@@ -6,8 +6,13 @@ using System.Threading.Tasks;
 
 namespace NEAT.Neural_Network
 {
+    /// <summary>
+    /// A node in a neural network.
+    /// </summary>
     public class Node : IComparable<Node>
     {
+        #region Constants
+
         /// <summary>
         /// The X value of an input node.
         /// </summary>
@@ -18,9 +23,13 @@ namespace NEAT.Neural_Network
         /// </summary>
         public const double OUTPUT_X = 1;
 
+        #endregion Constants
+
+
+        #region Properties
 
         /// <summary>
-        /// The X position of this node.
+        /// The X coordinate of this node.
         /// </summary>
         /// <remarks>Input nodes should have an X value of 0; output nodes should have an X value of 1.</remarks>
         public double X { get; }
@@ -28,7 +37,10 @@ namespace NEAT.Neural_Network
 
         private double? output;
 
-        public double Ouput
+        /// <summary>
+        /// The output of the node.
+        /// </summary>
+        public double Output
         {
             get
             {
@@ -37,21 +49,93 @@ namespace NEAT.Neural_Network
         }
 
 
-        public Node(double x)
+        /// <summary>
+        /// The connections of the node.
+        /// </summary>
+        public HashSet<Connection> Connections { get; }
+
+        #endregion Properties
+
+
+        /// <summary>
+        /// The delegate of the activation function for this node.
+        /// </summary>
+        /// <param name="x">The input of the function.</param>
+        /// <returns>The output of the function.</returns>
+        public delegate double ActivationFunction(double x);
+
+        private ActivationFunction Activation;
+
+
+        #region Constructors
+
+        /// <summary>
+        /// Constructs the node with the given x value. Uses the given activation function.
+        /// </summary>
+        /// <param name="x">The x coordinate of this node.</param>
+        /// <param name="activationFunction">The activation function to use for this node.</param>
+        public Node(double x, ActivationFunction activationFunction)
         {
             X = x;
+
+            Activation = activationFunction;
+
+            Connections = new HashSet<Connection>();
         }
+
+
+        /// <summary>
+        /// Constructs the node with the given x value. Uses the sigmoid activation function.
+        /// </summary>
+        /// <param name="x">The x coordinate of this node.</param>
+        public Node(double x)
+            : this(x, Sigmoid)
+        {
+
+        }
+
+
+        /// <summary>
+        /// Constructs the node with the <see cref="NEAT.Neural_Network.Node.INPUT_X"/> x value. Uses the sigmoid activation function.
+        /// </summary>
+        public Node()
+            : this(INPUT_X)
+        {
+
+        }
+
+        #endregion Constructors
 
 
         /// <summary>
         /// Calculates the output of the node.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The output of the node.</returns>
         public double Calulate()
         {
-            output = 1;
+            double sum = 0;
+
+            foreach (Connection connection in Connections)
+            {
+                if (connection.Enabled)
+                {
+                    sum += connection.From.Output;
+                }
+            }
+
+            output = Activation(sum);
 
             return output.Value;
+        }
+
+
+        /// <summary>
+        /// Sets the output of this node to the given value. This should ONLY be used for input nodes.
+        /// </summary>
+        /// <param name="output">The value to set the output to.</param>
+        public void SetOutput(double output)
+        {
+            this.output = output;
         }
 
 
@@ -66,12 +150,23 @@ namespace NEAT.Neural_Network
             {
                 return -1;
             }
-            if (X < other.X)
+            else if (X < other.X)
             {
                 return 1;
             }
 
             return 0;
+        }
+
+
+        /// <summary>
+        /// The sigmoid function. Used as the default activation function.
+        /// </summary>
+        /// <param name="x">The input for the function.</param>
+        /// <returns>The output of the sigmoid function.</returns>
+        public static double Sigmoid(double x)
+        {
+            return 1.0 / (1 + Math.Exp(-x));
         }
     }
 }
