@@ -12,9 +12,23 @@ namespace NEAT
     {
         public static void Main(string[] args)
         {
-            Node node = new Node(Node.INPUT_X);
+            Node node_1 = new Node();
+            Node node_2 = new Node();
 
-            Console.WriteLine(node.Output);
+            Node node_3 = new Node(Node.OUTPUT_X);
+
+            Connection connection = new Connection(node_1, node_3)
+            {
+                Weight = 1
+            };
+
+            Connection connection2 = new Connection(node_2, node_3)
+            {
+                Weight = 2
+            };
+
+
+            Console.WriteLine(node_3.Calulate());
 
             Console.ReadKey();
         }

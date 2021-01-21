@@ -16,7 +16,7 @@ namespace NEAT.Neural_Network
         /// <summary>
         /// The left-hand node of this connection.
         /// </summary>
-        public Node From { get; set; }
+        public Node From { get; set; }  //TODO consider making from and to readonly.
 
         /// <summary>
         /// The right-hand node of this connection.
@@ -37,13 +37,41 @@ namespace NEAT.Neural_Network
         #endregion Properties
 
 
+        #region Constructors
+
         /// <summary>
-        /// Constructs a connection gene with the given innovation number.
+        /// Constructs a connection with the given left-hand and right-hand nodes.
         /// </summary>
-        public Connection(Node from, Node to)
+        /// <param name="from">The left-hand node of this connection.</param>
+        /// <param name="to">The right-hand node of this connection.</param>
+        /// <param name="auto_connect">True to automatically add this connection to the nodes' connections; false if undesired.</param>
+        public Connection(Node from, Node to, bool auto_connect)
         {
             From = from;
             To = to;
+
+            Enabled = true;
+
+
+            if (auto_connect)
+            {
+                from.Connections.Add(this);
+                to.Connections.Add(this);
+            }
         }
+
+
+        /// <summary>
+        /// Constructs a connection with the given left-hand and right-hand nodes. Automatically connects the nodes.
+        /// </summary>
+        /// <param name="from">The left-hand node of this connection.</param>
+        /// <param name="to">The right-hand node of this connection.</param>
+        public Connection(Node from, Node to)
+            : this(from, to, true)
+        {
+
+        }
+
+        #endregion Constructors
     }
 }

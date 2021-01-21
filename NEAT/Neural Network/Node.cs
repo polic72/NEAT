@@ -35,7 +35,8 @@ namespace NEAT.Neural_Network
         public double X { get; }
 
 
-        private double? output;
+        private bool manual_output;
+        private double output;
 
         /// <summary>
         /// The output of the node.
@@ -44,13 +45,13 @@ namespace NEAT.Neural_Network
         {
             get
             {
-                return (output != null) ? output.Value : Calulate();
+                return manual_output ? output : Calulate();
             }
         }
 
 
         /// <summary>
-        /// The connections of the node.
+        /// The input connections of the node. This node should be the To of every connection.
         /// </summary>
         public HashSet<Connection> Connections { get; }
 
@@ -117,15 +118,15 @@ namespace NEAT.Neural_Network
 
             foreach (Connection connection in Connections)
             {
-                if (connection.Enabled)
+                if (connection.Enabled && connection.From.X < X)    //Does not use X values on the same or greater layers.
                 {
-                    sum += connection.From.Output;
+                    sum += connection.From.Output * connection.Weight;
                 }
             }
 
             output = Activation(sum);
 
-            return output.Value;
+            return output;
         }
 
 
@@ -135,6 +136,8 @@ namespace NEAT.Neural_Network
         /// <param name="output">The value to set the output to.</param>
         public void SetOutput(double output)
         {
+            manual_output = true;
+
             this.output = output;
         }
 
