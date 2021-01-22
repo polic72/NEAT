@@ -69,7 +69,7 @@
     <Compile Include="Genetic\Gene.cs" />
     <Compile Include="Genetic\NodeGene.cs" />
     <Compile Include="Neural Network\Connection.cs" />
-    <Compile Include="EvolvingNN.cs" />
+    <Compile Include="Genetic\Genome.cs" />
     <Compile Include="Neural Network\Node.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

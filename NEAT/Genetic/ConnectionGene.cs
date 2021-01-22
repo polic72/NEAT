@@ -102,7 +102,7 @@ namespace NEAT.Genetic
         /// <returns>The hash code.</returns>
         public override int GetHashCode()
         {
-            return From.InnovationNumber * Evolving_NeuralNetwork.MaxNodes + To.InnovationNumber;
+            return From.InnovationNumber * Genome.MaxNodes + To.InnovationNumber;
         }
 
 

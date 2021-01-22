@@ -4,16 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NEAT
+namespace NEAT.Genetic
 {
-    public class Evolving_NeuralNetwork
+    public class Genome
     {
         #region "Constants"
 
         /// <summary>
         /// The maximum number of nodes that any neural network can have.
         /// <para/>
-        /// Set in the <see cref="NEAT.Evolving_NeuralNetwork.Init(int)"/> method.
+        /// Set in the <see cref="NEAT.Genome.Init(int)"/> method.
         /// </summary>
         public static int MaxNodes { get; private set; }
 
@@ -30,7 +30,7 @@ namespace NEAT
         {
             if (initialized)
             {
-                throw new InvalidOperationException("The Evolving_NeuralNetwork class is already initialized.");
+                throw new InvalidOperationException("The Genome class is already initialized.");
             }
 
 
