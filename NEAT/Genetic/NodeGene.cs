@@ -9,7 +9,8 @@ using NEAT.Neural_Network;
 namespace NEAT.Genetic
 {
     /// <summary>
-    /// A gene specifying a nueron in the NN.
+    /// A gene specifying a nueron in the NN. This gene will be used construct a 
+    /// <see cref="NEAT.Neural_Network.Node"/>.
     /// </summary>
     public class NodeGene : Gene
     {

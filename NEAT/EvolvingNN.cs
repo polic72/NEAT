@@ -4,10 +4,44 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NEAT.Neural_Network
+namespace NEAT
 {
-    public class EvolvingNN
+    public class Evolving_NeuralNetwork
     {
+        #region "Constants"
 
+        /// <summary>
+        /// The maximum number of nodes that any neural network can have.
+        /// <para/>
+        /// Set in the <see cref="NEAT.Evolving_NeuralNetwork.Init(int)"/> method.
+        /// </summary>
+        public static int MaxNodes { get; private set; }
+
+
+        #region Initialization
+
+        private static bool initialized = false;
+
+        /// <summary>
+        /// Initializes the EvolvingNN class with the given max_nodes.
+        /// </summary>
+        /// <param name="max_nodes">The maximum number of nodes a neural network can have.</param>
+        public static void Init(int max_nodes)
+        {
+            if (initialized)
+            {
+                throw new InvalidOperationException("The Evolving_NeuralNetwork class is already initialized.");
+            }
+
+
+            MaxNodes = max_nodes;
+
+
+            initialized = true;
+        }
+
+        #endregion Initialization
+
+        #endregion "Constants"
     }
 }

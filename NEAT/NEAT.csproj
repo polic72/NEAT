@@ -65,6 +65,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Genetic\ConnectionGene.cs" />
     <Compile Include="Genetic\Gene.cs" />
     <Compile Include="Genetic\NodeGene.cs" />
     <Compile Include="Neural Network\Connection.cs" />
