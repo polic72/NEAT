@@ -65,10 +65,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Genetic\Gene.cs" />
     <Compile Include="Neural Network\Connection.cs" />
+    <Compile Include="EvolvingNN.cs" />
     <Compile Include="Neural Network\Node.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
