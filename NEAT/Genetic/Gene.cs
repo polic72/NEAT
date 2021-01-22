@@ -35,5 +35,15 @@ namespace NEAT.Genetic
         {
             InnovationNumber = innovation_number;
         }
+
+
+        /// <summary>
+        /// Constructs a gene with the default innovation number (0).
+        /// </summary>
+        public Gene()
+            : this(0)
+        {
+
+        }
     }
 }

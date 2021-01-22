@@ -66,6 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Genetic\Gene.cs" />
+    <Compile Include="Genetic\NodeGene.cs" />
     <Compile Include="Neural Network\Connection.cs" />
     <Compile Include="EvolvingNN.cs" />
     <Compile Include="Neural Network\Node.cs" />
