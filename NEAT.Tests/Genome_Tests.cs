@@ -727,7 +727,7 @@ namespace NEAT.Tests
             genome_2.ConnectionGenes.Add(connectionGene_4);
 
 
-            Assert.AreEqual(Genome.C2 * 2, genome_1.Distance(genome_2));
+            Assert.AreEqual(Genome.C1 * 2 + Genome.C2 * 2, genome_1.Distance(genome_2));
         }
 
 
@@ -777,7 +777,7 @@ namespace NEAT.Tests
             genome_2.ConnectionGenes.Add(connectionGene_4);
 
 
-            Assert.AreEqual(Genome.C2 * 2, genome_2.Distance(genome_1));
+            Assert.AreEqual(Genome.C1 * 2 + Genome.C2 * 2, genome_2.Distance(genome_1));
         }
 
         #endregion ManyNodes_DifferentConnections_SameWeight
@@ -831,7 +831,7 @@ namespace NEAT.Tests
             genome_2.ConnectionGenes.Add(connectionGene_4);
 
 
-            Assert.AreEqual(Genome.C2 * 2, genome_1.Distance(genome_2));
+            Assert.AreEqual(Genome.C1 * 2 + Genome.C2 * 2, genome_1.Distance(genome_2));
         }
 
 
@@ -881,7 +881,7 @@ namespace NEAT.Tests
             genome_2.ConnectionGenes.Add(connectionGene_4);
 
 
-            Assert.AreEqual(Genome.C2 * 2, genome_2.Distance(genome_1));
+            Assert.AreEqual(Genome.C1 * 2 + Genome.C2 * 2, genome_2.Distance(genome_1));
         }
 
         #endregion ManyNodes_DifferentConnections_DifferentWeight
