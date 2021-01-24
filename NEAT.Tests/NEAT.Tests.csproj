@@ -68,6 +68,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConnectionGene_Tests.cs" />
+    <Compile Include="Genome_Tests.cs" />
     <Compile Include="NodeGene_Tests.cs" />
     <Compile Include="Node_Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
