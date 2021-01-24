@@ -109,7 +109,7 @@ namespace NEAT.Neural_Network
 
 
         /// <summary>
-        /// Calculates the output of the node.
+        /// Calculates the output of the node. Also sets the Output property.
         /// </summary>
         /// <returns>The output of the node.</returns>
         public double Calulate()
@@ -118,7 +118,7 @@ namespace NEAT.Neural_Network
 
             foreach (Connection connection in Connections)
             {
-                if (connection.Enabled && connection.From.X < X)    //Does not use X values on the same or greater layers.
+                if (connection.Enabled && connection.From.X < X)    //Does not use X values on the same or greater layers. Ignores this Node at the same time, genius.
                 {
                     sum += connection.From.Output * connection.Weight;
                 }
