@@ -78,6 +78,26 @@ namespace NEAT.Genetic
             initialized = true;
         }
 
+
+        /// <summary>
+        /// Initializes the EvolvingNN class with 2^20 max_nodes, 1.0 c1, 1.0 c2, and 0.4 c3.
+        /// TODO update as needed
+        /// </summary>
+        public static void Init()
+        {
+            Init((int)Math.Pow(2, 20), 1, 1, .4);
+        }
+
+
+        /// <summary>
+        /// Tells whether or not the Genome constants are initialized.
+        /// </summary>
+        /// <returns>True if initialized, false otherwise.</returns>
+        public static bool IsInitialized()
+        {
+            return initialized;
+        }
+
         #endregion Initialization
 
         #endregion "Constants"

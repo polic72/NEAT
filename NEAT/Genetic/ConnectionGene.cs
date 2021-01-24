@@ -62,7 +62,8 @@ namespace NEAT.Genetic
 
 
         /// <summary>
-        /// Constructs a connection gene with the default innovation number (0) and enabled (true), and the given 
+        /// Constructs a connection gene with the default innovation number (output of 
+        /// <see cref="NEAT.Genetic.ConnectionGene.GetHashCode"/>) and enabled (true), and the given 
         /// weight.
         /// </summary>
         /// <param name="from">The NodeGene to connect from.</param>
@@ -71,7 +72,7 @@ namespace NEAT.Genetic
         public ConnectionGene(NodeGene from, NodeGene to, double weight)
             : this(from, to, 0, weight, true)
         {
-
+            InnovationNumber = GetHashCode();
         }
 
         #endregion Constructors
