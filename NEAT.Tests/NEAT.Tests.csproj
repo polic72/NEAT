@@ -71,6 +71,7 @@
     <Compile Include="Genome_Tests.cs" />
     <Compile Include="NodeGene_Tests.cs" />
     <Compile Include="Node_Tests.cs" />
+    <Compile Include="OrderedHashSet_Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
