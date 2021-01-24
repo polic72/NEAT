@@ -46,12 +46,30 @@ namespace NEAT.Genetic
         public static double C3 { get; private set; }
 
 
+        /// <summary>
+        /// Whether or not to use uniform crossover. If false, use blended crossover. See remarks for more details.
+        /// </summary>
+        /// <remarks>
+        /// In uniform crossover, matching genes are randomly chosen for the offspring genome.
+        /// <para/>
+        /// In blended crossover, the connection weights of matching genes are averaged.
+        /// </remarks>
+        public static bool Uniform_Crossover { get; private set; }
+
+        /// <summary>
+        /// The delta for genome scores can fall between to be considered equal. Used in corssover.
+        /// </summary>
+        public static double Crossover_ScoreDelta { get; private set; }
+
+
+
+
         #region Initialization
 
         private static bool initialized = false;
 
         /// <summary>
-        /// Initializes the EvolvingNN class with the given max_nodes.
+        /// Initializes the EvolvingNN class with the given constants.
         /// </summary>
         /// <param name="max_nodes">The maximum number of nodes a neural network can have.</param>
         /// <param name="c1">The c1 constant to set. See <see cref="NEAT.Genetic.Genome.Distance(Genome)"/> for more 
@@ -60,7 +78,11 @@ namespace NEAT.Genetic
         /// information.</param>
         /// <param name="c3">The c3 constant to set. See <see cref="NEAT.Genetic.Genome.Distance(Genome)"/> for more 
         /// information.</param>
-        public static void Init(int max_nodes, double c1, double c2, double c3)
+        /// <param name="uniform_crossover">Whether or not to use uniform crossover. See 
+        /// <see cref="NEAT.Genetic.Genome.Uniform_Crossover"/> for more information.</param>
+        /// <param name="crossover_scoreDelta">The delta for genome scores can fall between to be considered equal. 
+        /// Used in corssover.</param>
+        public static void Init(int max_nodes, double c1, double c2, double c3, bool uniform_crossover, double crossover_scoreDelta)
         {
             if (initialized)
             {
@@ -74,18 +96,28 @@ namespace NEAT.Genetic
             C2 = c2;
             C3 = c3;
 
+            Uniform_Crossover = uniform_crossover;
+
+            Crossover_ScoreDelta = crossover_scoreDelta;
+
 
             initialized = true;
         }
 
 
         /// <summary>
-        /// Initializes the EvolvingNN class with 2^20 max_nodes, 1.0 c1, 1.0 c2, and 0.4 c3.
+        /// Initializes the EvolvingNN class with:
+        /// <list type="bullet">
+        /// <item>MaxNodes: 2^20</item>
+        /// <item>C1: 1  <term/>  C2: 1  <term/>  C3: 0.4</item>
+        /// <item>Uniform_Crossover: true</item>
+        /// <item>Crossover_ScoreDelta: 0.001</item>
+        /// </list>
         /// TODO update as needed
         /// </summary>
         public static void Init()
         {
-            Init((int)Math.Pow(2, 20), 1, 1, .4);
+            Init((int)Math.Pow(2, 20), 1, 1, .4, true, 0.001);
         }
 
 
@@ -114,12 +146,12 @@ namespace NEAT.Genetic
         /// <summary>
         /// The ConnectionGenes of this genome.
         /// </summary>
-        public List<ConnectionGene> ConnectionGenes { get; }
+        public OrderedHashSet<ConnectionGene> ConnectionGenes { get; }
 
         /// <summary>
         /// The NodeGenes of this genome.
         /// </summary>
-        public List<NodeGene> NodeGenes { get; }
+        public OrderedHashSet<NodeGene> NodeGenes { get; }
 
         #endregion Properties
 
@@ -132,8 +164,8 @@ namespace NEAT.Genetic
         {
             Random = random;
 
-            ConnectionGenes = new List<ConnectionGene>();
-            NodeGenes = new List<NodeGene>();
+            ConnectionGenes = new OrderedHashSet<ConnectionGene>(random);
+            NodeGenes = new OrderedHashSet<NodeGene>(random);
         }
 
 
@@ -203,11 +235,11 @@ namespace NEAT.Genetic
 
 
             //Count excess genes.
-            if (ConnectionGenes.Count > genome.ConnectionGenes.Count)   //We has more genes, use our count.
+            if (index_me < ConnectionGenes.Count)   //We have leftover genes, use our count.
             {
                 num_excess = ConnectionGenes.Count - index_me;
             }
-            else if (ConnectionGenes.Count < genome.ConnectionGenes.Count)  //They have more genes, use their count.
+            else if (index_them < genome.ConnectionGenes.Count)  //They have leftover genes, use their count.
             {
                 num_excess = genome.ConnectionGenes.Count - index_them;
             }
@@ -227,5 +259,150 @@ namespace NEAT.Genetic
 
             return C1 * (num_excess / N) + C2 * (num_disjoint / N) + (C3 * weight_diff);
         }
+
+
+        #region Crossover
+
+        /// <summary>
+        /// Crosses over this genome with the given genome.
+        /// </summary>
+        /// <param name="my_score">Score of this genome. See remarks.</param>
+        /// <param name="genome">The genome to cross over with.</param>
+        /// <param name="their_score">Score of the given genome. See remarks.</param>
+        /// <param name="random">The random object for the created genome.</param>
+        /// <returns>The crossed-over genome.</returns>
+        /// <remarks>
+        /// When the given scores are equal, use the following rules:
+        /// <list type="bullet">
+        /// <item>On similar connection genes: See <see cref="NEAT.Genetic.Genome.Uniform_Crossover"/>.</item>
+        /// <item>On disjoint connection genes: Adds all to the created genome.</item>
+        /// <item>On excess connection genes: Adds all to the created genome.</item>
+        /// </list>
+        /// 
+        /// When the given scores are not equal, use the following rules:
+        /// <list type="bullet">
+        /// <item>On similar connection genes: See <see cref="NEAT.Genetic.Genome.Uniform_Crossover"/>.</item>
+        /// <item>On disjoint connection genes: Adds genes from parent with higher score.</item>
+        /// <item>On excess connection genes: Adds genes from parent with higher score.</item>
+        /// </list>
+        /// </remarks>
+        public Genome Crossover(double my_score, Genome genome, double their_score, Random random)
+        {
+            Genome created_genome = new Genome(random);
+
+
+            #region ConnectionGenes
+
+            int index_me = 0;
+            int index_them = 0;
+
+            //Step through both genomes and cross them over randomly.
+            //This section is similar to Distance, so we'll copy how that does it.
+            while (index_me < ConnectionGenes.Count && index_them < genome.ConnectionGenes.Count)
+            {
+                ConnectionGene connectionGene_me = ConnectionGenes[index_me];
+                ConnectionGene connectionGene_them = genome.ConnectionGenes[index_them];
+
+                int inNum_me = connectionGene_me.InnovationNumber;
+                int inNum_them = connectionGene_them.InnovationNumber;
+
+
+                if (inNum_me == inNum_them) //Similar genes, choose either side at random.
+                {
+                    index_me++;
+                    index_them++;
+
+                    if (Uniform_Crossover)
+                    {
+                        if (random.NextDouble() < .5)
+                        {
+                            created_genome.ConnectionGenes.Add(connectionGene_me);
+                        }
+                        else
+                        {
+                            created_genome.ConnectionGenes.Add(connectionGene_them);
+                        }
+                    }
+                    else
+                    {
+                        ConnectionGene temp = new ConnectionGene(connectionGene_me.From, connectionGene_me.To,
+                            (connectionGene_me.Weight + connectionGene_them.Weight) / 2);
+
+                        created_genome.ConnectionGenes.Add(temp);
+                    }
+                }
+                else if (inNum_me > inNum_them) //Disjoint gene at them, add this gene if allowed.
+                {
+                    index_them++;
+
+                    if (Math.Abs(my_score - their_score) < Crossover_ScoreDelta || their_score > my_score)
+                    {
+                        created_genome.ConnectionGenes.Add(connectionGene_them);
+                    }
+                }
+                else    //Disjoint gene at me, add this gene if allowed.
+                {
+                    index_me++;
+
+                    if (Math.Abs(my_score - their_score) < Crossover_ScoreDelta || my_score > their_score)
+                    {
+                        created_genome.ConnectionGenes.Add(connectionGene_me);
+                    }
+                }
+            }
+
+
+            //Run through the excess connections and add them all if allowed.
+            if (index_me < ConnectionGenes.Count)   //We have leftover genes, add ours if allowed.
+            {
+                if (Math.Abs(my_score - their_score) < Crossover_ScoreDelta || my_score > their_score)  //Check legality.
+                {
+                    while (index_me < ConnectionGenes.Count)
+                    {
+                        created_genome.ConnectionGenes.Add(ConnectionGenes[index_me++]);
+                    }
+                }
+            }
+            else if (index_them < genome.ConnectionGenes.Count)  //They have leftover genes, add theirs if allowed.
+            {
+                if (Math.Abs(my_score - their_score) < Crossover_ScoreDelta || their_score > my_score)  //Check legality.
+                {
+                    while (index_them < genome.ConnectionGenes.Count)
+                    {
+                        created_genome.ConnectionGenes.Add(genome.ConnectionGenes[index_them++]);
+                    }
+                }
+            }
+            //There is no else because if they have the same number of genes, there is no excess, so don't do anything.
+
+            #endregion ConnectionGenes
+
+
+            #region NodeGenes
+
+            foreach (ConnectionGene connectionGene in created_genome.ConnectionGenes)
+            {
+                created_genome.NodeGenes.Add(connectionGene.From);  //Finally making use of the uniqness in RandomHashSet.
+                created_genome.NodeGenes.Add(connectionGene.To);
+            }
+
+            #endregion NodeGenes
+
+
+            return created_genome;
+        }
+
+
+        /// <summary>
+        /// Crosses over this genome with the given genome, giving both the same score. Gives the created genome this genome's random.
+        /// </summary>
+        /// <param name="genome">The genome to cross over with.</param>
+        /// <returns>The crossed-over genome.</returns>
+        public Genome Crossover(Genome genome)
+        {
+            return Crossover(0, genome, 0, Random);
+        }
+
+        #endregion Crossover
     }
 }
