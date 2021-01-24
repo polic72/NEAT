@@ -382,7 +382,7 @@ namespace NEAT.Genetic
 
             foreach (ConnectionGene connectionGene in created_genome.ConnectionGenes)
             {
-                created_genome.NodeGenes.Add(connectionGene.From);  //Finally making use of the uniqness in RandomHashSet.
+                created_genome.NodeGenes.Add(connectionGene.From);  //Finally making use of the uniqness in OrderedHashSet.
                 created_genome.NodeGenes.Add(connectionGene.To);
             }
 
