@@ -18,7 +18,7 @@ namespace NEAT
                 Genome.Init();
             }
 
-            Random random = new Random();
+            Random random = new Random(1);
 
 
             int nodeGene_num = 1;
@@ -49,7 +49,38 @@ namespace NEAT
             Genome created_genome = genome_1.Crossover(genome_2);
 
 
-            Console.WriteLine((nodeGene_1 == nodeGene_2).ToString());
+            bool[] contains_genes = { false, false, false, false, false };
+
+            foreach (ConnectionGene cgene in created_genome.ConnectionGenes)
+            {
+                if (cgene == connectionGene_1)
+                {
+                    contains_genes[0] = true;
+                }
+                else if (cgene == connectionGene_2)
+                {
+                    contains_genes[1] = true;
+                }
+            }
+
+            foreach (NodeGene ngene in created_genome.NodeGenes)
+            {
+                if (ngene == nodeGene_1)
+                {
+                    contains_genes[2] = true;
+                }
+                else if (ngene == nodeGene_2)
+                {
+                    contains_genes[3] = true;
+                }
+                else if (ngene == nodeGene_3)
+                {
+                    contains_genes[4] = true;
+                }
+            }
+
+
+            Console.WriteLine();
 
             Console.ReadKey();
         }

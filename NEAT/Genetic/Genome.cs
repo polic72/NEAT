@@ -146,12 +146,12 @@ namespace NEAT.Genetic
         /// <summary>
         /// The ConnectionGenes of this genome.
         /// </summary>
-        public OrderedHashSet<ConnectionGene> ConnectionGenes { get; }
+        public SortedSet<ConnectionGene> ConnectionGenes { get; }
 
         /// <summary>
         /// The NodeGenes of this genome.
         /// </summary>
-        public OrderedHashSet<NodeGene> NodeGenes { get; }
+        public SortedSet<NodeGene> NodeGenes { get; }
 
         #endregion Properties
 
@@ -164,8 +164,8 @@ namespace NEAT.Genetic
         {
             Random = random;
 
-            ConnectionGenes = new OrderedHashSet<ConnectionGene>(random);
-            NodeGenes = new OrderedHashSet<NodeGene>(random);
+            ConnectionGenes = new SortedSet<ConnectionGene>();
+            NodeGenes = new SortedSet<NodeGene>();
         }
 
 
@@ -189,7 +189,7 @@ namespace NEAT.Genetic
         /// </remarks>
         public double Distance(Genome genome)
         {
-            int index_me = 0;
+            int index_me = 0;   //Leaving indexes from old implementation due to their mathematical usefulness later.
             int index_them = 0;
 
 
@@ -200,12 +200,19 @@ namespace NEAT.Genetic
             double weight_diff = 0; //The weight difference between similar genes.
 
 
+            SortedSet<ConnectionGene>.Enumerator enumerator_me = ConnectionGenes.GetEnumerator();
+            SortedSet<ConnectionGene>.Enumerator enumerator_them = genome.ConnectionGenes.GetEnumerator();
+
+            enumerator_me.MoveNext();   //Preps for first current.
+            enumerator_them.MoveNext();
+
+
             //Step through both genomes and find out how different they are.
             //This method is run a lot, so we want to do this by innovation number for efficiency.
             while (index_me < ConnectionGenes.Count && index_them < genome.ConnectionGenes.Count)
             {
-                ConnectionGene connectionGene_me = ConnectionGenes[index_me];
-                ConnectionGene connectionGene_them = genome.ConnectionGenes[index_them];
+                ConnectionGene connectionGene_me = enumerator_me.Current;
+                ConnectionGene connectionGene_them = enumerator_them.Current;
 
                 int inNum_me = connectionGene_me.InnovationNumber;
                 int inNum_them = connectionGene_them.InnovationNumber;
@@ -215,6 +222,8 @@ namespace NEAT.Genetic
                 {
                     index_me++;
                     index_them++;
+                    enumerator_me.MoveNext();
+                    enumerator_them.MoveNext();
 
                     num_similar++;
                     weight_diff += Math.Abs(connectionGene_me.Weight - connectionGene_them.Weight);
@@ -222,12 +231,14 @@ namespace NEAT.Genetic
                 else if (inNum_me > inNum_them) //Disjoint gene at them, increase them.
                 {
                     index_them++;
+                    enumerator_them.MoveNext();
 
                     num_disjoint++;
                 }
                 else    //Disjoint gene at me, increase me.
                 {
                     index_me++;
+                    enumerator_me.MoveNext();
 
                     num_disjoint++;
                 }
@@ -293,15 +304,18 @@ namespace NEAT.Genetic
 
             #region ConnectionGenes
 
-            int index_me = 0;
-            int index_them = 0;
+            SortedSet<ConnectionGene>.Enumerator enumerator_me = ConnectionGenes.GetEnumerator();
+            SortedSet<ConnectionGene>.Enumerator enumerator_them = genome.ConnectionGenes.GetEnumerator();
+
+            enumerator_me.MoveNext();   //Preps for first current.
+            enumerator_them.MoveNext();
+
 
             //Step through both genomes and cross them over randomly.
-            //This section is similar to Distance, so we'll copy how that does it.
-            while (index_me < ConnectionGenes.Count && index_them < genome.ConnectionGenes.Count)
+            while (enumerator_me.Current != null && enumerator_them.Current != null)
             {
-                ConnectionGene connectionGene_me = ConnectionGenes[index_me];
-                ConnectionGene connectionGene_them = genome.ConnectionGenes[index_them];
+                ConnectionGene connectionGene_me = enumerator_me.Current;
+                ConnectionGene connectionGene_them = enumerator_them.Current;
 
                 int inNum_me = connectionGene_me.InnovationNumber;
                 int inNum_them = connectionGene_them.InnovationNumber;
@@ -309,8 +323,8 @@ namespace NEAT.Genetic
 
                 if (inNum_me == inNum_them) //Similar genes, choose either side at random.
                 {
-                    index_me++;
-                    index_them++;
+                    enumerator_me.MoveNext();
+                    enumerator_them.MoveNext();
 
                     if (Uniform_Crossover)
                     {
@@ -333,7 +347,7 @@ namespace NEAT.Genetic
                 }
                 else if (inNum_me > inNum_them) //Disjoint gene at them, add this gene if allowed.
                 {
-                    index_them++;
+                    enumerator_them.MoveNext();
 
                     if (Math.Abs(my_score - their_score) < Crossover_ScoreDelta || their_score > my_score)
                     {
@@ -342,7 +356,7 @@ namespace NEAT.Genetic
                 }
                 else    //Disjoint gene at me, add this gene if allowed.
                 {
-                    index_me++;
+                    enumerator_me.MoveNext();
 
                     if (Math.Abs(my_score - their_score) < Crossover_ScoreDelta || my_score > their_score)
                     {
@@ -353,24 +367,26 @@ namespace NEAT.Genetic
 
 
             //Run through the excess connections and add them all if allowed.
-            if (index_me < ConnectionGenes.Count)   //We have leftover genes, add ours if allowed.
+            if (enumerator_me.Current != null)  //We have leftover genes, add ours if allowed.
             {
                 if (Math.Abs(my_score - their_score) < Crossover_ScoreDelta || my_score > their_score)  //Check legality.
                 {
-                    while (index_me < ConnectionGenes.Count)
+                    do
                     {
-                        created_genome.ConnectionGenes.Add(ConnectionGenes[index_me++]);
+                        created_genome.ConnectionGenes.Add(enumerator_me.Current);
                     }
+                    while (enumerator_me.MoveNext());
                 }
             }
-            else if (index_them < genome.ConnectionGenes.Count)  //They have leftover genes, add theirs if allowed.
+            else if (enumerator_them.Current != null)  //They have leftover genes, add theirs if allowed.
             {
                 if (Math.Abs(my_score - their_score) < Crossover_ScoreDelta || their_score > my_score)  //Check legality.
                 {
-                    while (index_them < genome.ConnectionGenes.Count)
+                    do
                     {
-                        created_genome.ConnectionGenes.Add(genome.ConnectionGenes[index_them++]);
+                        created_genome.ConnectionGenes.Add(enumerator_them.Current);
                     }
+                    while (enumerator_them.MoveNext());
                 }
             }
             //There is no else because if they have the same number of genes, there is no excess, so don't do anything.

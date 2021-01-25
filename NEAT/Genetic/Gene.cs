@@ -9,7 +9,7 @@ namespace NEAT.Genetic
     /// <summary>
     /// A base class for a gene.
     /// </summary>
-    public abstract class Gene
+    public abstract class Gene : IComparable<Gene>
     {
         /// <summary>
         /// The innovation number of this gene.
@@ -44,6 +44,28 @@ namespace NEAT.Genetic
             : this(0)
         {
 
+        }
+
+
+        /// <summary>
+        /// Compares this gene with the given gene. Based on their InnovationNumbers.
+        /// </summary>
+        /// <param name="other">The other gene to compare to.</param>
+        /// <returns>-1 when this InnovationNumber is lower, 1 when this InnovationNumber is greater, 0 otherwise.</returns>
+        public int CompareTo(Gene other)
+        {
+            if (InnovationNumber < other.InnovationNumber)
+            {
+                return -1;
+            }
+            else if (InnovationNumber > other.InnovationNumber)
+            {
+                return 1;
+            }
+            else
+            {
+                return 0;
+            }
         }
     }
 }
