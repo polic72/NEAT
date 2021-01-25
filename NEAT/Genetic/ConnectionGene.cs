@@ -113,7 +113,22 @@ namespace NEAT.Genetic
         /// <param name="left">The left ConnectionGene to test.</param>
         /// <param name="right">The right ConnectionGene to test.</param>
         /// <returns>True if both ConnectionGene have the same From/To NodeGenes. False otherwise.</returns>
-        public static bool operator ==(ConnectionGene left, ConnectionGene right) => left.Equals(right);
+        public static bool operator ==(ConnectionGene left, ConnectionGene right)
+        {
+            if (left is null)
+            {
+                if (right is null)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+            return left.Equals(right);
+        }
 
 
         /// <summary>
@@ -122,6 +137,21 @@ namespace NEAT.Genetic
         /// <param name="left">The left ConnectionGene to test.</param>
         /// <param name="right">The right ConnectionGene to test.</param>
         /// <returns>False if both ConnectionGene have the same From/To NodeGenes. True otherwise.</returns>
-        public static bool operator !=(ConnectionGene left, ConnectionGene right) => !left.Equals(right);
+        public static bool operator !=(ConnectionGene left, ConnectionGene right)
+        {
+            if (left is null)
+            {
+                if (right is null)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+
+            return !left.Equals(right);
+        }
     }
 }

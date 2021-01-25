@@ -95,7 +95,22 @@ namespace NEAT.Genetic
         /// <param name="left">The left NodeGene to test.</param>
         /// <param name="right">The right NodeGene to test.</param>
         /// <returns>True if both NodeGenes have the same innovation number. False otherwise.</returns>
-        public static bool operator ==(NodeGene left, NodeGene right) => left.Equals(right);
+        public static bool operator ==(NodeGene left, NodeGene right)
+        {
+            if (left is null)
+            {
+                if (right is null)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+            return left.Equals(right);
+        }
 
 
         /// <summary>
@@ -104,6 +119,21 @@ namespace NEAT.Genetic
         /// <param name="left">The left NodeGene to test.</param>
         /// <param name="right">The right NodeGene to test.</param>
         /// <returns>False if both NodeGenes have the same innovation number. True otherwise.</returns>
-        public static bool operator !=(NodeGene left, NodeGene right) => !left.Equals(right);
+        public static bool operator !=(NodeGene left, NodeGene right)
+        {
+            if (left is null)
+            {
+                if (right is null)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+
+            return !left.Equals(right);
+        }
     }
 }

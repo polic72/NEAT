@@ -24,7 +24,7 @@ namespace NEAT
             int nodeGene_num = 1;
 
             NodeGene nodeGene_1 = new NodeGene(nodeGene_num++, Node.Sigmoid);
-            NodeGene nodeGene_2 = new NodeGene(nodeGene_num++, Node.Sigmoid);
+            NodeGene nodeGene_2 = new NodeGene(nodeGene_num++, Node.Sigmoid); Console.WriteLine(nodeGene_1 == null);
 
             NodeGene nodeGene_3 = new NodeGene(nodeGene_num++, Node.Sigmoid);
 
