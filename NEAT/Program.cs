@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-//using System.Linq;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,14 +18,14 @@ namespace NEAT
             int num = 1;
 
 
-            NodeGene nodeGene_1 = new NodeGene(num++, Node.INPUT_X, Node.Sigmoid);
-            NodeGene nodeGene_2 = new NodeGene(num++, Node.INPUT_X, Node.Sigmoid);
+            NodeGene nodeGene_1 = new NodeGene(num++, 0, Node.Sigmoid);
+            NodeGene nodeGene_2 = new NodeGene(num++, .1, Node.Sigmoid);
 
             ConnectionGene connectionGene_1 = new ConnectionGene(nodeGene_1, nodeGene_2, 4);
 
 
-            NodeGene nodeGene_3 = new NodeGene(num++, Node.INPUT_X, Node.Sigmoid);
-            NodeGene nodeGene_4 = new NodeGene(num++, Node.INPUT_X, Node.Sigmoid);
+            NodeGene nodeGene_3 = new NodeGene(num++, .2, Node.Sigmoid);
+            NodeGene nodeGene_4 = new NodeGene(num++, .3, Node.Sigmoid);
 
             ConnectionGene connectionGene_2 = new ConnectionGene(nodeGene_1, nodeGene_2, 4);
 
@@ -41,6 +41,9 @@ namespace NEAT
             NodeGene wejf = null;
 
             set.TryGetValue(new NodeGene() { InnovationNumber = random.Next(set.Count) + 1}, out wejf);
+
+
+            IEnumerable<NodeGene> temp_subset = set.Where(a => a.X > wejf.X);
 
 
             Console.WriteLine();

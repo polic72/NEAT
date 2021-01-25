@@ -62,6 +62,19 @@ namespace NEAT.Genetic
         public static double Crossover_ScoreDelta { get; private set; }
 
 
+        #region Mutation Constants
+
+        /// <summary>
+        /// The value to be the min/max [-value, value) for the 
+        /// TODO fix this text
+        /// <see cref="NEAT_Tests.Gene_.Genome.Mutate_WeightRandom"/> and 
+        /// <see cref="NEAT.Genetic.Genome.Mutate_Link"/>.
+        /// </summary>
+        public static double Mutate_WeightRandom { get; private set; }
+
+        #endregion Mutation Constants
+
+
 
 
         #region Initialization
@@ -82,7 +95,9 @@ namespace NEAT.Genetic
         /// <see cref="NEAT.Genetic.Genome.Uniform_Crossover"/> for more information.</param>
         /// <param name="crossover_scoreDelta">The delta for genome scores can fall between to be considered equal. 
         /// Used in corssover.</param>
-        public static void Init(int max_nodes, double c1, double c2, double c3, bool uniform_crossover, double crossover_scoreDelta)
+        /// <param name="mutate_weightRandom">The value to be the min/max [-value, value) for random weight mutations.</param>
+        public static void Init(int max_nodes, double c1, double c2, double c3, bool uniform_crossover, double crossover_scoreDelta,
+            double mutate_weightRandom)
         {
             if (initialized)
             {
@@ -100,6 +115,8 @@ namespace NEAT.Genetic
 
             Crossover_ScoreDelta = crossover_scoreDelta;
 
+            Mutate_WeightRandom = mutate_weightRandom;
+
 
             initialized = true;
         }
@@ -112,12 +129,13 @@ namespace NEAT.Genetic
         /// <item>C1: 1  <term/>  C2: 1  <term/>  C3: 0.4</item>
         /// <item>Uniform_Crossover: true</item>
         /// <item>Crossover_ScoreDelta: 0.001</item>
+        /// <item>Mutate_WeightRandom: 1</item>
         /// </list>
         /// TODO update as needed
         /// </summary>
         public static void Init()
         {
-            Init((int)Math.Pow(2, 20), 1, 1, .4, true, 0.001);
+            Init((int)Math.Pow(2, 20), 1, 1, .4, true, 0.001, 1);
         }
 
 
@@ -429,49 +447,28 @@ namespace NEAT.Genetic
         /// </summary>
         public void Mutate_Link()
         {
-            ////Get first node to connect.
-            //NodeGene nodeGene_a = null;
-            //NodeGenes.TryGetValue(new NodeGene(Random.Next(NodeGenes.Count) + 1), out nodeGene_a);  //Innovation numbers start at 1.
+            //Get first node to connect. It is random.
+            NodeGene nodeGene_a = null;
+            NodeGenes.TryGetValue(new NodeGene(Random.Next(NodeGenes.Count) + 1), out nodeGene_a);  //Innovation numbers start at 1.
 
 
-            ////Get the node directly above 
-            //NodeGene subsetStart_nodeGene = null;
-            //NodeGenes.TryGetValue(new NodeGene(nodeGene_a.InnovationNumber + 1), out subsetStart_nodeGene);
+            IEnumerable<NodeGene> temp_subset = NodeGenes.Where(a => a.X > nodeGene_a.X);
 
-            //SortedSet<NodeGene> subset = NodeGenes.GetViewBetween(nodeGene_a)
+            NodeGene nodeGene_b = temp_subset.ElementAt(Random.Next(temp_subset.Count()));
 
 
-            //NodeGene nodeGene_b = null;
+            //TODO make a global gene tracker and get from it instead of new here.
+            ConnectionGene connectionGene = new ConnectionGene(nodeGene_a, nodeGene_b, Mutate_WeightRandom * (Random.NextDouble() * 2 - 1));
 
-            //if (nodeGene_a.X == nodeGene_b.X)
-            //{
-            //    continue;
-            //}
-
-
-            //ConnectionGene connectionGene;
-
-            //if (nodeGene_a.X < nodeGene_b.X)
-            //{
-            //    connectionGene = new ConnectionGene(nodeGene_a, nodeGene_b, 0); //Temp innovation number.
-            //}
-            //else
-            //{
-            //    connectionGene = new ConnectionGene(nodeGene_b, nodeGene_a, 0); //Temp innovation number.
-            //}
-
-            //if (Connections.Contains(connectionGene))
-            //{
-            //    continue;
-            //}
+            if (ConnectionGenes.Contains(connectionGene))
+            {
+                return; //TODO think of how to handle this, maybe have a retry somewhere?
+            }
 
 
-            //connectionGene = NEAT.CreateConnection(connectionGene.From, connectionGene.To);
-            //connectionGene.Weight = NEAT.WEIGHT_RANDOM + (random.NextDouble() * 2 - 1);
+            //TODO Add to global tracker here
 
-            //Connections.Add_Sorted_Gene(connectionGene);    //This needs to be sorted otherwise something breaks.
-
-            //return;
+            ConnectionGenes.Add(connectionGene);
         }
 
         #endregion Mutate
