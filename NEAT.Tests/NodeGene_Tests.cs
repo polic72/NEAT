@@ -2,6 +2,7 @@
 using System;
 
 using NEAT.Genetic;
+using NEAT.Neural_Network;
 
 namespace NEAT.Tests
 {
@@ -17,9 +18,9 @@ namespace NEAT.Tests
             }
 
 
-            NodeGene nodeGene_1 = new NodeGene(1, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_1 = new NodeGene(1, Node.INPUT_X, Neural_Network.Node.Sigmoid);
 
-            NodeGene nodeGene_2 = new NodeGene(1, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_2 = new NodeGene(1, Node.INPUT_X, Neural_Network.Node.Sigmoid);
 
 
             Assert.IsTrue(nodeGene_1 == nodeGene_2);
@@ -35,9 +36,9 @@ namespace NEAT.Tests
             }
 
 
-            NodeGene nodeGene_1 = new NodeGene(1, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_1 = new NodeGene(1, Node.INPUT_X, Neural_Network.Node.Sigmoid);
 
-            NodeGene nodeGene_2 = new NodeGene(2, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_2 = new NodeGene(2, Node.INPUT_X, Neural_Network.Node.Sigmoid);
 
 
             Assert.IsTrue(nodeGene_1 != nodeGene_2);

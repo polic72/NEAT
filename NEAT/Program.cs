@@ -23,10 +23,10 @@ namespace NEAT
 
             int nodeGene_num = 1;
 
-            NodeGene nodeGene_1 = new NodeGene(nodeGene_num++, Node.Sigmoid);
-            NodeGene nodeGene_2 = new NodeGene(nodeGene_num++, Node.Sigmoid); Console.WriteLine(nodeGene_1 == null);
+            NodeGene nodeGene_1 = new NodeGene(nodeGene_num++, Node.INPUT_X, Node.Sigmoid);
+            NodeGene nodeGene_2 = new NodeGene(nodeGene_num++, Node.INPUT_X, Node.Sigmoid);
 
-            NodeGene nodeGene_3 = new NodeGene(nodeGene_num++, Node.Sigmoid);
+            NodeGene nodeGene_3 = new NodeGene(nodeGene_num++, Node.INPUT_X, Node.Sigmoid);
 
             ConnectionGene connectionGene_1 = new ConnectionGene(nodeGene_1, nodeGene_2, 1);
             ConnectionGene connectionGene_2 = new ConnectionGene(nodeGene_1, nodeGene_3, 1);

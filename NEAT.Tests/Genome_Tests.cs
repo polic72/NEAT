@@ -41,7 +41,7 @@ namespace NEAT.Tests
             }
 
 
-            NodeGene nodeGene = new NodeGene(1, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene = new NodeGene(1, Node.INPUT_X, Neural_Network.Node.Sigmoid);
 
 
             Random random = new Random();
@@ -63,9 +63,9 @@ namespace NEAT.Tests
             }
 
 
-            NodeGene nodeGene_1 = new NodeGene(1, Neural_Network.Node.Sigmoid);
-            NodeGene nodeGene_2 = new NodeGene(2, Neural_Network.Node.Sigmoid);
-            NodeGene nodeGene_3 = new NodeGene(3, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_1 = new NodeGene(1, Node.INPUT_X, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_2 = new NodeGene(2, Node.INPUT_X, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_3 = new NodeGene(3, Node.INPUT_X, Neural_Network.Node.Sigmoid);
 
 
             Random random = new Random();
@@ -89,8 +89,8 @@ namespace NEAT.Tests
             }
 
 
-            NodeGene nodeGene_1 = new NodeGene(1, Neural_Network.Node.Sigmoid);
-            NodeGene nodeGene_2 = new NodeGene(2, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_1 = new NodeGene(1, Node.INPUT_X, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_2 = new NodeGene(2, Node.INPUT_X, Neural_Network.Node.Sigmoid);
 
             ConnectionGene connectionGene = new ConnectionGene(nodeGene_1, nodeGene_2, 1);
 
@@ -117,10 +117,10 @@ namespace NEAT.Tests
             }
 
 
-            NodeGene nodeGene_1 = new NodeGene(1, Neural_Network.Node.Sigmoid);
-            NodeGene nodeGene_2 = new NodeGene(2, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_1 = new NodeGene(1, Node.INPUT_X, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_2 = new NodeGene(2, Node.INPUT_X, Neural_Network.Node.Sigmoid);
 
-            NodeGene output_nodeGene = new NodeGene(3, Neural_Network.Node.Sigmoid);
+            NodeGene output_nodeGene = new NodeGene(3, Node.INPUT_X, Neural_Network.Node.Sigmoid);
 
             ConnectionGene connectionGene_1 = new ConnectionGene(nodeGene_1, output_nodeGene, 1);
             ConnectionGene connectionGene_2 = new ConnectionGene(nodeGene_2, output_nodeGene, 2);
@@ -198,8 +198,8 @@ namespace NEAT.Tests
             }
 
 
-            NodeGene nodeGene_1 = new NodeGene(1, Neural_Network.Node.Sigmoid);
-            NodeGene nodeGene_2 = new NodeGene(2, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_1 = new NodeGene(1, Node.INPUT_X, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_2 = new NodeGene(2, Node.INPUT_X, Neural_Network.Node.Sigmoid);
 
 
             Random random = new Random();
@@ -224,8 +224,8 @@ namespace NEAT.Tests
             }
 
 
-            NodeGene nodeGene_1 = new NodeGene(1, Neural_Network.Node.Sigmoid);
-            NodeGene nodeGene_2 = new NodeGene(2, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_1 = new NodeGene(1, Node.INPUT_X, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_2 = new NodeGene(2, Node.INPUT_X, Neural_Network.Node.Sigmoid);
 
 
             Random random = new Random();
@@ -254,11 +254,11 @@ namespace NEAT.Tests
             }
 
 
-            NodeGene nodeGene_1 = new NodeGene(1, Neural_Network.Node.Sigmoid);
-            NodeGene nodeGene_2 = new NodeGene(2, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_1 = new NodeGene(1, Node.INPUT_X, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_2 = new NodeGene(2, Node.INPUT_X, Neural_Network.Node.Sigmoid);
 
-            NodeGene nodeGene_3 = new NodeGene(1, Neural_Network.Node.Sigmoid);
-            NodeGene nodeGene_4 = new NodeGene(2, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_3 = new NodeGene(1, Node.INPUT_X, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_4 = new NodeGene(2, Node.INPUT_X, Neural_Network.Node.Sigmoid);
 
 
             Random random = new Random();
@@ -285,11 +285,11 @@ namespace NEAT.Tests
             }
 
 
-            NodeGene nodeGene_1 = new NodeGene(1, Neural_Network.Node.Sigmoid);
-            NodeGene nodeGene_2 = new NodeGene(2, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_1 = new NodeGene(1, Node.INPUT_X, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_2 = new NodeGene(2, Node.INPUT_X, Neural_Network.Node.Sigmoid);
 
-            NodeGene nodeGene_3 = new NodeGene(1, Neural_Network.Node.Sigmoid);
-            NodeGene nodeGene_4 = new NodeGene(2, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_3 = new NodeGene(1, Node.INPUT_X, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_4 = new NodeGene(2, Node.INPUT_X, Neural_Network.Node.Sigmoid);
 
 
             Random random = new Random();
@@ -320,11 +320,11 @@ namespace NEAT.Tests
             }
 
 
-            NodeGene nodeGene_1 = new NodeGene(1, Neural_Network.Node.Sigmoid);
-            NodeGene nodeGene_2 = new NodeGene(2, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_1 = new NodeGene(1, Node.INPUT_X, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_2 = new NodeGene(2, Node.OUTPUT_X, Neural_Network.Node.Sigmoid);
 
-            NodeGene nodeGene_3 = new NodeGene(1, Neural_Network.Node.Sigmoid);
-            NodeGene nodeGene_4 = new NodeGene(2, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_3 = new NodeGene(1, Node.INPUT_X, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_4 = new NodeGene(2, Node.OUTPUT_X, Neural_Network.Node.Sigmoid);
 
             ConnectionGene connectionGene_1 = new ConnectionGene(nodeGene_1, nodeGene_2, 1);
             ConnectionGene connectionGene_2 = new ConnectionGene(nodeGene_3, nodeGene_4, 1);
@@ -359,11 +359,11 @@ namespace NEAT.Tests
             }
 
 
-            NodeGene nodeGene_1 = new NodeGene(1, Neural_Network.Node.Sigmoid);
-            NodeGene nodeGene_2 = new NodeGene(2, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_1 = new NodeGene(1, Node.INPUT_X, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_2 = new NodeGene(2, Node.OUTPUT_X, Neural_Network.Node.Sigmoid);
 
-            NodeGene nodeGene_3 = new NodeGene(1, Neural_Network.Node.Sigmoid);
-            NodeGene nodeGene_4 = new NodeGene(2, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_3 = new NodeGene(1, Node.INPUT_X, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_4 = new NodeGene(2, Node.OUTPUT_X, Neural_Network.Node.Sigmoid);
 
             ConnectionGene connectionGene_1 = new ConnectionGene(nodeGene_1, nodeGene_2, 1);
             ConnectionGene connectionGene_2 = new ConnectionGene(nodeGene_3, nodeGene_4, 1);
@@ -402,11 +402,11 @@ namespace NEAT.Tests
             }
 
 
-            NodeGene nodeGene_1 = new NodeGene(1, Neural_Network.Node.Sigmoid);
-            NodeGene nodeGene_2 = new NodeGene(2, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_1 = new NodeGene(1, Node.INPUT_X, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_2 = new NodeGene(2, Node.OUTPUT_X, Neural_Network.Node.Sigmoid);
 
-            NodeGene nodeGene_3 = new NodeGene(1, Neural_Network.Node.Sigmoid);
-            NodeGene nodeGene_4 = new NodeGene(2, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_3 = new NodeGene(1, Node.INPUT_X, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_4 = new NodeGene(2, Node.OUTPUT_X, Neural_Network.Node.Sigmoid);
 
             ConnectionGene connectionGene_1 = new ConnectionGene(nodeGene_1, nodeGene_2, 1);
             ConnectionGene connectionGene_2 = new ConnectionGene(nodeGene_3, nodeGene_4, 2);
@@ -441,11 +441,11 @@ namespace NEAT.Tests
             }
 
 
-            NodeGene nodeGene_1 = new NodeGene(1, Neural_Network.Node.Sigmoid);
-            NodeGene nodeGene_2 = new NodeGene(2, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_1 = new NodeGene(1, Node.INPUT_X, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_2 = new NodeGene(2, Node.OUTPUT_X, Neural_Network.Node.Sigmoid);
 
-            NodeGene nodeGene_3 = new NodeGene(1, Neural_Network.Node.Sigmoid);
-            NodeGene nodeGene_4 = new NodeGene(2, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_3 = new NodeGene(1, Node.INPUT_X, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_4 = new NodeGene(2, Node.OUTPUT_X, Neural_Network.Node.Sigmoid);
 
             ConnectionGene connectionGene_1 = new ConnectionGene(nodeGene_1, nodeGene_2, 1);
             ConnectionGene connectionGene_2 = new ConnectionGene(nodeGene_3, nodeGene_4, 2);
@@ -484,19 +484,19 @@ namespace NEAT.Tests
             }
 
 
-            NodeGene nodeGene_1 = new NodeGene(1, Neural_Network.Node.Sigmoid);
-            NodeGene nodeGene_2 = new NodeGene(2, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_1 = new NodeGene(1, Node.INPUT_X, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_2 = new NodeGene(2, Node.INPUT_X, Neural_Network.Node.Sigmoid);
 
-            NodeGene output_nodeGene_1 = new NodeGene(3, Neural_Network.Node.Sigmoid);
+            NodeGene output_nodeGene_1 = new NodeGene(3, Node.OUTPUT_X, Neural_Network.Node.Sigmoid);
 
             ConnectionGene connectionGene_1 = new ConnectionGene(nodeGene_1, output_nodeGene_1, 1);
             ConnectionGene connectionGene_2 = new ConnectionGene(nodeGene_2, output_nodeGene_1, 2);
 
 
-            NodeGene nodeGene_3 = new NodeGene(1, Neural_Network.Node.Sigmoid);
-            NodeGene nodeGene_4 = new NodeGene(2, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_3 = new NodeGene(1, Node.INPUT_X, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_4 = new NodeGene(2, Node.INPUT_X, Neural_Network.Node.Sigmoid);
 
-            NodeGene output_nodeGene_2 = new NodeGene(3, Neural_Network.Node.Sigmoid);
+            NodeGene output_nodeGene_2 = new NodeGene(3, Node.OUTPUT_X, Neural_Network.Node.Sigmoid);
 
             ConnectionGene connectionGene_3 = new ConnectionGene(nodeGene_3, output_nodeGene_2, 1);
             ConnectionGene connectionGene_4 = new ConnectionGene(nodeGene_4, output_nodeGene_2, 2);
@@ -534,19 +534,19 @@ namespace NEAT.Tests
             }
 
 
-            NodeGene nodeGene_1 = new NodeGene(1, Neural_Network.Node.Sigmoid);
-            NodeGene nodeGene_2 = new NodeGene(2, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_1 = new NodeGene(1, Node.INPUT_X, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_2 = new NodeGene(2, Node.INPUT_X, Neural_Network.Node.Sigmoid);
 
-            NodeGene output_nodeGene_1 = new NodeGene(3, Neural_Network.Node.Sigmoid);
+            NodeGene output_nodeGene_1 = new NodeGene(3, Node.OUTPUT_X, Neural_Network.Node.Sigmoid);
 
             ConnectionGene connectionGene_1 = new ConnectionGene(nodeGene_1, output_nodeGene_1, 1);
             ConnectionGene connectionGene_2 = new ConnectionGene(nodeGene_2, output_nodeGene_1, 2);
 
 
-            NodeGene nodeGene_3 = new NodeGene(1, Neural_Network.Node.Sigmoid);
-            NodeGene nodeGene_4 = new NodeGene(2, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_3 = new NodeGene(1, Node.INPUT_X, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_4 = new NodeGene(2, Node.INPUT_X, Neural_Network.Node.Sigmoid);
 
-            NodeGene output_nodeGene_2 = new NodeGene(3, Neural_Network.Node.Sigmoid);
+            NodeGene output_nodeGene_2 = new NodeGene(3, Node.OUTPUT_X, Neural_Network.Node.Sigmoid);
 
             ConnectionGene connectionGene_3 = new ConnectionGene(nodeGene_3, output_nodeGene_2, 1);
             ConnectionGene connectionGene_4 = new ConnectionGene(nodeGene_4, output_nodeGene_2, 2);
@@ -588,19 +588,19 @@ namespace NEAT.Tests
             }
 
 
-            NodeGene nodeGene_1 = new NodeGene(1, Neural_Network.Node.Sigmoid);
-            NodeGene nodeGene_2 = new NodeGene(2, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_1 = new NodeGene(1, Node.INPUT_X, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_2 = new NodeGene(2, Node.INPUT_X, Neural_Network.Node.Sigmoid);
 
-            NodeGene output_nodeGene_1 = new NodeGene(3, Neural_Network.Node.Sigmoid);
+            NodeGene output_nodeGene_1 = new NodeGene(3, Node.OUTPUT_X, Neural_Network.Node.Sigmoid);
 
             ConnectionGene connectionGene_1 = new ConnectionGene(nodeGene_1, output_nodeGene_1, 1);
             ConnectionGene connectionGene_2 = new ConnectionGene(nodeGene_2, output_nodeGene_1, 2);
 
 
-            NodeGene nodeGene_3 = new NodeGene(1, Neural_Network.Node.Sigmoid);
-            NodeGene nodeGene_4 = new NodeGene(2, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_3 = new NodeGene(1, Node.INPUT_X, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_4 = new NodeGene(2, Node.INPUT_X, Neural_Network.Node.Sigmoid);
 
-            NodeGene output_nodeGene_2 = new NodeGene(3, Neural_Network.Node.Sigmoid);
+            NodeGene output_nodeGene_2 = new NodeGene(3, Node.OUTPUT_X, Neural_Network.Node.Sigmoid);
 
             ConnectionGene connectionGene_3 = new ConnectionGene(nodeGene_3, output_nodeGene_2, 1);
             ConnectionGene connectionGene_4 = new ConnectionGene(nodeGene_4, output_nodeGene_2, 4);
@@ -638,19 +638,19 @@ namespace NEAT.Tests
             }
 
 
-            NodeGene nodeGene_1 = new NodeGene(1, Neural_Network.Node.Sigmoid);
-            NodeGene nodeGene_2 = new NodeGene(2, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_1 = new NodeGene(1, Node.INPUT_X, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_2 = new NodeGene(2, Node.INPUT_X, Neural_Network.Node.Sigmoid);
 
-            NodeGene output_nodeGene_1 = new NodeGene(3, Neural_Network.Node.Sigmoid);
+            NodeGene output_nodeGene_1 = new NodeGene(3, Node.OUTPUT_X, Neural_Network.Node.Sigmoid);
 
             ConnectionGene connectionGene_1 = new ConnectionGene(nodeGene_1, output_nodeGene_1, 1);
             ConnectionGene connectionGene_2 = new ConnectionGene(nodeGene_2, output_nodeGene_1, 2);
 
 
-            NodeGene nodeGene_3 = new NodeGene(1, Neural_Network.Node.Sigmoid);
-            NodeGene nodeGene_4 = new NodeGene(2, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_3 = new NodeGene(1, Node.INPUT_X, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_4 = new NodeGene(2, Node.INPUT_X, Neural_Network.Node.Sigmoid);
 
-            NodeGene output_nodeGene_2 = new NodeGene(3, Neural_Network.Node.Sigmoid);
+            NodeGene output_nodeGene_2 = new NodeGene(3, Node.OUTPUT_X, Neural_Network.Node.Sigmoid);
 
             ConnectionGene connectionGene_3 = new ConnectionGene(nodeGene_3, output_nodeGene_2, 1);
             ConnectionGene connectionGene_4 = new ConnectionGene(nodeGene_4, output_nodeGene_2, 4);
@@ -692,19 +692,19 @@ namespace NEAT.Tests
             }
 
 
-            NodeGene nodeGene_1 = new NodeGene(1, Neural_Network.Node.Sigmoid);
-            NodeGene nodeGene_2 = new NodeGene(2, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_1 = new NodeGene(1, Node.INPUT_X, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_2 = new NodeGene(2, Node.INPUT_X, Neural_Network.Node.Sigmoid);
 
-            NodeGene output_nodeGene_1 = new NodeGene(3, Neural_Network.Node.Sigmoid);
+            NodeGene output_nodeGene_1 = new NodeGene(3, Node.OUTPUT_X, Neural_Network.Node.Sigmoid);
 
             ConnectionGene connectionGene_1 = new ConnectionGene(nodeGene_1, output_nodeGene_1, 1);
             ConnectionGene connectionGene_2 = new ConnectionGene(nodeGene_2, output_nodeGene_1, 2);
 
 
-            NodeGene nodeGene_3 = new NodeGene(4, Neural_Network.Node.Sigmoid);
-            NodeGene nodeGene_4 = new NodeGene(5, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_3 = new NodeGene(4, Node.INPUT_X, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_4 = new NodeGene(5, Node.INPUT_X, Neural_Network.Node.Sigmoid);
 
-            NodeGene output_nodeGene_2 = new NodeGene(3, Neural_Network.Node.Sigmoid);
+            NodeGene output_nodeGene_2 = new NodeGene(3, Node.OUTPUT_X, Neural_Network.Node.Sigmoid);
 
             ConnectionGene connectionGene_3 = new ConnectionGene(nodeGene_3, output_nodeGene_2, 1);
             ConnectionGene connectionGene_4 = new ConnectionGene(nodeGene_4, output_nodeGene_2, 2);
@@ -742,19 +742,19 @@ namespace NEAT.Tests
             }
 
 
-            NodeGene nodeGene_1 = new NodeGene(1, Neural_Network.Node.Sigmoid);
-            NodeGene nodeGene_2 = new NodeGene(2, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_1 = new NodeGene(1, Node.INPUT_X, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_2 = new NodeGene(2, Node.INPUT_X, Neural_Network.Node.Sigmoid);
 
-            NodeGene output_nodeGene_1 = new NodeGene(3, Neural_Network.Node.Sigmoid);
+            NodeGene output_nodeGene_1 = new NodeGene(3, Node.OUTPUT_X, Neural_Network.Node.Sigmoid);
 
             ConnectionGene connectionGene_1 = new ConnectionGene(nodeGene_1, output_nodeGene_1, 1);
             ConnectionGene connectionGene_2 = new ConnectionGene(nodeGene_2, output_nodeGene_1, 2);
 
 
-            NodeGene nodeGene_3 = new NodeGene(4, Neural_Network.Node.Sigmoid);
-            NodeGene nodeGene_4 = new NodeGene(5, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_3 = new NodeGene(4, Node.INPUT_X, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_4 = new NodeGene(5, Node.INPUT_X, Neural_Network.Node.Sigmoid);
 
-            NodeGene output_nodeGene_2 = new NodeGene(3, Neural_Network.Node.Sigmoid);
+            NodeGene output_nodeGene_2 = new NodeGene(3, Node.OUTPUT_X, Neural_Network.Node.Sigmoid);
 
             ConnectionGene connectionGene_3 = new ConnectionGene(nodeGene_3, output_nodeGene_2, 1);
             ConnectionGene connectionGene_4 = new ConnectionGene(nodeGene_4, output_nodeGene_2, 2);
@@ -796,19 +796,19 @@ namespace NEAT.Tests
             }
 
 
-            NodeGene nodeGene_1 = new NodeGene(1, Neural_Network.Node.Sigmoid);
-            NodeGene nodeGene_2 = new NodeGene(2, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_1 = new NodeGene(1, Node.INPUT_X, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_2 = new NodeGene(2, Node.INPUT_X, Neural_Network.Node.Sigmoid);
 
-            NodeGene output_nodeGene_1 = new NodeGene(3, Neural_Network.Node.Sigmoid);
+            NodeGene output_nodeGene_1 = new NodeGene(3, Node.OUTPUT_X, Neural_Network.Node.Sigmoid);
 
             ConnectionGene connectionGene_1 = new ConnectionGene(nodeGene_1, output_nodeGene_1, 1);
             ConnectionGene connectionGene_2 = new ConnectionGene(nodeGene_2, output_nodeGene_1, 2);
 
 
-            NodeGene nodeGene_3 = new NodeGene(4, Neural_Network.Node.Sigmoid);
-            NodeGene nodeGene_4 = new NodeGene(5, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_3 = new NodeGene(4, Node.INPUT_X, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_4 = new NodeGene(5, Node.INPUT_X, Neural_Network.Node.Sigmoid);
 
-            NodeGene output_nodeGene_2 = new NodeGene(3, Neural_Network.Node.Sigmoid);
+            NodeGene output_nodeGene_2 = new NodeGene(3, Node.OUTPUT_X, Neural_Network.Node.Sigmoid);
 
             ConnectionGene connectionGene_3 = new ConnectionGene(nodeGene_3, output_nodeGene_2, 1);
             ConnectionGene connectionGene_4 = new ConnectionGene(nodeGene_4, output_nodeGene_2, 4);
@@ -846,19 +846,19 @@ namespace NEAT.Tests
             }
 
 
-            NodeGene nodeGene_1 = new NodeGene(1, Neural_Network.Node.Sigmoid);
-            NodeGene nodeGene_2 = new NodeGene(2, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_1 = new NodeGene(1, Node.INPUT_X, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_2 = new NodeGene(2, Node.INPUT_X, Neural_Network.Node.Sigmoid);
 
-            NodeGene output_nodeGene_1 = new NodeGene(3, Neural_Network.Node.Sigmoid);
+            NodeGene output_nodeGene_1 = new NodeGene(3, Node.OUTPUT_X, Neural_Network.Node.Sigmoid);
 
             ConnectionGene connectionGene_1 = new ConnectionGene(nodeGene_1, output_nodeGene_1, 1);
             ConnectionGene connectionGene_2 = new ConnectionGene(nodeGene_2, output_nodeGene_1, 2);
 
 
-            NodeGene nodeGene_3 = new NodeGene(4, Neural_Network.Node.Sigmoid);
-            NodeGene nodeGene_4 = new NodeGene(5, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_3 = new NodeGene(4, Node.INPUT_X, Neural_Network.Node.Sigmoid);
+            NodeGene nodeGene_4 = new NodeGene(5, Node.INPUT_X, Neural_Network.Node.Sigmoid);
 
-            NodeGene output_nodeGene_2 = new NodeGene(3, Neural_Network.Node.Sigmoid);
+            NodeGene output_nodeGene_2 = new NodeGene(3, Node.OUTPUT_X, Neural_Network.Node.Sigmoid);
 
             ConnectionGene connectionGene_3 = new ConnectionGene(nodeGene_3, output_nodeGene_2, 1);
             ConnectionGene connectionGene_4 = new ConnectionGene(nodeGene_4, output_nodeGene_2, 4);
@@ -909,8 +909,8 @@ namespace NEAT.Tests
 
             int nodeGene_num = 1;
 
-            NodeGene nodeGene_1 = new NodeGene(nodeGene_num++, Node.Sigmoid);
-            NodeGene nodeGene_2 = new NodeGene(nodeGene_num++, Node.Sigmoid);
+            NodeGene nodeGene_1 = new NodeGene(nodeGene_num++, Node.INPUT_X, Node.Sigmoid);
+            NodeGene nodeGene_2 = new NodeGene(nodeGene_num++, Node.OUTPUT_X, Node.Sigmoid);
 
             ConnectionGene connectionGene = new ConnectionGene(nodeGene_1, nodeGene_2, 4);
 
@@ -968,10 +968,10 @@ namespace NEAT.Tests
 
             int nodeGene_num = 1;
 
-            NodeGene nodeGene_1 = new NodeGene(nodeGene_num++, Node.Sigmoid);
-            NodeGene nodeGene_2 = new NodeGene(nodeGene_num++, Node.Sigmoid);
+            NodeGene nodeGene_1 = new NodeGene(nodeGene_num++, Node.INPUT_X, Node.Sigmoid);
+            NodeGene nodeGene_2 = new NodeGene(nodeGene_num++, Node.INPUT_X, Node.Sigmoid);
 
-            NodeGene nodeGene_3 = new NodeGene(nodeGene_num++, Node.Sigmoid);
+            NodeGene nodeGene_3 = new NodeGene(nodeGene_num++, Node.OUTPUT_X, Node.Sigmoid);
 
             ConnectionGene connectionGene_1 = new ConnectionGene(nodeGene_1, nodeGene_3, 4);
             ConnectionGene connectionGene_2 = new ConnectionGene(nodeGene_2, nodeGene_3, -1);
@@ -1041,10 +1041,10 @@ namespace NEAT.Tests
 
             int nodeGene_num = 1;
 
-            NodeGene nodeGene_1 = new NodeGene(nodeGene_num++, Node.Sigmoid);
-            NodeGene nodeGene_2 = new NodeGene(nodeGene_num++, Node.Sigmoid);
+            NodeGene nodeGene_1 = new NodeGene(nodeGene_num++, Node.INPUT_X, Node.Sigmoid);
+            NodeGene nodeGene_2 = new NodeGene(nodeGene_num++, Node.OUTPUT_X, Node.Sigmoid);
 
-            NodeGene nodeGene_3 = new NodeGene(nodeGene_num++, Node.Sigmoid);
+            NodeGene nodeGene_3 = new NodeGene(nodeGene_num++, Node.OUTPUT_X, Node.Sigmoid);
 
             ConnectionGene connectionGene_1 = new ConnectionGene(nodeGene_1, nodeGene_2, 1);
             ConnectionGene connectionGene_2 = new ConnectionGene(nodeGene_1, nodeGene_3, 1);

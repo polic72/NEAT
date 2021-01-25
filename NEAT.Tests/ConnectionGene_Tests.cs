@@ -2,6 +2,7 @@
 using System;
 
 using NEAT.Genetic;
+using NEAT.Neural_Network;
 
 namespace NEAT.Tests
 {
@@ -17,9 +18,9 @@ namespace NEAT.Tests
             }
 
 
-            NodeGene from = new NodeGene(1, Neural_Network.Node.Sigmoid);
+            NodeGene from = new NodeGene(1, Node.INPUT_X, Neural_Network.Node.Sigmoid);
 
-            NodeGene to = new NodeGene(2, Neural_Network.Node.Sigmoid);
+            NodeGene to = new NodeGene(2, Node.INPUT_X, Neural_Network.Node.Sigmoid);
 
 
             ConnectionGene connectionGene_1 = new ConnectionGene(from, to, 1);

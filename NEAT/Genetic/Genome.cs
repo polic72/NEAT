@@ -420,5 +420,12 @@ namespace NEAT.Genetic
         }
 
         #endregion Crossover
+
+
+        #region Mutate
+
+
+
+        #endregion Mutate
     }
 }

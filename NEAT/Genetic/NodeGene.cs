@@ -17,7 +17,7 @@ namespace NEAT.Genetic
         /// <summary>
         /// The X position of the node.
         /// </summary>
-        public double X { get; set; }
+        public double X { get; }
 
 
         /// <summary>
@@ -29,34 +29,41 @@ namespace NEAT.Genetic
         #region Constructors
 
         /// <summary>
-        /// Constructs a node gene with the given innovation number and activation function.
+        /// Constructs a node gene with the given innovation number, X position, and activation function.
         /// </summary>
         /// <param name="innovation_number">The innovation number.</param>
+        /// <param name="x">The X position of the node.</param>
         /// <param name="activationFunction">The activation function of the node.</param>
-        public NodeGene(int innovation_number, Node.ActivationFunction activationFunction) :
+        public NodeGene(int innovation_number, double x, Node.ActivationFunction activationFunction) :
             base(innovation_number)
         {
+            X = x;
             ActivationFunction = activationFunction;
         }
 
 
         /// <summary>
-        /// Constructs a node gene with the default innovation number (0) and given activation function.
+        /// Constructs a node gene with the default innovation number (0) and given X position and activation function.
         /// </summary>
+        /// <param name="x">The X position of the node.</param>
         /// <param name="activationFunction">The activation function of the node.</param>
-        public NodeGene(Node.ActivationFunction activationFunction)
+        public NodeGene(double x, Node.ActivationFunction activationFunction)
             : base()
         {
+            X = x;
             ActivationFunction = activationFunction;
         }
 
 
         /// <summary>
-        /// Constructs a node gene with the default innovation number (0) and activation function (sigmoid).
+        /// Constructs a node gene with the default innovation number (0), 
+        /// X position (<see cref="NEAT.Neural_Network.Node.INPUT_X"/>), 
+        /// and activation function (<see cref="NEAT.Neural_Network.Node.Sigmoid(double)"/>).
         /// </summary>
         public NodeGene()
             : base()
         {
+            X = Node.INPUT_X;
             ActivationFunction = Node.Sigmoid;
         }
 
