@@ -125,6 +125,42 @@ namespace NEAT.Tests
         #endregion Get
 
 
-        //Remove among other things.
+        #region Remove
+
+        [TestMethod]
+        public void Remove()
+        {
+            Random random = new Random(1);
+
+            OrderedHashSet<string> ohs = new OrderedHashSet<string>(random);
+
+
+            string s_1 = "hello";
+            string s_2 = "world";
+
+            ohs.Add(s_1);
+            ohs.Add(s_2);
+
+
+            ohs.Remove(s_2);
+
+
+            bool found = false;
+
+            foreach (string s in ohs)
+            {
+                if (s == s_2)
+                {
+                    found = true;
+
+                    break;
+                }
+            }
+
+
+            Assert.IsFalse(found);
+        }
+
+        #endregion Remove
     }
 }
