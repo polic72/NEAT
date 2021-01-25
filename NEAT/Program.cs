@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+//using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,71 +13,34 @@ namespace NEAT
     {
         public static void Main(string[] args)
         {
-            if (!Genome.IsInitialized())
-            {
-                Genome.Init();
-            }
+            SortedSet<NodeGene> set = new SortedSet<NodeGene>();
 
-            Random random = new Random(1);
+            int num = 1;
 
 
-            int nodeGene_num = 1;
+            NodeGene nodeGene_1 = new NodeGene(num++, Node.INPUT_X, Node.Sigmoid);
+            NodeGene nodeGene_2 = new NodeGene(num++, Node.INPUT_X, Node.Sigmoid);
 
-            NodeGene nodeGene_1 = new NodeGene(nodeGene_num++, Node.INPUT_X, Node.Sigmoid);
-            NodeGene nodeGene_2 = new NodeGene(nodeGene_num++, Node.INPUT_X, Node.Sigmoid);
-
-            NodeGene nodeGene_3 = new NodeGene(nodeGene_num++, Node.INPUT_X, Node.Sigmoid);
-
-            ConnectionGene connectionGene_1 = new ConnectionGene(nodeGene_1, nodeGene_2, 1);
-            ConnectionGene connectionGene_2 = new ConnectionGene(nodeGene_1, nodeGene_3, 1);
+            ConnectionGene connectionGene_1 = new ConnectionGene(nodeGene_1, nodeGene_2, 4);
 
 
-            Genome genome_1 = new Genome(random);
-            genome_1.NodeGenes.Add(nodeGene_1);
-            genome_1.NodeGenes.Add(nodeGene_2);
+            NodeGene nodeGene_3 = new NodeGene(num++, Node.INPUT_X, Node.Sigmoid);
+            NodeGene nodeGene_4 = new NodeGene(num++, Node.INPUT_X, Node.Sigmoid);
 
-            genome_1.ConnectionGenes.Add(connectionGene_1);
-
-
-            Genome genome_2 = new Genome(random);
-            genome_2.NodeGenes.Add(nodeGene_1);
-            genome_2.NodeGenes.Add(nodeGene_3);
-
-            genome_2.ConnectionGenes.Add(connectionGene_2);
+            ConnectionGene connectionGene_2 = new ConnectionGene(nodeGene_1, nodeGene_2, 4);
 
 
-            Genome created_genome = genome_1.Crossover(genome_2);
+            set.Add(nodeGene_1);
+            set.Add(nodeGene_2);
+            set.Add(nodeGene_3);
+            set.Add(nodeGene_4);
 
 
-            bool[] contains_genes = { false, false, false, false, false };
+            Random random = new Random();
 
-            foreach (ConnectionGene cgene in created_genome.ConnectionGenes)
-            {
-                if (cgene == connectionGene_1)
-                {
-                    contains_genes[0] = true;
-                }
-                else if (cgene == connectionGene_2)
-                {
-                    contains_genes[1] = true;
-                }
-            }
+            NodeGene wejf = null;
 
-            foreach (NodeGene ngene in created_genome.NodeGenes)
-            {
-                if (ngene == nodeGene_1)
-                {
-                    contains_genes[2] = true;
-                }
-                else if (ngene == nodeGene_2)
-                {
-                    contains_genes[3] = true;
-                }
-                else if (ngene == nodeGene_3)
-                {
-                    contains_genes[4] = true;
-                }
-            }
+            set.TryGetValue(new NodeGene() { InnovationNumber = random.Next(set.Count) + 1}, out wejf);
 
 
             Console.WriteLine();

@@ -56,6 +56,20 @@ namespace NEAT.Genetic
 
 
         /// <summary>
+        /// Constructs a node gene with the given innovation number and default X position 
+        /// (<see cref="NEAT.Neural_Network.Node.INPUT_X"/>) and activation function 
+        /// (<see cref="NEAT.Neural_Network.Node.Sigmoid(double)"/>).
+        /// </summary>
+        /// <param name="innovation_number">The innovation number.</param>
+        public NodeGene(int innovation_number)
+            : base(innovation_number)
+        {
+            X = Node.INPUT_X;
+            ActivationFunction = Node.Sigmoid;
+        }
+
+
+        /// <summary>
         /// Constructs a node gene with the default innovation number (0), 
         /// X position (<see cref="NEAT.Neural_Network.Node.INPUT_X"/>), 
         /// and activation function (<see cref="NEAT.Neural_Network.Node.Sigmoid(double)"/>).

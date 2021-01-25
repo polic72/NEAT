@@ -424,7 +424,55 @@ namespace NEAT.Genetic
 
         #region Mutate
 
+        /// <summary>
+        /// Mutates the genome by creating a new connection. 
+        /// </summary>
+        public void Mutate_Link()
+        {
+            ////Get first node to connect.
+            //NodeGene nodeGene_a = null;
+            //NodeGenes.TryGetValue(new NodeGene(Random.Next(NodeGenes.Count) + 1), out nodeGene_a);  //Innovation numbers start at 1.
 
+
+            ////Get the node directly above 
+            //NodeGene subsetStart_nodeGene = null;
+            //NodeGenes.TryGetValue(new NodeGene(nodeGene_a.InnovationNumber + 1), out subsetStart_nodeGene);
+
+            //SortedSet<NodeGene> subset = NodeGenes.GetViewBetween(nodeGene_a)
+
+
+            //NodeGene nodeGene_b = null;
+
+            //if (nodeGene_a.X == nodeGene_b.X)
+            //{
+            //    continue;
+            //}
+
+
+            //ConnectionGene connectionGene;
+
+            //if (nodeGene_a.X < nodeGene_b.X)
+            //{
+            //    connectionGene = new ConnectionGene(nodeGene_a, nodeGene_b, 0); //Temp innovation number.
+            //}
+            //else
+            //{
+            //    connectionGene = new ConnectionGene(nodeGene_b, nodeGene_a, 0); //Temp innovation number.
+            //}
+
+            //if (Connections.Contains(connectionGene))
+            //{
+            //    continue;
+            //}
+
+
+            //connectionGene = NEAT.CreateConnection(connectionGene.From, connectionGene.To);
+            //connectionGene.Weight = NEAT.WEIGHT_RANDOM + (random.NextDouble() * 2 - 1);
+
+            //Connections.Add_Sorted_Gene(connectionGene);    //This needs to be sorted otherwise something breaks.
+
+            //return;
+        }
 
         #endregion Mutate
     }
