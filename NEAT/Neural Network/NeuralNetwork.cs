@@ -18,7 +18,7 @@ namespace NEAT.Neural_Network
     public class NeuralNetwork
     {
         /// <summary>
-        /// The input nodes of the neural network. Do not insert or delete! Reset after each get of Output.
+        /// The input nodes of the neural network. Do not insert or delete!
         /// TODO consider adding deticated bias node to NeuralNetwork class
         /// </summary>
         protected List<Node> input_nodes = new List<Node>();

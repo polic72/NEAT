@@ -63,7 +63,7 @@ namespace NEAT.Genetic
 
         /// <summary>
         /// Constructs a connection gene with the default innovation number (output of 
-        /// <see cref="NEAT.Genetic.ConnectionGene.GetHashCode"/>) and enabled (true), and the given 
+        /// <see cref="NEAT.Genetic.ConnectionGene.GetHashCode()"/>) and enabled (true), and the given 
         /// weight.
         /// </summary>
         /// <param name="from">The NodeGene to connect from.</param>
@@ -104,6 +104,18 @@ namespace NEAT.Genetic
         public override int GetHashCode()
         {
             return From.InnovationNumber * Genome.MaxNodes + To.InnovationNumber;
+        }
+
+
+        /// <summary>
+        /// Gets the hash code of a potential ConnectionGene. Based off the innovation numbers of the given NodeGenes.
+        /// </summary>
+        /// <param name="from">The from node of the potential ConnectionGene.</param>
+        /// <param name="to">The to node of the potential ConnectionGene.</param>
+        /// <returns>The hash code.</returns>
+        public static int GetHashCode(NodeGene from, NodeGene to)
+        {
+            return from.InnovationNumber * Genome.MaxNodes + to.InnovationNumber;
         }
 
 

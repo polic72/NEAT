@@ -457,16 +457,13 @@ namespace NEAT.Genetic
             NodeGene nodeGene_b = temp_subset.ElementAt(Random.Next(temp_subset.Count()));  //Get a random gene with a higher X value.
 
 
-            //TODO make a global gene tracker and get from it instead of new here.
-            ConnectionGene connectionGene = new ConnectionGene(nodeGene_a, nodeGene_b, Mutate_WeightRandom * (Random.NextDouble() * 2 - 1));
+            ConnectionGene connectionGene = GeneTracker.GetCreate_ConnectionGene(nodeGene_a, nodeGene_b, Mutate_WeightRandom * (Random.NextDouble() * 2 - 1));
 
-            if (ConnectionGenes.Contains(connectionGene))
+            if (ConnectionGenes.Contains(connectionGene))   //Can only happen if it already existed in the tracker.
             {
                 return; //TODO think of how to handle this, maybe have a retry somewhere?
             }
 
-
-            //TODO Add to global tracker here
 
             ConnectionGenes.Add(connectionGene);
         }
