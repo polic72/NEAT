@@ -454,7 +454,7 @@ namespace NEAT.Genetic
 
             IEnumerable<NodeGene> temp_subset = NodeGenes.Where(a => a.X > nodeGene_a.X);
 
-            NodeGene nodeGene_b = temp_subset.ElementAt(Random.Next(temp_subset.Count()));
+            NodeGene nodeGene_b = temp_subset.ElementAt(Random.Next(temp_subset.Count()));  //Get a random gene with a higher X value.
 
 
             //TODO make a global gene tracker and get from it instead of new here.

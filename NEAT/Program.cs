@@ -27,7 +27,7 @@ namespace NEAT
 
             Connection connection_1 = new Connection(input, hidden_1)
             {
-                Weight = 1
+                Weight = 2
             };
             Connection connection_2 = new Connection(hidden_1, hidden_2)
             {
@@ -38,6 +38,13 @@ namespace NEAT
                 Weight = 1
             };
 
+
+            Console.WriteLine(output.Output);
+
+            input.SetOutput(3);
+            hidden_1.ResetOutput();
+            hidden_2.ResetOutput();
+            output.ResetOutput();
 
             Console.WriteLine(output.Output);
 

@@ -39,13 +39,17 @@ namespace NEAT.Neural_Network
         private double output;
 
         /// <summary>
-        /// The output of the node.
+        /// The output of the node. Must be reset after first get.
         /// </summary>
         public double Output
         {
             get
             {
-                return manual_output ? output : Calculate();
+                double ret = manual_output ? output : Calculate();
+
+                manual_output = true;
+
+                return ret;
             }
         }
 
@@ -139,6 +143,15 @@ namespace NEAT.Neural_Network
             manual_output = true;
 
             this.output = output;
+        }
+
+
+        /// <summary>
+        /// Resets the firing of the output. <see cref="NEAT.Neural_Network.Node.Output"/> will calculate on the next get.
+        /// </summary>
+        public void ResetOutput()
+        {
+            manual_output = false;
         }
 
 

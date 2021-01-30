@@ -68,6 +68,7 @@
   <ItemGroup>
     <Compile Include="Genetic\ConnectionGene.cs" />
     <Compile Include="Genetic\Gene.cs" />
+    <Compile Include="Genetic\GeneTracker.cs" />
     <Compile Include="Genetic\NodeGene.cs" />
     <Compile Include="Neural Network\Connection.cs" />
     <Compile Include="Genetic\Genome.cs" />

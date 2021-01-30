@@ -18,18 +18,18 @@ namespace NEAT.Neural_Network
     public class NeuralNetwork
     {
         /// <summary>
-        /// The input nodes of the neural network. Do not insert or delete!
+        /// The input nodes of the neural network. Do not insert or delete! Reset after each get of Output.
         /// TODO consider adding deticated bias node to NeuralNetwork class
         /// </summary>
         protected List<Node> input_nodes = new List<Node>();
 
         /// <summary>
-        /// The hidden nodes of the neural network. Do not insert or delete!
+        /// The hidden nodes of the neural network. Do not insert or delete! Reset after each get of Output.
         /// </summary>
         protected List<Node> output_nodes = new List<Node>();
 
         /// <summary>
-        /// The output nodes of the neural network. Do not insert or delete!
+        /// The output nodes of the neural network. Do not insert or delete! Reset after each get of Output.
         /// </summary>
         protected List<Node> hidden_nodes = new List<Node>();
 
@@ -113,19 +113,25 @@ namespace NEAT.Neural_Network
             }
 
 
-            foreach (Node node in hidden_nodes)
-            {
-                node.Calculate();
-            }
+            //foreach (Node node in hidden_nodes)
+            //{
+            //    node.SetOutput(node.Calculate());
+            //}
 
 
-            foreach (Node node in output_nodes)
-            {
-                node.Calculate();
-            }
+            //foreach (Node node in output_nodes)
+            //{
+            //    node.SetOutput(node.Calculate());
+            //}
 
 
-            return output_nodes.Select(x => x.Output).ToArray();    //Order of output nodes is preserved.
+            double[] output = output_nodes.Select(x => x.Output).ToArray();    //Order of output nodes is preserved.
+
+
+            input_nodes.ForEach(node => node.ResetOutput());
+
+
+            return output;
         }
     }
 }
