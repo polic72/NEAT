@@ -28,7 +28,7 @@ namespace NEAT.Tests
         {
             Node node = new Node();
 
-            double output = node.Calulate();
+            double output = node.Calculate();
 
             Assert.AreEqual(output, 0.5);
         }
@@ -52,7 +52,7 @@ namespace NEAT.Tests
             };
 
 
-            double output = testing_node.Calulate();
+            double output = testing_node.Calculate();
 
             Assert.AreEqual(expected_output, output, 0.0001);
         }
@@ -88,7 +88,7 @@ namespace NEAT.Tests
             };
 
 
-            double output = testing_node.Calulate();
+            double output = testing_node.Calculate();
 
             Assert.AreEqual(expected_output, output, 0.0001);
         }

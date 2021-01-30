@@ -45,7 +45,7 @@ namespace NEAT.Neural_Network
         {
             get
             {
-                return manual_output ? output : Calulate();
+                return manual_output ? output : Calculate();
             }
         }
 
@@ -112,7 +112,7 @@ namespace NEAT.Neural_Network
         /// Calculates the output of the node. Also sets the Output property.
         /// </summary>
         /// <returns>The output of the node.</returns>
-        public double Calulate()
+        public double Calculate()
         {
             double sum = 0;
 

@@ -18,14 +18,14 @@ namespace NEAT.Genetic
     /// <para/>
     /// Excess: A gene is excess if it doesn't have a neighbor.
     /// </remarks>
-    public class Genome
+    public class Genome //TODO Consider adding bias node to Genome (absolutely do)
     {
         #region "Constants"
 
         /// <summary>
         /// The maximum number of nodes that any neural network can have.
         /// <para/>
-        /// Set in the <see cref="NEAT.Genetic.Genome.Init(int)"/> method.
+        /// Set in the <see cref="NEAT.Genetic.Genome.Init(int, double, double, double, bool, double, double)"/> method.
         /// </summary>
         public static int MaxNodes { get; private set; }
 

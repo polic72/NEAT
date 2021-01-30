@@ -13,42 +13,41 @@ namespace NEAT
     {
         public static void Main(string[] args)
         {
-            SortedSet<NodeGene> set = new SortedSet<NodeGene>();
-
-            int num = 1;
-
-
-            NodeGene nodeGene_1 = new NodeGene(num++, 0, Node.Sigmoid);
-            NodeGene nodeGene_2 = new NodeGene(num++, .1, Node.Sigmoid);
-
-            ConnectionGene connectionGene_1 = new ConnectionGene(nodeGene_1, nodeGene_2, 4);
+            Node input = new Node(Node.INPUT_X, RELU);
+            input.SetOutput(2);
 
 
-            NodeGene nodeGene_3 = new NodeGene(num++, .2, Node.Sigmoid);
-            NodeGene nodeGene_4 = new NodeGene(num++, .3, Node.Sigmoid);
+            Node hidden_1 = new Node(.2, RELU);
 
-            ConnectionGene connectionGene_2 = new ConnectionGene(nodeGene_1, nodeGene_2, 4);
-
-
-            set.Add(nodeGene_1);
-            set.Add(nodeGene_2);
-            set.Add(nodeGene_3);
-            set.Add(nodeGene_4);
+            Node hidden_2 = new Node(.4, RELU);
 
 
-            Random random = new Random();
-
-            NodeGene wejf = null;
-
-            set.TryGetValue(new NodeGene() { InnovationNumber = random.Next(set.Count) + 1}, out wejf);
+            Node output = new Node(Node.OUTPUT_X, RELU);
 
 
-            IEnumerable<NodeGene> temp_subset = set.Where(a => a.X > wejf.X);
+            Connection connection_1 = new Connection(input, hidden_1)
+            {
+                Weight = 1
+            };
+            Connection connection_2 = new Connection(hidden_1, hidden_2)
+            {
+                Weight = 1
+            };
+            Connection connection_3 = new Connection(hidden_2, output)
+            {
+                Weight = 1
+            };
 
 
-            Console.WriteLine();
+            Console.WriteLine(output.Output);
 
             Console.ReadKey();
+        }
+
+
+        private static double RELU(double x)
+        {
+            return x;
         }
     }
 }
