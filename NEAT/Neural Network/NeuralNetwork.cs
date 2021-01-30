@@ -128,7 +128,8 @@ namespace NEAT.Neural_Network
             double[] output = output_nodes.Select(x => x.Output).ToArray();    //Order of output nodes is preserved.
 
 
-            input_nodes.ForEach(node => node.ResetOutput());
+            hidden_nodes.ForEach(node => node.ResetOutput());
+            output_nodes.ForEach(node => node.ResetOutput());
 
 
             return output;
