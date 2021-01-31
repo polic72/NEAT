@@ -16,12 +16,12 @@ namespace NEAT.Neural_Network
         /// <summary>
         /// The left-hand node of this connection.
         /// </summary>
-        public Node From { get; set; }  //TODO consider making from and to readonly.
+        public Node From { get; }
 
         /// <summary>
         /// The right-hand node of this connection.
         /// </summary>
-        public Node To { get; set; }
+        public Node To { get; }
 
 
         /// <summary>

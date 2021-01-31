@@ -46,7 +46,7 @@ namespace NEAT.Neural_Network
 
             foreach (NodeGene nodeGene in genome.NodeGenes)
             {
-                Node node = new Node(nodeGene.X);   //TODO add function gene.
+                Node node = new Node(nodeGene.X, nodeGene.ActivationFunction);
 
                 temp_nodes.Add(nodeGene.InnovationNumber, node);
 
