@@ -44,7 +44,7 @@ namespace NEAT.Neural_Network
         {
             Dictionary<int, Node> temp_nodes = new Dictionary<int, Node>(); //Temporary holder to for creating connections.
 
-            foreach (NodeGene nodeGene in genome.NodeGenes)
+            foreach (NodeGene nodeGene in genome.NodeGenes.Values)
             {
                 Node node = new Node(nodeGene.X, nodeGene.ActivationFunction);
 
@@ -68,7 +68,7 @@ namespace NEAT.Neural_Network
             hidden_nodes.Sort();    //Sorts by X thanks to Node.CompareTo(). This needs to happen so each hidden layer outputs in correct order.
 
 
-            foreach (ConnectionGene connectionGene in genome.ConnectionGenes)
+            foreach (ConnectionGene connectionGene in genome.ConnectionGenes.Values)
             {
                 Node from = temp_nodes[connectionGene.From.InnovationNumber];   //new Node(connections[i].From.InnovationNumber);
                 Node to = temp_nodes[connectionGene.To.InnovationNumber]; //new Node(connections[i].To.InnovationNumber);

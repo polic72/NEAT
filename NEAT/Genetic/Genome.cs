@@ -164,12 +164,12 @@ namespace NEAT.Genetic
         /// <summary>
         /// The ConnectionGenes of this genome.
         /// </summary>
-        public SortedSet<ConnectionGene> ConnectionGenes { get; }
+        public SortedDictionary<int, ConnectionGene> ConnectionGenes { get; }
 
         /// <summary>
         /// The NodeGenes of this genome.
         /// </summary>
-        public SortedSet<NodeGene> NodeGenes { get; }
+        public SortedDictionary<int, NodeGene> NodeGenes { get; }
 
         #endregion Properties
 
@@ -182,8 +182,8 @@ namespace NEAT.Genetic
         {
             Random = random;
 
-            ConnectionGenes = new SortedSet<ConnectionGene>();
-            NodeGenes = new SortedSet<NodeGene>();
+            ConnectionGenes = new SortedDictionary<int, ConnectionGene>();
+            NodeGenes = new SortedDictionary<int, NodeGene>();
         }
 
 
@@ -218,8 +218,8 @@ namespace NEAT.Genetic
             double weight_diff = 0; //The weight difference between similar genes.
 
 
-            SortedSet<ConnectionGene>.Enumerator enumerator_me = ConnectionGenes.GetEnumerator();
-            SortedSet<ConnectionGene>.Enumerator enumerator_them = genome.ConnectionGenes.GetEnumerator();
+            SortedDictionary<int, ConnectionGene>.ValueCollection.Enumerator enumerator_me = ConnectionGenes.Values.GetEnumerator();
+            SortedDictionary<int, ConnectionGene>.ValueCollection.Enumerator enumerator_them = genome.ConnectionGenes.Values.GetEnumerator();
 
             enumerator_me.MoveNext();   //Preps for first current.
             enumerator_them.MoveNext();
@@ -322,8 +322,8 @@ namespace NEAT.Genetic
 
             #region ConnectionGenes
 
-            SortedSet<ConnectionGene>.Enumerator enumerator_me = ConnectionGenes.GetEnumerator();
-            SortedSet<ConnectionGene>.Enumerator enumerator_them = genome.ConnectionGenes.GetEnumerator();
+            SortedDictionary<int, ConnectionGene>.ValueCollection.Enumerator enumerator_me = ConnectionGenes.Values.GetEnumerator();
+            SortedDictionary<int, ConnectionGene>.ValueCollection.Enumerator enumerator_them = genome.ConnectionGenes.Values.GetEnumerator();
 
             enumerator_me.MoveNext();   //Preps for first current.
             enumerator_them.MoveNext();
@@ -348,11 +348,11 @@ namespace NEAT.Genetic
                     {
                         if (random.NextDouble() < .5)
                         {
-                            created_genome.ConnectionGenes.Add(connectionGene_me);
+                            created_genome.ConnectionGenes.Add(inNum_me, connectionGene_me);
                         }
                         else
                         {
-                            created_genome.ConnectionGenes.Add(connectionGene_them);
+                            created_genome.ConnectionGenes.Add(inNum_them, connectionGene_them);
                         }
                     }
                     else
@@ -360,7 +360,7 @@ namespace NEAT.Genetic
                         ConnectionGene temp = new ConnectionGene(connectionGene_me.From, connectionGene_me.To,
                             (connectionGene_me.Weight + connectionGene_them.Weight) / 2);
 
-                        created_genome.ConnectionGenes.Add(temp);
+                        created_genome.ConnectionGenes.Add(inNum_me, temp);
                     }
                 }
                 else if (inNum_me > inNum_them) //Disjoint gene at them, add this gene if allowed.
@@ -369,7 +369,7 @@ namespace NEAT.Genetic
 
                     if (Math.Abs(my_score - their_score) < Crossover_ScoreDelta || their_score > my_score)
                     {
-                        created_genome.ConnectionGenes.Add(connectionGene_them);
+                        created_genome.ConnectionGenes.Add(inNum_them, connectionGene_them);
                     }
                 }
                 else    //Disjoint gene at me, add this gene if allowed.
@@ -378,7 +378,7 @@ namespace NEAT.Genetic
 
                     if (Math.Abs(my_score - their_score) < Crossover_ScoreDelta || my_score > their_score)
                     {
-                        created_genome.ConnectionGenes.Add(connectionGene_me);
+                        created_genome.ConnectionGenes.Add(inNum_me, connectionGene_me);
                     }
                 }
             }
@@ -391,7 +391,7 @@ namespace NEAT.Genetic
                 {
                     do
                     {
-                        created_genome.ConnectionGenes.Add(enumerator_me.Current);
+                        created_genome.ConnectionGenes.Add(enumerator_me.Current.InnovationNumber, enumerator_me.Current);
                     }
                     while (enumerator_me.MoveNext());
                 }
@@ -402,7 +402,7 @@ namespace NEAT.Genetic
                 {
                     do
                     {
-                        created_genome.ConnectionGenes.Add(enumerator_them.Current);
+                        created_genome.ConnectionGenes.Add(enumerator_them.Current.InnovationNumber, enumerator_them.Current);
                     }
                     while (enumerator_them.MoveNext());
                 }
@@ -414,10 +414,17 @@ namespace NEAT.Genetic
 
             #region NodeGenes
 
-            foreach (ConnectionGene connectionGene in created_genome.ConnectionGenes)
+            foreach (ConnectionGene connectionGene in created_genome.ConnectionGenes.Values)
             {
-                created_genome.NodeGenes.Add(connectionGene.From);  //Finally making use of the uniqness in OrderedHashSet.
-                created_genome.NodeGenes.Add(connectionGene.To);
+                if (!created_genome.NodeGenes.ContainsKey(connectionGene.From.InnovationNumber))
+                {
+                    created_genome.NodeGenes.Add(connectionGene.From.InnovationNumber, connectionGene.From);
+                }
+
+                if (!created_genome.NodeGenes.ContainsKey(connectionGene.To.InnovationNumber))
+                {
+                    created_genome.NodeGenes.Add(connectionGene.To.InnovationNumber, connectionGene.To);
+                }
             }
 
             #endregion NodeGenes
@@ -448,24 +455,23 @@ namespace NEAT.Genetic
         public void Mutate_Link()
         {
             //Get first node to connect. It is random.
-            NodeGene nodeGene_a = null;
-            NodeGenes.TryGetValue(new NodeGene(Random.Next(NodeGenes.Count) + 1), out nodeGene_a);  //Innovation numbers start at 1.
+            NodeGene nodeGene_a = NodeGenes[Random.Next(NodeGenes.Count) + 1];  //Innovation numbers start at 1.
 
 
-            IEnumerable<NodeGene> temp_subset = NodeGenes.Where(a => a.X > nodeGene_a.X);
+            IEnumerable<NodeGene> temp_subset = NodeGenes.Values.Where(a => a.X > nodeGene_a.X);
 
             NodeGene nodeGene_b = temp_subset.ElementAt(Random.Next(temp_subset.Count()));  //Get a random gene with a higher X value.
 
 
             ConnectionGene connectionGene = GeneTracker.GetCreate_ConnectionGene(nodeGene_a, nodeGene_b, Mutate_WeightRandom * (Random.NextDouble() * 2 - 1));
 
-            if (ConnectionGenes.Contains(connectionGene))   //Can only happen if it already existed in the tracker.
+            if (ConnectionGenes.ContainsKey(connectionGene.InnovationNumber))   //Can only happen if it already existed in the tracker.
             {
                 return; //TODO think of how to handle this, maybe have a retry somewhere?
             }
 
 
-            ConnectionGenes.Add(connectionGene);
+            ConnectionGenes.Add(connectionGene.InnovationNumber, connectionGene);
         }
 
         #endregion Mutate
