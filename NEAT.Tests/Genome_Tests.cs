@@ -47,7 +47,7 @@ namespace NEAT.Tests
             Random random = new Random();
 
             Genome genome_1 = new Genome(random);
-            genome_1.NodeGenes.Add(nodeGene);
+            genome_1.NodeGenes.Add(nodeGene.InnovationNumber, nodeGene);
 
 
             Assert.AreEqual(0, genome_1.Distance(genome_1));
@@ -71,9 +71,9 @@ namespace NEAT.Tests
             Random random = new Random();
 
             Genome genome_1 = new Genome(random);
-            genome_1.NodeGenes.Add(nodeGene_1);
-            genome_1.NodeGenes.Add(nodeGene_2);
-            genome_1.NodeGenes.Add(nodeGene_3);
+            genome_1.NodeGenes.Add(nodeGene_1.InnovationNumber, nodeGene_1);
+            genome_1.NodeGenes.Add(nodeGene_2.InnovationNumber, nodeGene_2);
+            genome_1.NodeGenes.Add(nodeGene_3.InnovationNumber, nodeGene_3);
 
 
             Assert.AreEqual(0, genome_1.Distance(genome_1));
@@ -98,10 +98,10 @@ namespace NEAT.Tests
             Random random = new Random();
 
             Genome genome_1 = new Genome(random);
-            genome_1.NodeGenes.Add(nodeGene_1);
-            genome_1.NodeGenes.Add(nodeGene_2);
+            genome_1.NodeGenes.Add(nodeGene_1.InnovationNumber, nodeGene_1);
+            genome_1.NodeGenes.Add(nodeGene_2.InnovationNumber, nodeGene_2);
 
-            genome_1.ConnectionGenes.Add(connectionGene);
+            genome_1.ConnectionGenes.Add(connectionGene.InnovationNumber, connectionGene);
 
 
             Assert.AreEqual(0, genome_1.Distance(genome_1));
@@ -129,12 +129,12 @@ namespace NEAT.Tests
             Random random = new Random();
 
             Genome genome_1 = new Genome(random);
-            genome_1.NodeGenes.Add(nodeGene_1);
-            genome_1.NodeGenes.Add(nodeGene_2);
-            genome_1.NodeGenes.Add(output_nodeGene);
+            genome_1.NodeGenes.Add(nodeGene_1.InnovationNumber, nodeGene_1);
+            genome_1.NodeGenes.Add(nodeGene_2.InnovationNumber, nodeGene_2);
+            genome_1.NodeGenes.Add(output_nodeGene.InnovationNumber, output_nodeGene);
 
-            genome_1.ConnectionGenes.Add(connectionGene_1);
-            genome_1.ConnectionGenes.Add(connectionGene_2);
+            genome_1.ConnectionGenes.Add(connectionGene_1.InnovationNumber, connectionGene_1);
+            genome_1.ConnectionGenes.Add(connectionGene_2.InnovationNumber, connectionGene_2);
 
 
             Assert.AreEqual(0, genome_1.Distance(genome_1));
@@ -205,10 +205,10 @@ namespace NEAT.Tests
             Random random = new Random();
 
             Genome genome_1 = new Genome(random);
-            genome_1.NodeGenes.Add(nodeGene_1);
+            genome_1.NodeGenes.Add(nodeGene_1.InnovationNumber, nodeGene_1);
 
             Genome genome_2 = new Genome(random);
-            genome_2.NodeGenes.Add(nodeGene_2);
+            genome_2.NodeGenes.Add(nodeGene_2.InnovationNumber, nodeGene_2);
 
 
             Assert.AreEqual(0, genome_1.Distance(genome_2));
@@ -231,10 +231,10 @@ namespace NEAT.Tests
             Random random = new Random();
 
             Genome genome_1 = new Genome(random);
-            genome_1.NodeGenes.Add(nodeGene_1);
+            genome_1.NodeGenes.Add(nodeGene_1.InnovationNumber, nodeGene_1);
 
             Genome genome_2 = new Genome(random);
-            genome_2.NodeGenes.Add(nodeGene_2);
+            genome_2.NodeGenes.Add(nodeGene_2.InnovationNumber, nodeGene_2);
 
 
             Assert.AreEqual(0, genome_2.Distance(genome_1));
@@ -264,12 +264,12 @@ namespace NEAT.Tests
             Random random = new Random();
 
             Genome genome_1 = new Genome(random);
-            genome_1.NodeGenes.Add(nodeGene_1);
-            genome_1.NodeGenes.Add(nodeGene_2);
+            genome_1.NodeGenes.Add(nodeGene_1.InnovationNumber, nodeGene_1);
+            genome_1.NodeGenes.Add(nodeGene_2.InnovationNumber, nodeGene_2);
 
             Genome genome_2 = new Genome(random);
-            genome_2.NodeGenes.Add(nodeGene_3);
-            genome_2.NodeGenes.Add(nodeGene_4);
+            genome_2.NodeGenes.Add(nodeGene_3.InnovationNumber, nodeGene_3);
+            genome_2.NodeGenes.Add(nodeGene_4.InnovationNumber, nodeGene_4);
 
 
             Assert.AreEqual(0, genome_1.Distance(genome_2));
@@ -295,12 +295,12 @@ namespace NEAT.Tests
             Random random = new Random();
 
             Genome genome_1 = new Genome(random);
-            genome_1.NodeGenes.Add(nodeGene_1);
-            genome_1.NodeGenes.Add(nodeGene_2);
+            genome_1.NodeGenes.Add(nodeGene_1.InnovationNumber, nodeGene_1);
+            genome_1.NodeGenes.Add(nodeGene_2.InnovationNumber, nodeGene_2);
 
             Genome genome_2 = new Genome(random);
-            genome_2.NodeGenes.Add(nodeGene_3);
-            genome_2.NodeGenes.Add(nodeGene_4);
+            genome_2.NodeGenes.Add(nodeGene_3.InnovationNumber, nodeGene_3);
+            genome_2.NodeGenes.Add(nodeGene_4.InnovationNumber, nodeGene_4);
 
 
             Assert.AreEqual(0, genome_2.Distance(genome_1));
@@ -333,17 +333,17 @@ namespace NEAT.Tests
             Random random = new Random();
 
             Genome genome_1 = new Genome(random);
-            genome_1.NodeGenes.Add(nodeGene_1);
-            genome_1.NodeGenes.Add(nodeGene_2);
+            genome_1.NodeGenes.Add(nodeGene_1.InnovationNumber, nodeGene_1);
+            genome_1.NodeGenes.Add(nodeGene_2.InnovationNumber, nodeGene_2);
 
-            genome_1.ConnectionGenes.Add(connectionGene_1);
+            genome_1.ConnectionGenes.Add(connectionGene_1.InnovationNumber, connectionGene_1);
 
 
             Genome genome_2 = new Genome(random);
-            genome_2.NodeGenes.Add(nodeGene_3);
-            genome_2.NodeGenes.Add(nodeGene_4);
+            genome_2.NodeGenes.Add(nodeGene_3.InnovationNumber, nodeGene_3);
+            genome_2.NodeGenes.Add(nodeGene_4.InnovationNumber, nodeGene_4);
 
-            genome_2.ConnectionGenes.Add(connectionGene_2);
+            genome_2.ConnectionGenes.Add(connectionGene_2.InnovationNumber, connectionGene_2);
 
 
             Assert.AreEqual(0, genome_1.Distance(genome_2));
@@ -372,17 +372,17 @@ namespace NEAT.Tests
             Random random = new Random();
 
             Genome genome_1 = new Genome(random);
-            genome_1.NodeGenes.Add(nodeGene_1);
-            genome_1.NodeGenes.Add(nodeGene_2);
+            genome_1.NodeGenes.Add(nodeGene_1.InnovationNumber, nodeGene_1);
+            genome_1.NodeGenes.Add(nodeGene_2.InnovationNumber, nodeGene_2);
 
-            genome_1.ConnectionGenes.Add(connectionGene_1);
+            genome_1.ConnectionGenes.Add(connectionGene_1.InnovationNumber, connectionGene_1);
 
 
             Genome genome_2 = new Genome(random);
-            genome_2.NodeGenes.Add(nodeGene_3);
-            genome_2.NodeGenes.Add(nodeGene_4);
+            genome_2.NodeGenes.Add(nodeGene_3.InnovationNumber, nodeGene_3);
+            genome_2.NodeGenes.Add(nodeGene_4.InnovationNumber, nodeGene_4);
 
-            genome_2.ConnectionGenes.Add(connectionGene_2);
+            genome_2.ConnectionGenes.Add(connectionGene_2.InnovationNumber, connectionGene_2);
 
 
             Assert.AreEqual(0, genome_2.Distance(genome_1));
@@ -415,17 +415,17 @@ namespace NEAT.Tests
             Random random = new Random();
 
             Genome genome_1 = new Genome(random);
-            genome_1.NodeGenes.Add(nodeGene_1);
-            genome_1.NodeGenes.Add(nodeGene_2);
+            genome_1.NodeGenes.Add(nodeGene_1.InnovationNumber, nodeGene_1);
+            genome_1.NodeGenes.Add(nodeGene_2.InnovationNumber, nodeGene_2);
 
-            genome_1.ConnectionGenes.Add(connectionGene_1);
+            genome_1.ConnectionGenes.Add(connectionGene_1.InnovationNumber, connectionGene_1);
 
 
             Genome genome_2 = new Genome(random);
-            genome_2.NodeGenes.Add(nodeGene_3);
-            genome_2.NodeGenes.Add(nodeGene_4);
+            genome_2.NodeGenes.Add(nodeGene_3.InnovationNumber, nodeGene_3);
+            genome_2.NodeGenes.Add(nodeGene_4.InnovationNumber, nodeGene_4);
 
-            genome_2.ConnectionGenes.Add(connectionGene_2);
+            genome_2.ConnectionGenes.Add(connectionGene_2.InnovationNumber, connectionGene_2);
 
 
             Assert.AreEqual(Genome.C3 * 1, genome_1.Distance(genome_2));
@@ -454,17 +454,17 @@ namespace NEAT.Tests
             Random random = new Random();
 
             Genome genome_1 = new Genome(random);
-            genome_1.NodeGenes.Add(nodeGene_1);
-            genome_1.NodeGenes.Add(nodeGene_2);
+            genome_1.NodeGenes.Add(nodeGene_1.InnovationNumber, nodeGene_1);
+            genome_1.NodeGenes.Add(nodeGene_2.InnovationNumber, nodeGene_2);
 
-            genome_1.ConnectionGenes.Add(connectionGene_1);
+            genome_1.ConnectionGenes.Add(connectionGene_1.InnovationNumber, connectionGene_1);
 
 
             Genome genome_2 = new Genome(random);
-            genome_2.NodeGenes.Add(nodeGene_3);
-            genome_2.NodeGenes.Add(nodeGene_4);
+            genome_2.NodeGenes.Add(nodeGene_3.InnovationNumber, nodeGene_3);
+            genome_2.NodeGenes.Add(nodeGene_4.InnovationNumber, nodeGene_4);
 
-            genome_2.ConnectionGenes.Add(connectionGene_2);
+            genome_2.ConnectionGenes.Add(connectionGene_2.InnovationNumber, connectionGene_2);
 
 
             Assert.AreEqual(Genome.C3 * 1, genome_2.Distance(genome_1));
@@ -505,20 +505,20 @@ namespace NEAT.Tests
             Random random = new Random();
 
             Genome genome_1 = new Genome(random);
-            genome_1.NodeGenes.Add(nodeGene_1);
-            genome_1.NodeGenes.Add(nodeGene_2);
-            genome_1.NodeGenes.Add(output_nodeGene_1);
+            genome_1.NodeGenes.Add(nodeGene_1.InnovationNumber, nodeGene_1);
+            genome_1.NodeGenes.Add(nodeGene_2.InnovationNumber, nodeGene_2);
+            genome_1.NodeGenes.Add(output_nodeGene_1.InnovationNumber, output_nodeGene_1);
 
-            genome_1.ConnectionGenes.Add(connectionGene_1);
-            genome_1.ConnectionGenes.Add(connectionGene_2);
+            genome_1.ConnectionGenes.Add(connectionGene_1.InnovationNumber, connectionGene_1);
+            genome_1.ConnectionGenes.Add(connectionGene_2.InnovationNumber, connectionGene_2);
 
 
             Genome genome_2 = new Genome(random);
-            genome_2.NodeGenes.Add(nodeGene_3);
-            genome_2.NodeGenes.Add(nodeGene_4);
+            genome_2.NodeGenes.Add(nodeGene_3.InnovationNumber, nodeGene_3);
+            genome_2.NodeGenes.Add(nodeGene_4.InnovationNumber, nodeGene_4);
 
-            genome_2.ConnectionGenes.Add(connectionGene_3);
-            genome_2.ConnectionGenes.Add(connectionGene_4);
+            genome_2.ConnectionGenes.Add(connectionGene_3.InnovationNumber, connectionGene_3);
+            genome_2.ConnectionGenes.Add(connectionGene_4.InnovationNumber, connectionGene_4);
 
 
             Assert.AreEqual(0, genome_1.Distance(genome_2));
@@ -555,20 +555,20 @@ namespace NEAT.Tests
             Random random = new Random();
 
             Genome genome_1 = new Genome(random);
-            genome_1.NodeGenes.Add(nodeGene_1);
-            genome_1.NodeGenes.Add(nodeGene_2);
-            genome_1.NodeGenes.Add(output_nodeGene_1);
+            genome_1.NodeGenes.Add(nodeGene_1.InnovationNumber, nodeGene_1);
+            genome_1.NodeGenes.Add(nodeGene_2.InnovationNumber, nodeGene_2);
+            genome_1.NodeGenes.Add(output_nodeGene_1.InnovationNumber, output_nodeGene_1);
 
-            genome_1.ConnectionGenes.Add(connectionGene_1);
-            genome_1.ConnectionGenes.Add(connectionGene_2);
+            genome_1.ConnectionGenes.Add(connectionGene_1.InnovationNumber, connectionGene_1);
+            genome_1.ConnectionGenes.Add(connectionGene_2.InnovationNumber, connectionGene_2);
 
 
             Genome genome_2 = new Genome(random);
-            genome_2.NodeGenes.Add(nodeGene_3);
-            genome_2.NodeGenes.Add(nodeGene_4);
+            genome_2.NodeGenes.Add(nodeGene_3.InnovationNumber, nodeGene_3);
+            genome_2.NodeGenes.Add(nodeGene_4.InnovationNumber, nodeGene_4);
 
-            genome_2.ConnectionGenes.Add(connectionGene_3);
-            genome_2.ConnectionGenes.Add(connectionGene_4);
+            genome_2.ConnectionGenes.Add(connectionGene_3.InnovationNumber, connectionGene_3);
+            genome_2.ConnectionGenes.Add(connectionGene_4.InnovationNumber, connectionGene_4);
 
 
             Assert.AreEqual(0, genome_2.Distance(genome_1));
@@ -609,20 +609,20 @@ namespace NEAT.Tests
             Random random = new Random();
 
             Genome genome_1 = new Genome(random);
-            genome_1.NodeGenes.Add(nodeGene_1);
-            genome_1.NodeGenes.Add(nodeGene_2);
-            genome_1.NodeGenes.Add(output_nodeGene_1);
+            genome_1.NodeGenes.Add(nodeGene_1.InnovationNumber, nodeGene_1);
+            genome_1.NodeGenes.Add(nodeGene_2.InnovationNumber, nodeGene_2);
+            genome_1.NodeGenes.Add(output_nodeGene_1.InnovationNumber, output_nodeGene_1);
 
-            genome_1.ConnectionGenes.Add(connectionGene_1);
-            genome_1.ConnectionGenes.Add(connectionGene_2);
+            genome_1.ConnectionGenes.Add(connectionGene_1.InnovationNumber, connectionGene_1);
+            genome_1.ConnectionGenes.Add(connectionGene_2.InnovationNumber, connectionGene_2);
 
 
             Genome genome_2 = new Genome(random);
-            genome_2.NodeGenes.Add(nodeGene_3);
-            genome_2.NodeGenes.Add(nodeGene_4);
+            genome_2.NodeGenes.Add(nodeGene_3.InnovationNumber, nodeGene_3);
+            genome_2.NodeGenes.Add(nodeGene_4.InnovationNumber, nodeGene_4);
 
-            genome_2.ConnectionGenes.Add(connectionGene_3);
-            genome_2.ConnectionGenes.Add(connectionGene_4);
+            genome_2.ConnectionGenes.Add(connectionGene_3.InnovationNumber, connectionGene_3);
+            genome_2.ConnectionGenes.Add(connectionGene_4.InnovationNumber, connectionGene_4);
 
 
             Assert.AreEqual(Genome.C3 * 1, genome_1.Distance(genome_2));
@@ -659,20 +659,20 @@ namespace NEAT.Tests
             Random random = new Random();
 
             Genome genome_1 = new Genome(random);
-            genome_1.NodeGenes.Add(nodeGene_1);
-            genome_1.NodeGenes.Add(nodeGene_2);
-            genome_1.NodeGenes.Add(output_nodeGene_1);
+            genome_1.NodeGenes.Add(nodeGene_1.InnovationNumber, nodeGene_1);
+            genome_1.NodeGenes.Add(nodeGene_2.InnovationNumber, nodeGene_2);
+            genome_1.NodeGenes.Add(output_nodeGene_1.InnovationNumber, output_nodeGene_1);
 
-            genome_1.ConnectionGenes.Add(connectionGene_1);
-            genome_1.ConnectionGenes.Add(connectionGene_2);
+            genome_1.ConnectionGenes.Add(connectionGene_1.InnovationNumber, connectionGene_1);
+            genome_1.ConnectionGenes.Add(connectionGene_2.InnovationNumber, connectionGene_2);
 
 
             Genome genome_2 = new Genome(random);
-            genome_2.NodeGenes.Add(nodeGene_3);
-            genome_2.NodeGenes.Add(nodeGene_4);
+            genome_2.NodeGenes.Add(nodeGene_3.InnovationNumber, nodeGene_3);
+            genome_2.NodeGenes.Add(nodeGene_4.InnovationNumber, nodeGene_4);
 
-            genome_2.ConnectionGenes.Add(connectionGene_3);
-            genome_2.ConnectionGenes.Add(connectionGene_4);
+            genome_2.ConnectionGenes.Add(connectionGene_3.InnovationNumber, connectionGene_3);
+            genome_2.ConnectionGenes.Add(connectionGene_4.InnovationNumber, connectionGene_4);
 
 
             Assert.AreEqual(Genome.C3 * 1, genome_2.Distance(genome_1));
@@ -713,20 +713,20 @@ namespace NEAT.Tests
             Random random = new Random();
 
             Genome genome_1 = new Genome(random);
-            genome_1.NodeGenes.Add(nodeGene_1);
-            genome_1.NodeGenes.Add(nodeGene_2);
-            genome_1.NodeGenes.Add(output_nodeGene_1);
+            genome_1.NodeGenes.Add(nodeGene_1.InnovationNumber, nodeGene_1);
+            genome_1.NodeGenes.Add(nodeGene_2.InnovationNumber, nodeGene_2);
+            genome_1.NodeGenes.Add(output_nodeGene_1.InnovationNumber, output_nodeGene_1);
 
-            genome_1.ConnectionGenes.Add(connectionGene_1);
-            genome_1.ConnectionGenes.Add(connectionGene_2);
+            genome_1.ConnectionGenes.Add(connectionGene_1.InnovationNumber, connectionGene_1);
+            genome_1.ConnectionGenes.Add(connectionGene_2.InnovationNumber, connectionGene_2);
 
 
             Genome genome_2 = new Genome(random);
-            genome_2.NodeGenes.Add(nodeGene_3);
-            genome_2.NodeGenes.Add(nodeGene_4);
+            genome_2.NodeGenes.Add(nodeGene_3.InnovationNumber, nodeGene_3);
+            genome_2.NodeGenes.Add(nodeGene_4.InnovationNumber, nodeGene_4);
 
-            genome_2.ConnectionGenes.Add(connectionGene_3);
-            genome_2.ConnectionGenes.Add(connectionGene_4);
+            genome_2.ConnectionGenes.Add(connectionGene_3.InnovationNumber, connectionGene_3);
+            genome_2.ConnectionGenes.Add(connectionGene_4.InnovationNumber, connectionGene_4);
 
 
             Assert.AreEqual(Genome.C1 * 2 + Genome.C2 * 2, genome_1.Distance(genome_2));
@@ -763,20 +763,20 @@ namespace NEAT.Tests
             Random random = new Random();
 
             Genome genome_1 = new Genome(random);
-            genome_1.NodeGenes.Add(nodeGene_1);
-            genome_1.NodeGenes.Add(nodeGene_2);
-            genome_1.NodeGenes.Add(output_nodeGene_1);
+            genome_1.NodeGenes.Add(nodeGene_1.InnovationNumber, nodeGene_1);
+            genome_1.NodeGenes.Add(nodeGene_2.InnovationNumber, nodeGene_2);
+            genome_1.NodeGenes.Add(output_nodeGene_1.InnovationNumber, output_nodeGene_1);
 
-            genome_1.ConnectionGenes.Add(connectionGene_1);
-            genome_1.ConnectionGenes.Add(connectionGene_2);
+            genome_1.ConnectionGenes.Add(connectionGene_1.InnovationNumber, connectionGene_1);
+            genome_1.ConnectionGenes.Add(connectionGene_2.InnovationNumber, connectionGene_2);
 
 
             Genome genome_2 = new Genome(random);
-            genome_2.NodeGenes.Add(nodeGene_3);
-            genome_2.NodeGenes.Add(nodeGene_4);
+            genome_2.NodeGenes.Add(nodeGene_3.InnovationNumber, nodeGene_3);
+            genome_2.NodeGenes.Add(nodeGene_4.InnovationNumber, nodeGene_4);
 
-            genome_2.ConnectionGenes.Add(connectionGene_3);
-            genome_2.ConnectionGenes.Add(connectionGene_4);
+            genome_2.ConnectionGenes.Add(connectionGene_3.InnovationNumber , connectionGene_3);
+            genome_2.ConnectionGenes.Add(connectionGene_4.InnovationNumber, connectionGene_4);
 
 
             Assert.AreEqual(Genome.C1 * 2 + Genome.C2 * 2, genome_2.Distance(genome_1));
@@ -817,20 +817,20 @@ namespace NEAT.Tests
             Random random = new Random();
 
             Genome genome_1 = new Genome(random);
-            genome_1.NodeGenes.Add(nodeGene_1);
-            genome_1.NodeGenes.Add(nodeGene_2);
-            genome_1.NodeGenes.Add(output_nodeGene_1);
+            genome_1.NodeGenes.Add(nodeGene_1.InnovationNumber, nodeGene_1);
+            genome_1.NodeGenes.Add(nodeGene_2.InnovationNumber, nodeGene_2);
+            genome_1.NodeGenes.Add(output_nodeGene_1.InnovationNumber, output_nodeGene_1);
 
-            genome_1.ConnectionGenes.Add(connectionGene_1);
-            genome_1.ConnectionGenes.Add(connectionGene_2);
+            genome_1.ConnectionGenes.Add(connectionGene_1.InnovationNumber, connectionGene_1);
+            genome_1.ConnectionGenes.Add(connectionGene_2.InnovationNumber, connectionGene_2);
 
 
             Genome genome_2 = new Genome(random);
-            genome_2.NodeGenes.Add(nodeGene_3);
-            genome_2.NodeGenes.Add(nodeGene_4);
+            genome_2.NodeGenes.Add(nodeGene_3.InnovationNumber, nodeGene_3);
+            genome_2.NodeGenes.Add(nodeGene_4.InnovationNumber, nodeGene_4);
 
-            genome_2.ConnectionGenes.Add(connectionGene_3);
-            genome_2.ConnectionGenes.Add(connectionGene_4);
+            genome_2.ConnectionGenes.Add(connectionGene_3.InnovationNumber, connectionGene_3);
+            genome_2.ConnectionGenes.Add(connectionGene_4.InnovationNumber, connectionGene_4);
 
 
             Assert.AreEqual(Genome.C1 * 2 + Genome.C2 * 2, genome_1.Distance(genome_2));
@@ -867,20 +867,20 @@ namespace NEAT.Tests
             Random random = new Random();
 
             Genome genome_1 = new Genome(random);
-            genome_1.NodeGenes.Add(nodeGene_1);
-            genome_1.NodeGenes.Add(nodeGene_2);
-            genome_1.NodeGenes.Add(output_nodeGene_1);
+            genome_1.NodeGenes.Add(nodeGene_1.InnovationNumber, nodeGene_1);
+            genome_1.NodeGenes.Add(nodeGene_2.InnovationNumber, nodeGene_2);
+            genome_1.NodeGenes.Add(output_nodeGene_1.InnovationNumber, output_nodeGene_1);
 
-            genome_1.ConnectionGenes.Add(connectionGene_1);
-            genome_1.ConnectionGenes.Add(connectionGene_2);
+            genome_1.ConnectionGenes.Add(connectionGene_1.InnovationNumber, connectionGene_1);
+            genome_1.ConnectionGenes.Add(connectionGene_2.InnovationNumber, connectionGene_2);
 
 
             Genome genome_2 = new Genome(random);
-            genome_2.NodeGenes.Add(nodeGene_3);
-            genome_2.NodeGenes.Add(nodeGene_4);
+            genome_2.NodeGenes.Add(nodeGene_3.InnovationNumber, nodeGene_3);
+            genome_2.NodeGenes.Add(nodeGene_4.InnovationNumber, nodeGene_4);
 
-            genome_2.ConnectionGenes.Add(connectionGene_3);
-            genome_2.ConnectionGenes.Add(connectionGene_4);
+            genome_2.ConnectionGenes.Add(connectionGene_3.InnovationNumber, connectionGene_3);
+            genome_2.ConnectionGenes.Add(connectionGene_4.InnovationNumber, connectionGene_4);
 
 
             Assert.AreEqual(Genome.C1 * 2 + Genome.C2 * 2, genome_2.Distance(genome_1));
@@ -916,10 +916,10 @@ namespace NEAT.Tests
 
 
             Genome genome = new Genome(random);
-            genome.NodeGenes.Add(nodeGene_1);
-            genome.NodeGenes.Add(nodeGene_2);
+            genome.NodeGenes.Add(nodeGene_1.InnovationNumber, nodeGene_1);
+            genome.NodeGenes.Add(nodeGene_2.InnovationNumber, nodeGene_2);
 
-            genome.ConnectionGenes.Add(connectionGene);
+            genome.ConnectionGenes.Add(connectionGene.InnovationNumber, connectionGene);
 
 
             Genome created_genome = genome.Crossover(genome);
@@ -927,7 +927,7 @@ namespace NEAT.Tests
 
             bool[] contains_genes = { false, false, false };
 
-            foreach (ConnectionGene cgene in created_genome.ConnectionGenes)
+            foreach (ConnectionGene cgene in created_genome.ConnectionGenes.Values)
             {
                 if (cgene == connectionGene)
                 {
@@ -937,7 +937,7 @@ namespace NEAT.Tests
                 }
             }
 
-            foreach (NodeGene ngene in created_genome.NodeGenes)
+            foreach (NodeGene ngene in created_genome.NodeGenes.Values)
             {
                 if (ngene == nodeGene_1)
                 {
@@ -978,12 +978,12 @@ namespace NEAT.Tests
 
 
             Genome genome = new Genome(random);
-            genome.NodeGenes.Add(nodeGene_1);
-            genome.NodeGenes.Add(nodeGene_2);
-            genome.NodeGenes.Add(nodeGene_3);
+            genome.NodeGenes.Add(nodeGene_1.InnovationNumber, nodeGene_1);
+            genome.NodeGenes.Add(nodeGene_2.InnovationNumber, nodeGene_2);
+            genome.NodeGenes.Add(nodeGene_3.InnovationNumber, nodeGene_3);
 
-            genome.ConnectionGenes.Add(connectionGene_1);
-            genome.ConnectionGenes.Add(connectionGene_2);
+            genome.ConnectionGenes.Add(connectionGene_1.InnovationNumber, connectionGene_1);
+            genome.ConnectionGenes.Add(connectionGene_2.InnovationNumber, connectionGene_2);
 
 
             Genome created_genome = genome.Crossover(genome);
@@ -991,7 +991,7 @@ namespace NEAT.Tests
 
             bool[] contains_genes = { false, false, false, false, false };
 
-            foreach (ConnectionGene cgene in created_genome.ConnectionGenes)
+            foreach (ConnectionGene cgene in created_genome.ConnectionGenes.Values)
             {
                 if (cgene == connectionGene_1)
                 {
@@ -1003,7 +1003,7 @@ namespace NEAT.Tests
                 }
             }
 
-            foreach (NodeGene ngene in created_genome.NodeGenes)
+            foreach (NodeGene ngene in created_genome.NodeGenes.Values)
             {
                 if (ngene == nodeGene_1)
                 {
@@ -1051,17 +1051,17 @@ namespace NEAT.Tests
 
 
             Genome genome_1 = new Genome(random);
-            genome_1.NodeGenes.Add(nodeGene_1);
-            genome_1.NodeGenes.Add(nodeGene_2);
+            genome_1.NodeGenes.Add(nodeGene_1.InnovationNumber, nodeGene_1);
+            genome_1.NodeGenes.Add(nodeGene_2.InnovationNumber, nodeGene_2);
 
-            genome_1.ConnectionGenes.Add(connectionGene_1);
+            genome_1.ConnectionGenes.Add(connectionGene_1.InnovationNumber, connectionGene_1);
 
 
             Genome genome_2 = new Genome(random);
-            genome_2.NodeGenes.Add(nodeGene_1);
-            genome_2.NodeGenes.Add(nodeGene_3);
+            genome_2.NodeGenes.Add(nodeGene_1.InnovationNumber, nodeGene_1);
+            genome_2.NodeGenes.Add(nodeGene_3.InnovationNumber, nodeGene_3);
 
-            genome_2.ConnectionGenes.Add(connectionGene_2);
+            genome_2.ConnectionGenes.Add(connectionGene_2.InnovationNumber, connectionGene_2);
 
 
             Genome created_genome = genome_1.Crossover(genome_2);
@@ -1069,7 +1069,7 @@ namespace NEAT.Tests
 
             bool[] contains_genes = { false, false, false, false, false };
 
-            foreach (ConnectionGene cgene in created_genome.ConnectionGenes)
+            foreach (ConnectionGene cgene in created_genome.ConnectionGenes.Values)
             {
                 if (cgene == connectionGene_1)
                 {
@@ -1081,7 +1081,7 @@ namespace NEAT.Tests
                 }
             }
 
-            foreach (NodeGene ngene in created_genome.NodeGenes)
+            foreach (NodeGene ngene in created_genome.NodeGenes.Values)
             {
                 if (ngene == nodeGene_1)
                 {
