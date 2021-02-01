@@ -208,21 +208,21 @@ namespace NEAT.Genetic
 
 
         /// <summary>
-        /// Gets the distance between this Genome and the given Genome. Higher = less compatible.
+        /// Gets the distance between this genome and the given genome. Higher = less compatible.
         /// </summary>
-        /// <param name="genome">The Genome to compare to.</param>
-        /// <returns>The distance between this Genome and the given Genome.</returns>
+        /// <param name="genome">The genome to compare to.</param>
+        /// <returns>The distance between this genome and the given genome.</returns>
         /// <remarks>
         /// The distance d can be measured by the following equation:
         /// <para/>
         /// d = c1(E / N) + c2(D / N) + c3 * W
         /// <para/>
         /// Where:
-        ///     d = distance
-        ///     E = # excess genes
-        ///     D = # of disjoint genes
-        ///     W = weight difference of similar genes
-        ///     N = # of genes in largest genome (this or them), 1 if #genes &lt; 20
+        ///     d = distance |
+        ///     E = # excess genes |
+        ///     D = # of disjoint genes |
+        ///     W = weight difference of similar genes |
+        ///     N = # of genes in largest genome (this or them), 1 if #genes &lt; 20 |
         ///     c_ = constant for adjusting
         /// </remarks>
         public double Distance(Genome genome)
@@ -252,8 +252,8 @@ namespace NEAT.Genetic
                 ConnectionGene connectionGene_me = enumerator_me.Current;
                 ConnectionGene connectionGene_them = enumerator_them.Current;
 
-                int inNum_me = connectionGene_me.InnovationNumber;
-                int inNum_them = connectionGene_them.InnovationNumber;
+                int inNum_me = connectionGene_me.ConnectionGenePattern.InnovationNumber;
+                int inNum_them = connectionGene_them.ConnectionGenePattern.InnovationNumber;
 
 
                 if (inNum_me == inNum_them) //Similar genes.
@@ -355,8 +355,8 @@ namespace NEAT.Genetic
                 ConnectionGene connectionGene_me = enumerator_me.Current;
                 ConnectionGene connectionGene_them = enumerator_them.Current;
 
-                int inNum_me = connectionGene_me.InnovationNumber;
-                int inNum_them = connectionGene_them.InnovationNumber;
+                int inNum_me = connectionGene_me.ConnectionGenePattern.InnovationNumber;
+                int inNum_them = connectionGene_them.ConnectionGenePattern.InnovationNumber;
 
 
                 if (inNum_me == inNum_them) //Similar genes, choose either side at random.
@@ -368,19 +368,18 @@ namespace NEAT.Genetic
                     {
                         if (random.NextDouble() < .5)
                         {
-                            created_genome.ConnectionGenes.Add(inNum_me, connectionGene_me);
+                            created_genome.ConnectionGenes.Add(inNum_me, GenePatternTracker.Copy_ConnectionGene(connectionGene_me));
                         }
                         else
                         {
-                            created_genome.ConnectionGenes.Add(inNum_them, connectionGene_them);
+                            created_genome.ConnectionGenes.Add(inNum_them, GenePatternTracker.Copy_ConnectionGene(connectionGene_them));
                         }
                     }
                     else
                     {
-                        ConnectionGene temp = new ConnectionGene(connectionGene_me.From, connectionGene_me.To,
-                            (connectionGene_me.Weight + connectionGene_them.Weight) / 2);
-
-                        created_genome.ConnectionGenes.Add(inNum_me, temp);
+                        created_genome.ConnectionGenes.Add(inNum_me, GenePatternTracker.Create_ConnectionGene(connectionGene_me.ConnectionGenePattern,
+                            (connectionGene_me.Weight + connectionGene_them.Weight) / 2,
+                            (random.NextDouble() < .5) ? connectionGene_me.Enabled : connectionGene_them.Enabled));
                     }
                 }
                 else if (inNum_me > inNum_them) //Disjoint gene at them, add this gene if allowed.
@@ -389,7 +388,7 @@ namespace NEAT.Genetic
 
                     if (Math.Abs(my_score - their_score) < Crossover_ScoreDelta || their_score > my_score)
                     {
-                        created_genome.ConnectionGenes.Add(inNum_them, connectionGene_them);
+                        created_genome.ConnectionGenes.Add(inNum_them, GenePatternTracker.Copy_ConnectionGene(connectionGene_them));
                     }
                 }
                 else    //Disjoint gene at me, add this gene if allowed.
@@ -398,7 +397,7 @@ namespace NEAT.Genetic
 
                     if (Math.Abs(my_score - their_score) < Crossover_ScoreDelta || my_score > their_score)
                     {
-                        created_genome.ConnectionGenes.Add(inNum_me, connectionGene_me);
+                        created_genome.ConnectionGenes.Add(inNum_me, GenePatternTracker.Copy_ConnectionGene(connectionGene_me));
                     }
                 }
             }
@@ -411,7 +410,8 @@ namespace NEAT.Genetic
                 {
                     do
                     {
-                        created_genome.ConnectionGenes.Add(enumerator_me.Current.InnovationNumber, enumerator_me.Current);
+                        created_genome.ConnectionGenes.Add(enumerator_me.Current.ConnectionGenePattern.InnovationNumber, 
+                            GenePatternTracker.Copy_ConnectionGene(enumerator_me.Current));
                     }
                     while (enumerator_me.MoveNext());
                 }
@@ -422,7 +422,8 @@ namespace NEAT.Genetic
                 {
                     do
                     {
-                        created_genome.ConnectionGenes.Add(enumerator_them.Current.InnovationNumber, enumerator_them.Current);
+                        created_genome.ConnectionGenes.Add(enumerator_them.Current.ConnectionGenePattern.InnovationNumber,
+                            GenePatternTracker.Copy_ConnectionGene(enumerator_them.Current));
                     }
                     while (enumerator_them.MoveNext());
                 }
@@ -436,14 +437,16 @@ namespace NEAT.Genetic
 
             foreach (ConnectionGene connectionGene in created_genome.ConnectionGenes.Values)
             {
-                if (!created_genome.NodeGenes.ContainsKey(connectionGene.From.InnovationNumber))
+                ConnectionGenePattern pattern = connectionGene.ConnectionGenePattern;
+
+                if (!created_genome.NodeGenes.ContainsKey(pattern.From.InnovationNumber))
                 {
-                    created_genome.NodeGenes.Add(connectionGene.From.InnovationNumber, connectionGene.From);
+                    created_genome.NodeGenes.Add(pattern.From.InnovationNumber, GenePatternTracker.Copy_NodeGene(NodeGenes[pattern.From.InnovationNumber]));
                 }
 
-                if (!created_genome.NodeGenes.ContainsKey(connectionGene.To.InnovationNumber))
+                if (!created_genome.NodeGenes.ContainsKey(pattern.To.InnovationNumber))
                 {
-                    created_genome.NodeGenes.Add(connectionGene.To.InnovationNumber, connectionGene.To);
+                    created_genome.NodeGenes.Add(pattern.To.InnovationNumber, GenePatternTracker.Copy_NodeGene(NodeGenes[pattern.To.InnovationNumber]));
                 }
             }
 
@@ -478,20 +481,20 @@ namespace NEAT.Genetic
             NodeGene nodeGene_a = NodeGenes.RandomValue().Take(1).ElementAt(0); //NodeGenes[Random.Next(NodeGenes.Count) + 1];  //Innovation numbers start at 1.
 
 
-            IEnumerable<NodeGene> temp_subset = NodeGenes.Values.Where(a => a.X > nodeGene_a.X);
+            IEnumerable<NodeGene> temp_subset = NodeGenes.Values.Where(a => a.NodeGenePattern.X > nodeGene_a.NodeGenePattern.X);
 
             NodeGene nodeGene_b = temp_subset.ElementAt(Random.Next(temp_subset.Count()));  //Get a random gene with a higher X value.
 
 
-            ConnectionGene connectionGene = GenePatternTracker.Create_ConnectionGene(nodeGene_a, nodeGene_b, Mutation_WeightRandom * (Random.NextDouble() * 2 - 1));
+            ConnectionGene connectionGene = GenePatternTracker.Create_ConnectionGene(nodeGene_a, nodeGene_b, Mutation_WeightRandom * (Random.NextDouble() * 2 - 1), true);
 
-            if (ConnectionGenes.ContainsKey(connectionGene.InnovationNumber))   //Can only happen if it already existed in the tracker.
+            if (ConnectionGenes.ContainsKey(connectionGene.ConnectionGenePattern.InnovationNumber))   //Can only happen if it already existed in the tracker.
             {
                 return; //TODO think of how to handle this, maybe have a retry somewhere?
             }
 
 
-            ConnectionGenes.Add(connectionGene.InnovationNumber, connectionGene);
+            ConnectionGenes.Add(connectionGene.ConnectionGenePattern.InnovationNumber, connectionGene);
         }
 
 

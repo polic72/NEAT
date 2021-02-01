@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using NEAT.Neural_Network;
+
 namespace NEAT.Genetic.Tracker
 {
     /// <summary>
@@ -31,7 +33,7 @@ namespace NEAT.Genetic.Tracker
         }
 
 
-        #region NodeGene
+        #region NodeGenePattern
 
         /// <summary>
         /// Adds the given node gene pattern if not already there.
@@ -67,10 +69,33 @@ namespace NEAT.Genetic.Tracker
             return null;
         }
 
-        #endregion NodeGene
+
+        /// <summary>
+        /// Creates a node gene with the given pattern and activation function.
+        /// </summary>
+        /// <param name="nodeGenePattern">The node gene pattern of the node gene.</param>
+        /// <param name="activationFunction">The activation function of the node gene.</param>
+        /// <returns>The created node gene.</returns>
+        public NodeGene Create_NodeGene(NodeGenePattern nodeGenePattern, Node.ActivationFunction activationFunction)
+        {
+            return new NodeGene(nodeGenePattern, activationFunction);
+        }
 
 
-        #region ConnectionGene
+        /// <summary>
+        /// Copies the given node gene.
+        /// </summary>
+        /// <param name="nodeGene">The node gene to copy.</param>
+        /// <returns>The copy of the node gene.</returns>
+        public NodeGene Copy_NodeGene(NodeGene nodeGene)
+        {
+            return new NodeGene(nodeGene.NodeGenePattern, nodeGene.ActivationFunction);
+        }
+
+        #endregion NodeGenePattern
+
+
+        #region ConnectionGenePattern
 
         /// <summary>
         /// Adds the given connection gene pattern if not already there.
@@ -108,19 +133,20 @@ namespace NEAT.Genetic.Tracker
 
 
         /// <summary>
-        /// Creates a connection gene with the given connections and weight. Adds the pattern to the tracker if it doesn't exist.
+        /// Creates a connection gene with the given connections, weight, and enabled. Adds the pattern to the tracker if it doesn't exist.
         /// </summary>
         /// <param name="from">The from node gene of the connection gene.</param>
         /// <param name="to">The to node gene of the connection gene.</param>
         /// <param name="weight">The weight of the connection gene.</param>
+        /// <param name="enabled">Whether or not the connection is enabled.</param>
         /// <returns>The created connection gene.</returns>
-        public ConnectionGene Create_ConnectionGene(NodeGene from, NodeGene to, double weight)
+        public ConnectionGene Create_ConnectionGene(NodeGene from, NodeGene to, double weight, bool enabled)
         {
             int innovation_number = ConnectionGenePattern.GetHashCode(from.NodeGenePattern, to.NodeGenePattern);
 
             if (connectionGenePatterns.ContainsKey(innovation_number))
             {
-                return new ConnectionGene(connectionGenePatterns[innovation_number], weight);
+                return new ConnectionGene(connectionGenePatterns[innovation_number], weight, enabled);
             }
 
 
@@ -128,9 +154,33 @@ namespace NEAT.Genetic.Tracker
 
             connectionGenePatterns.Add(innovation_number, created_connectionGenePattern);
 
-            return new ConnectionGene(created_connectionGenePattern, weight);
+            return new ConnectionGene(created_connectionGenePattern, weight, enabled);
         }
 
-        #endregion ConnectionGene
+
+        /// <summary>
+        /// Creates a connection gene with the given pattern, weight, and enabled.
+        /// </summary>
+        /// <param name="connectionGenePattern">The connection gene pattern of the connection gene.</param>
+        /// <param name="weight">The weight of the connection gene.</param>
+        /// <param name="enabled">Whether or not the connection is enabled.</param>
+        /// <returns>The created connection gene.</returns>
+        public ConnectionGene Create_ConnectionGene(ConnectionGenePattern connectionGenePattern, double weight, bool enabled)
+        {
+            return new ConnectionGene(connectionGenePattern, weight, enabled);
+        }
+
+
+        /// <summary>
+        /// Copies the given connection gene.
+        /// </summary>
+        /// <param name="connectionGene">The connection gene to copy.</param>
+        /// <returns>The copy of the connection gene.</returns>
+        public ConnectionGene Copy_ConnectionGene(ConnectionGene connectionGene)
+        {
+            return new ConnectionGene(connectionGene.ConnectionGenePattern, connectionGene.Weight, connectionGene.Enabled);
+        }
+
+        #endregion ConnectionGenePattern
     }
 }
