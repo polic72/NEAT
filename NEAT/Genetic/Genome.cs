@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using NEAT.Genetic.Tracker;
+
 namespace NEAT.Genetic
 {
     /// <summary>
@@ -169,7 +171,7 @@ namespace NEAT.Genetic
         /// <summary>
         /// The gene tracker associated with this genome. All genes in this genome are in this gene tracker.
         /// </summary>
-        public GeneTracker GeneTracker { get; }
+        public GenePatternTracker GenePatternTracker { get; }
 
         /// <summary>
         /// The internal random of the genome.
@@ -191,13 +193,13 @@ namespace NEAT.Genetic
 
 
         /// <summary>
-        /// Constructs a genome with the given random.
+        /// Constructs a genome with the given gene pattern tracker and random.
         /// </summary>
-        /// <param name="geneTracker">The gene tracker for the genome.</param>
+        /// <param name="genePatternTracker">The gene pattern tracker for the genome.</param>
         /// <param name="random">The internal random for the genome.</param>
-        public Genome(GeneTracker geneTracker, Random random)
+        public Genome(GenePatternTracker genePatternTracker, Random random)
         {
-            GeneTracker = geneTracker;
+            GenePatternTracker = genePatternTracker;
             Random = random;
 
             ConnectionGenes = new SortedDictionary<int, ConnectionGene>();
@@ -335,7 +337,7 @@ namespace NEAT.Genetic
         /// </remarks>
         public Genome Crossover(double my_score, Genome genome, double their_score, Random random)
         {
-            Genome created_genome = new Genome(GeneTracker, random);
+            Genome created_genome = new Genome(GenePatternTracker, random);
 
 
             #region ConnectionGenes
@@ -481,7 +483,7 @@ namespace NEAT.Genetic
             NodeGene nodeGene_b = temp_subset.ElementAt(Random.Next(temp_subset.Count()));  //Get a random gene with a higher X value.
 
 
-            ConnectionGene connectionGene = GeneTracker.GetCreate_ConnectionGene(nodeGene_a, nodeGene_b, Mutation_WeightRandom * (Random.NextDouble() * 2 - 1));
+            ConnectionGene connectionGene = GenePatternTracker.Create_ConnectionGene(nodeGene_a, nodeGene_b, Mutation_WeightRandom * (Random.NextDouble() * 2 - 1));
 
             if (ConnectionGenes.ContainsKey(connectionGene.InnovationNumber))   //Can only happen if it already existed in the tracker.
             {

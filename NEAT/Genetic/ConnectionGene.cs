@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using NEAT.Neural_Network;
+using NEAT.Genetic.Tracker;
 
 namespace NEAT.Genetic
 {
@@ -12,25 +13,14 @@ namespace NEAT.Genetic
     /// A gene specifying a synapse in the NN. This gene will be used construct a 
     /// <see cref="NEAT.Neural_Network.Connection"/>.
     /// </summary>
-    public class ConnectionGene : Gene
+    public class ConnectionGene
     {
         #region Properties
 
         /// <summary>
-        /// The left-hand node of this connection.
+        /// The connection gene pattern assosciated with this connection gene.
         /// </summary>
-        public NodeGene From { get; }
-
-        /// <summary>
-        /// The right-hand node of this connection.
-        /// </summary>
-        public NodeGene To { get; }
-
-        /// <summary>
-        /// The innovation number of the node that replaces this connection on <see cref="NEAT.Genetic.Genome.Mutate_Node"/>.
-        /// </summary>
-        public int ReplacingNumber { get; }
-
+        public ConnectionGenePattern ConnectionGenePattern { get; }
 
         /// <summary>
         /// The weight of this connection.
@@ -48,38 +38,25 @@ namespace NEAT.Genetic
         #region Constructors
 
         /// <summary>
-        /// Constructs a connection gene with the given innovation number, weight, and enabled.
+        /// Constructs a connection gene with the given weight and enabled.
         /// </summary>
-        /// <param name="from">The NodeGene to connect from.</param>
-        /// <param name="to">The NodeGene to connect to.</param>
-        /// <param name="innovation_number">The innovation number.</param>
+        /// <param name="connectionGenePattern">The connection gene pattern that this connection gene implements.</param>
         /// <param name="weight">The weight of the connection.</param>
         /// <param name="enabled">Whether or not this connection is enabled.</param>
-        /// <param name="replacing_number">The innovation number of the node that replaces this connection.</param>
-        public ConnectionGene(NodeGene from, NodeGene to, int innovation_number, double weight, bool enabled, int replacing_number) :
-            base(innovation_number)
+        public ConnectionGene(ConnectionGenePattern connectionGenePattern, double weight, bool enabled)
         {
-            From = from;
-            To = to;
-
             Weight = weight;
             Enabled = enabled;
-
-            ReplacingNumber = replacing_number;
         }
 
 
         /// <summary>
-        /// Constructs a connection gene with the default innovation number (output of 
-        /// <see cref="NEAT.Genetic.ConnectionGene.GetHashCode()"/>) and enabled (true), and the given 
-        /// weight.
+        /// Constructs a connection gene with and enabled (true), and the given weight.
         /// </summary>
-        /// <param name="from">The NodeGene to connect from.</param>
-        /// <param name="to">The NodeGene to connect to.</param>
+        /// <param name="connectionGenePattern">The connection gene pattern that this connection gene implements.</param>
         /// <param name="weight">The weight of the connection.</param>
-        /// <param name="replacing_number">The innovation number of the node that replaces this connection.</param>
-        public ConnectionGene(NodeGene from, NodeGene to, double weight, int replacing_number)
-            : this(from, to, GetHashCode(from, to), weight, true, replacing_number)
+        public ConnectionGene(ConnectionGenePattern connectionGenePattern, double weight)
+            : this(connectionGenePattern, weight, true)
         {
 
         }
@@ -88,15 +65,15 @@ namespace NEAT.Genetic
 
 
         /// <summary>
-        /// Whether or not this ConnectionGene is equal to the given object.
+        /// Whether or not this connection gene is equal to the given object.
         /// </summary>
         /// <param name="obj">The object to test.</param>
-        /// <returns>True if obj is a ConnectionGene object and From/To match up. False otherwise.</returns>
+        /// <returns>True if obj is a ConnectionGene object and ConnectionGenePatterns match up. False otherwise.</returns>
         public override bool Equals(object obj)
         {
             if (obj is ConnectionGene connectionGene)
             {
-                if (From == connectionGene.From && To == connectionGene.To)
+                if (ConnectionGenePattern == connectionGene.ConnectionGenePattern)
                 {
                     return true;
                 }
@@ -107,33 +84,21 @@ namespace NEAT.Genetic
 
 
         /// <summary>
-        /// Gets the hash code of this ConnectionGene. Based off the innovation numbers of the From/To NodeGenes.
+        /// Gets the hash code of this connection gene. Is the ConnectionGenePattern hash code as well.
         /// </summary>
         /// <returns>The hash code.</returns>
         public override int GetHashCode()
         {
-            return From.InnovationNumber * Genome.MaxNodes + To.InnovationNumber;
+            return ConnectionGenePattern.GetHashCode();
         }
 
 
         /// <summary>
-        /// Gets the hash code of a potential ConnectionGene. Based off the innovation numbers of the given NodeGenes.
+        /// Whether or not the left connection gene is equal to the right one.
         /// </summary>
-        /// <param name="from">The from node of the potential ConnectionGene.</param>
-        /// <param name="to">The to node of the potential ConnectionGene.</param>
-        /// <returns>The hash code.</returns>
-        public static int GetHashCode(NodeGene from, NodeGene to)
-        {
-            return from.InnovationNumber * Genome.MaxNodes + to.InnovationNumber;
-        }
-
-
-        /// <summary>
-        /// Whether or not the left ConnectionGene is equal to the right one.
-        /// </summary>
-        /// <param name="left">The left ConnectionGene to test.</param>
-        /// <param name="right">The right ConnectionGene to test.</param>
-        /// <returns>True if both ConnectionGene have the same From/To NodeGenes. False otherwise.</returns>
+        /// <param name="left">The left connection gene to test.</param>
+        /// <param name="right">The right connection gene to test.</param>
+        /// <returns>True if both connection genes have the same ConnectionGenePatterns. False otherwise.</returns>
         public static bool operator ==(ConnectionGene left, ConnectionGene right)
         {
             if (left is null)
@@ -153,11 +118,11 @@ namespace NEAT.Genetic
 
 
         /// <summary>
-        /// Whether or not the left ConnectionGene is not equal to the right one.
+        /// Whether or not the left connection gene is not equal to the right one.
         /// </summary>
-        /// <param name="left">The left ConnectionGene to test.</param>
-        /// <param name="right">The right ConnectionGene to test.</param>
-        /// <returns>False if both ConnectionGene have the same From/To NodeGenes. True otherwise.</returns>
+        /// <param name="left">The left connection gene to test.</param>
+        /// <param name="right">The right connection gene to test.</param>
+        /// <returns>False if both connection genes have the same ConnectionGenePatterns. True otherwise.</returns>
         public static bool operator !=(ConnectionGene left, ConnectionGene right)
         {
             if (left is null)

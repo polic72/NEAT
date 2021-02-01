@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using NEAT.Neural_Network;
+using NEAT.Genetic.Tracker;
 
 namespace NEAT.Genetic
 {
@@ -12,12 +13,12 @@ namespace NEAT.Genetic
     /// A gene specifying a nueron in the NN. This gene will be used construct a 
     /// <see cref="NEAT.Neural_Network.Node"/>.
     /// </summary>
-    public class NodeGene : Gene
+    public class NodeGene
     {
         /// <summary>
-        /// The X position of the node.
+        /// The node gene pattern assosciated with this node gene.
         /// </summary>
-        public double X { get; }
+        public NodeGenePattern NodeGenePattern { get; }
 
 
         /// <summary>
@@ -29,71 +30,41 @@ namespace NEAT.Genetic
         #region Constructors
 
         /// <summary>
-        /// Constructs a node gene with the given innovation number, X position, and activation function.
+        /// Constructs a node gene with the given node gene pattern and activation function.
         /// </summary>
-        /// <param name="innovation_number">The innovation number.</param>
-        /// <param name="x">The X position of the node.</param>
+        /// <param name="nodeGenePattern">The node gene pattern that this node gene implements.</param>
         /// <param name="activationFunction">The activation function of the node.</param>
-        public NodeGene(int innovation_number, double x, Node.ActivationFunction activationFunction) :
-            base(innovation_number)
+        public NodeGene(NodeGenePattern nodeGenePattern, Node.ActivationFunction activationFunction)
         {
-            X = x;
+            NodeGenePattern = nodeGenePattern;
+
             ActivationFunction = activationFunction;
         }
 
 
         /// <summary>
-        /// Constructs a node gene with the default innovation number (0) and given X position and activation function.
+        /// Constructs a node gene with the given node gene pattern and default activation function (<see cref="NEAT.Neural_Network.Node.Sigmoid(double)"/>).
         /// </summary>
-        /// <param name="x">The X position of the node.</param>
-        /// <param name="activationFunction">The activation function of the node.</param>
-        public NodeGene(double x, Node.ActivationFunction activationFunction)
-            : base()
+        /// <param name="nodeGenePattern">The node gene pattern that this node gene implements.</param>
+        public NodeGene(NodeGenePattern nodeGenePattern)
+            : this(nodeGenePattern, Node.Sigmoid)
         {
-            X = x;
-            ActivationFunction = activationFunction;
-        }
 
-
-        /// <summary>
-        /// Constructs a node gene with the given innovation number and default X position 
-        /// (<see cref="NEAT.Neural_Network.Node.INPUT_X"/>) and activation function 
-        /// (<see cref="NEAT.Neural_Network.Node.Sigmoid(double)"/>).
-        /// </summary>
-        /// <param name="innovation_number">The innovation number.</param>
-        public NodeGene(int innovation_number)
-            : base(innovation_number)
-        {
-            X = Node.INPUT_X;
-            ActivationFunction = Node.Sigmoid;
-        }
-
-
-        /// <summary>
-        /// Constructs a node gene with the default innovation number (0), 
-        /// X position (<see cref="NEAT.Neural_Network.Node.INPUT_X"/>), 
-        /// and activation function (<see cref="NEAT.Neural_Network.Node.Sigmoid(double)"/>).
-        /// </summary>
-        public NodeGene()
-            : base()
-        {
-            X = Node.INPUT_X;
-            ActivationFunction = Node.Sigmoid;
         }
 
         #endregion Constructors
 
 
         /// <summary>
-        /// Whether or not this NodeGene is equal to the given object.
+        /// Whether or not this node gene is equal to the given object.
         /// </summary>
         /// <param name="obj">The object to test.</param>
-        /// <returns>True if obj is a NodeGene object and has the same innovation number. False otherwise.</returns>
+        /// <returns>True if obj is a NodeGene object and has the same node gene pattern. False otherwise.</returns>
         public override bool Equals(object obj)
         {
             if (obj is NodeGene nodeGene)
             {
-                return InnovationNumber == nodeGene.InnovationNumber;
+                return NodeGenePattern == nodeGene.NodeGenePattern;
             }
 
             return false;
@@ -101,21 +72,21 @@ namespace NEAT.Genetic
 
 
         /// <summary>
-        /// Gets the hash code of this NodeGene. This is equivalent to the innovation number.
+        /// Gets the hash code of this node gene. Is the ConnectionGenePattern hash code as well.
         /// </summary>
         /// <returns>The hash code.</returns>
         public override int GetHashCode()
         {
-            return InnovationNumber;
+            return NodeGenePattern.GetHashCode();
         }
 
 
         /// <summary>
-        /// Whether or not the left NodeGene is equal to the right one.
+        /// Whether or not the left node gene is equal to the right one.
         /// </summary>
-        /// <param name="left">The left NodeGene to test.</param>
-        /// <param name="right">The right NodeGene to test.</param>
-        /// <returns>True if both NodeGenes have the same innovation number. False otherwise.</returns>
+        /// <param name="left">The left node gene to test.</param>
+        /// <param name="right">The right node gene to test.</param>
+        /// <returns>True if both node genes have the node gene pattern. False otherwise.</returns>
         public static bool operator ==(NodeGene left, NodeGene right)
         {
             if (left is null)
@@ -135,11 +106,11 @@ namespace NEAT.Genetic
 
 
         /// <summary>
-        /// Whether or not the left NodeGene is not equal to the right one.
+        /// Whether or not the left node gene is not equal to the right one.
         /// </summary>
-        /// <param name="left">The left NodeGene to test.</param>
-        /// <param name="right">The right NodeGene to test.</param>
-        /// <returns>False if both NodeGenes have the same innovation number. True otherwise.</returns>
+        /// <param name="left">The left node gene to test.</param>
+        /// <param name="right">The right node gene to test.</param>
+        /// <returns>False if both node genes have the same node gene pattern. True otherwise.</returns>
         public static bool operator !=(NodeGene left, NodeGene right)
         {
             if (left is null)
