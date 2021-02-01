@@ -24,7 +24,7 @@ namespace NEAT.Genetic
         /// same innovation number.
         /// TODO change if Y does anything.
         /// </remarks>
-        public int InnovationNumber { get; set; }
+        public int InnovationNumber { get; }
 
 
         /// <summary>

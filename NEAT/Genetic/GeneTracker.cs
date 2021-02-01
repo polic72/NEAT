@@ -7,23 +7,27 @@ using System.Threading.Tasks;
 namespace NEAT.Genetic
 {
     /// <summary>
-    /// A static class that is used to track genes globally.
+    /// A class that is used to track genes globally. Used for optimization.
     /// </summary>
-    public static class GeneTracker
+    public class GeneTracker
     {
-        private static readonly Dictionary<int, NodeGene> nodeGenes;
-        private static readonly Dictionary<int, ConnectionGene> connectionGenes;
+        private readonly Dictionary<int, NodeGene> nodeGenes;
+        private readonly Dictionary<int, ConnectionGene> connectionGenes;
 
 
-        public static int HighestInnovationNumber_NodeGene { get; private set; }
+        private static int max_replacingNumber;
 
 
-        static GeneTracker()
+        /// <summary>
+        /// Constructs a GeneTracker with the given initial max replacing number.
+        /// </summary>
+        /// <param name="initial_max_replacingNumber">Should be #input_nodes + #output_nodes + 1.</param>
+        public GeneTracker(int initial_max_replacingNumber)
         {
             nodeGenes = new Dictionary<int, NodeGene>();
             connectionGenes = new Dictionary<int, ConnectionGene>();
 
-            HighestInnovationNumber_NodeGene = 0;
+            max_replacingNumber = initial_max_replacingNumber;
         }
 
 
@@ -34,7 +38,7 @@ namespace NEAT.Genetic
         /// </summary>
         /// <param name="nodeGene">The node gene to add.</param>
         /// <returns>True if added. False if already contained.</returns>
-        public static bool AddNodeGene(NodeGene nodeGene)
+        public bool AddNodeGene(NodeGene nodeGene)
         {
             if (nodeGenes.ContainsKey(nodeGene.InnovationNumber))
             {
@@ -43,11 +47,6 @@ namespace NEAT.Genetic
 
 
             nodeGenes.Add(nodeGene.InnovationNumber, nodeGene);
-
-            if (HighestInnovationNumber_NodeGene < nodeGene.InnovationNumber)
-            {
-                HighestInnovationNumber_NodeGene = nodeGene.InnovationNumber;
-            }
 
             return true;
         }
@@ -58,7 +57,7 @@ namespace NEAT.Genetic
         /// </summary>
         /// <param name="innovation_number">The innovation number of the node to get.</param>
         /// <returns>The node gene with the given innovation number. Null if it was never added.</returns>
-        public static NodeGene GetNodeGene(int innovation_number)
+        public NodeGene GetNodeGene(int innovation_number)
         {
             if (nodeGenes.ContainsKey(innovation_number))
             {
@@ -78,7 +77,7 @@ namespace NEAT.Genetic
         /// </summary>
         /// <param name="connectionGene">The connection gene to add.</param>
         /// <returns>True if added. False if already contained.</returns>
-        public static bool AddConnectionGene(ConnectionGene connectionGene)
+        public bool AddConnectionGene(ConnectionGene connectionGene)
         {
             if (connectionGenes.ContainsKey(connectionGene.InnovationNumber))
             {
@@ -97,7 +96,7 @@ namespace NEAT.Genetic
         /// </summary>
         /// <param name="innovation_number">The innovation number of the connection to get.</param>
         /// <returns>The connection gene with the given innovation number. Null if it was never added.</returns>
-        public static ConnectionGene GetConnectionGene(int innovation_number)
+        public ConnectionGene GetConnectionGene(int innovation_number)
         {
             if (connectionGenes.ContainsKey(innovation_number))
             {
@@ -115,7 +114,7 @@ namespace NEAT.Genetic
         /// <param name="to">The to node gene of the connection gene.</param>
         /// <param name="weight">The weight of the connection gene. Only used if created.</param>
         /// <returns>The retrieved or created connection gene.</returns>
-        public static ConnectionGene GetCreate_ConnectionGene(NodeGene from, NodeGene to, double weight)
+        public ConnectionGene GetCreate_ConnectionGene(NodeGene from, NodeGene to, double weight)
         {
             int innovation_number = ConnectionGene.GetHashCode(from, to);
 
@@ -125,7 +124,7 @@ namespace NEAT.Genetic
             }
 
 
-            ConnectionGene created_connectionGene = new ConnectionGene(from, to, weight);
+            ConnectionGene created_connectionGene = new ConnectionGene(from, to, weight, max_replacingNumber++);
 
             connectionGenes.Add(innovation_number, created_connectionGene);
 

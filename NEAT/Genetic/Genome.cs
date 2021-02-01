@@ -25,7 +25,7 @@ namespace NEAT.Genetic
         /// <summary>
         /// The maximum number of nodes that any neural network can have.
         /// <para/>
-        /// Set in the <see cref="NEAT.Genetic.Genome.Init(int, double, double, double, bool, double, double)"/> method.
+        /// Set in the <see cref="NEAT.Genetic.Genome.Init(int, double, double, double, bool, double, double, double)"/> method.
         /// </summary>
         public static int MaxNodes { get; private set; }
 
@@ -167,6 +167,11 @@ namespace NEAT.Genetic
         #region Properties
 
         /// <summary>
+        /// The gene tracker associated with this genome. All genes in this genome are in this gene tracker.
+        /// </summary>
+        public GeneTracker GeneTracker { get; }
+
+        /// <summary>
         /// The internal random of the genome.
         /// </summary>
         public Random Random { get; }
@@ -188,9 +193,11 @@ namespace NEAT.Genetic
         /// <summary>
         /// Constructs a genome with the given random.
         /// </summary>
+        /// <param name="geneTracker">The gene tracker for the genome.</param>
         /// <param name="random">The internal random for the genome.</param>
-        public Genome(Random random)
+        public Genome(GeneTracker geneTracker, Random random)
         {
+            GeneTracker = geneTracker;
             Random = random;
 
             ConnectionGenes = new SortedDictionary<int, ConnectionGene>();
@@ -328,7 +335,7 @@ namespace NEAT.Genetic
         /// </remarks>
         public Genome Crossover(double my_score, Genome genome, double their_score, Random random)
         {
-            Genome created_genome = new Genome(random);
+            Genome created_genome = new Genome(GeneTracker, random);
 
 
             #region ConnectionGenes
@@ -484,6 +491,46 @@ namespace NEAT.Genetic
 
             ConnectionGenes.Add(connectionGene.InnovationNumber, connectionGene);
         }
+
+
+        ///// <summary>
+        ///// Mutates a random connection splitting it with a node.
+        ///// </summary>
+        //public void Mutate_Node()
+        //{
+        //    ConnectionGene connectionGene = ConnectionGenes.RandomValue().Take(1).ElementAt(0);
+
+        //    if (connectionGene == null)
+        //    {
+        //        return;
+        //    }
+
+
+        //    NodeGene from = connectionGene.From;
+        //    NodeGene to = connectionGene.To;
+
+        //    NodeGene created = NEAT.CreateNode();
+
+        //    created.X = (from.X + to.X) / 2;
+        //    created.Y = (from.Y + to.Y) / 2 + random.NextDouble() * 0.1 + .05;
+
+        //    Nodes.Add(created);
+
+
+        //    ConnectionGene created_connectionGene_1 = NEAT.CreateConnection(from, created);
+        //    ConnectionGene created_connectionGene_2 = NEAT.CreateConnection(created, to);
+
+        //    Connections.Remove(connectionGene);
+
+        //    Connections.Add(created_connectionGene_1);
+        //    Connections.Add(created_connectionGene_2);
+
+
+        //    created_connectionGene_1.Weight = 1;                        //Default weight.
+        //    created_connectionGene_2.Weight = connectionGene.Weight;    //Old connection's weight.
+
+        //    created_connectionGene_2.Enabled = connectionGene.Enabled;  //Old enabled state.
+        //}
 
 
         /// <summary>

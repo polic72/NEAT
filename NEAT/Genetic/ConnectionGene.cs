@@ -19,12 +19,17 @@ namespace NEAT.Genetic
         /// <summary>
         /// The left-hand node of this connection.
         /// </summary>
-        public NodeGene From { get; set; }
+        public NodeGene From { get; }
 
         /// <summary>
         /// The right-hand node of this connection.
         /// </summary>
-        public NodeGene To { get; set; }
+        public NodeGene To { get; }
+
+        /// <summary>
+        /// The innovation number of the node that replaces this connection on <see cref="NEAT.Genetic.Genome.Mutate_Node"/>.
+        /// </summary>
+        public int ReplacingNumber { get; }
 
 
         /// <summary>
@@ -50,7 +55,8 @@ namespace NEAT.Genetic
         /// <param name="innovation_number">The innovation number.</param>
         /// <param name="weight">The weight of the connection.</param>
         /// <param name="enabled">Whether or not this connection is enabled.</param>
-        public ConnectionGene(NodeGene from, NodeGene to, int innovation_number, double weight, bool enabled) :
+        /// <param name="replacing_number">The innovation number of the node that replaces this connection.</param>
+        public ConnectionGene(NodeGene from, NodeGene to, int innovation_number, double weight, bool enabled, int replacing_number) :
             base(innovation_number)
         {
             From = from;
@@ -58,6 +64,8 @@ namespace NEAT.Genetic
 
             Weight = weight;
             Enabled = enabled;
+
+            ReplacingNumber = replacing_number;
         }
 
 
@@ -69,10 +77,11 @@ namespace NEAT.Genetic
         /// <param name="from">The NodeGene to connect from.</param>
         /// <param name="to">The NodeGene to connect to.</param>
         /// <param name="weight">The weight of the connection.</param>
-        public ConnectionGene(NodeGene from, NodeGene to, double weight)
-            : this(from, to, 0, weight, true)
+        /// <param name="replacing_number">The innovation number of the node that replaces this connection.</param>
+        public ConnectionGene(NodeGene from, NodeGene to, double weight, int replacing_number)
+            : this(from, to, GetHashCode(from, to), weight, true, replacing_number)
         {
-            InnovationNumber = GetHashCode();
+
         }
 
         #endregion Constructors
