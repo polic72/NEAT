@@ -13,40 +13,21 @@ namespace NEAT
     {
         public static void Main(string[] args)
         {
-            Node input = new Node(Node.INPUT_X, RELU);
-            input.SetOutput(2);
+            SortedDictionary<int, string> sd = new SortedDictionary<int, string>();
 
-
-            Node hidden_1 = new Node(.2, RELU);
-
-            Node hidden_2 = new Node(.4, RELU);
-
-
-            Node output = new Node(Node.OUTPUT_X, RELU);
-
-
-            Connection connection_1 = new Connection(input, hidden_1)
+            for (int i = 0; i < 10; ++i)
             {
-                Weight = 2
-            };
-            Connection connection_2 = new Connection(hidden_1, hidden_2)
-            {
-                Weight = 1
-            };
-            Connection connection_3 = new Connection(hidden_2, output)
-            {
-                Weight = 1
-            };
+                sd.Add(i, i.ToString());
+            }
 
 
-            Console.WriteLine(output.Output);
+            IEnumerable<string> efewg = RandomValue(sd).Take(5);
 
-            input.SetOutput(3);
-            hidden_1.ResetOutput();
-            hidden_2.ResetOutput();
-            output.ResetOutput();
+            sd.Add(30, "30");
 
-            Console.WriteLine(output.Output);
+            IEnumerable<string> ewe = RandomValue(sd).Take(5);
+
+            Console.WriteLine(RandomValue(sd));
 
             Console.ReadKey();
         }
@@ -55,6 +36,18 @@ namespace NEAT
         private static double RELU(double x)
         {
             return x;
+        }
+
+
+        private static IEnumerable<TValue> RandomValue<TKey, TValue>(IDictionary<TKey, TValue> dictionary)
+        {
+            Random rand = new Random();
+            List<TValue> values = Enumerable.ToList(dictionary.Values);
+            int size = dictionary.Count;
+            while (true)
+            {
+                yield return values[rand.Next(size)];
+            }
         }
     }
 }

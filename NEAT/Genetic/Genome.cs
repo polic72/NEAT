@@ -66,11 +66,17 @@ namespace NEAT.Genetic
 
         /// <summary>
         /// The value to be the min/max [-value, value) for the 
-        /// TODO fix this text
-        /// <see cref="NEAT_Tests.Gene_.Genome.Mutate_WeightRandom"/> and 
+        /// <see cref="NEAT.Genetic.Genome.Mutate_WeightRandom"/> and 
         /// <see cref="NEAT.Genetic.Genome.Mutate_Link"/>.
         /// </summary>
-        public static double Mutate_WeightRandom { get; private set; }
+        public static double Mutation_WeightRandom { get; private set; }
+
+
+        /// <summary>
+        /// The strength to adjust the weight during 
+        /// <see cref="NEAT.Genetic.Genome.Mutate_WeightShift"/>.
+        /// </summary>
+        public static double Mutation_WeightShift { get; private set; }
 
         #endregion Mutation Constants
 
@@ -96,8 +102,9 @@ namespace NEAT.Genetic
         /// <param name="crossover_scoreDelta">The delta for genome scores can fall between to be considered equal. 
         /// Used in corssover.</param>
         /// <param name="mutate_weightRandom">The value to be the min/max [-value, value) for random weight mutations.</param>
+        /// <param name="mutate_weightShift">The strength to adjust the weight for weight shift mutations.</param>
         public static void Init(int max_nodes, double c1, double c2, double c3, bool uniform_crossover, double crossover_scoreDelta,
-            double mutate_weightRandom)
+            double mutate_weightRandom, double mutate_weightShift)
         {
             if (initialized)
             {
@@ -115,7 +122,10 @@ namespace NEAT.Genetic
 
             Crossover_ScoreDelta = crossover_scoreDelta;
 
-            Mutate_WeightRandom = mutate_weightRandom;
+
+            Mutation_WeightRandom = mutate_weightRandom;
+
+            Mutation_WeightShift = mutate_weightShift;
 
 
             initialized = true;
@@ -129,13 +139,14 @@ namespace NEAT.Genetic
         /// <item>C1: 1  <term/>  C2: 1  <term/>  C3: 0.4</item>
         /// <item>Uniform_Crossover: true</item>
         /// <item>Crossover_ScoreDelta: 0.001</item>
-        /// <item>Mutate_WeightRandom: 1</item>
+        /// <item>Mutation_WeightRandom: 1</item>
+        /// <item>Mutation_WeightShift: 0.3</item>
         /// </list>
         /// TODO update as needed
         /// </summary>
         public static void Init()
         {
-            Init((int)Math.Pow(2, 20), 1, 1, .4, true, 0.001, 1);
+            Init((int)Math.Pow(2, 20), 1, 1, .4, true, .001, 1, .3);
         }
 
 
@@ -455,7 +466,7 @@ namespace NEAT.Genetic
         public void Mutate_Link()
         {
             //Get first node to connect. It is random.
-            NodeGene nodeGene_a = NodeGenes[Random.Next(NodeGenes.Count) + 1];  //Innovation numbers start at 1.
+            NodeGene nodeGene_a = NodeGenes.RandomValue().Take(1).ElementAt(0); //NodeGenes[Random.Next(NodeGenes.Count) + 1];  //Innovation numbers start at 1.
 
 
             IEnumerable<NodeGene> temp_subset = NodeGenes.Values.Where(a => a.X > nodeGene_a.X);
@@ -463,7 +474,7 @@ namespace NEAT.Genetic
             NodeGene nodeGene_b = temp_subset.ElementAt(Random.Next(temp_subset.Count()));  //Get a random gene with a higher X value.
 
 
-            ConnectionGene connectionGene = GeneTracker.GetCreate_ConnectionGene(nodeGene_a, nodeGene_b, Mutate_WeightRandom * (Random.NextDouble() * 2 - 1));
+            ConnectionGene connectionGene = GeneTracker.GetCreate_ConnectionGene(nodeGene_a, nodeGene_b, Mutation_WeightRandom * (Random.NextDouble() * 2 - 1));
 
             if (ConnectionGenes.ContainsKey(connectionGene.InnovationNumber))   //Can only happen if it already existed in the tracker.
             {
@@ -472,6 +483,48 @@ namespace NEAT.Genetic
 
 
             ConnectionGenes.Add(connectionGene.InnovationNumber, connectionGene);
+        }
+
+
+        /// <summary>
+        /// Mutates a random connection by shifting its weight up or down by a radom value.
+        /// </summary>
+        public void Mutate_WeightShift()
+        {
+            ConnectionGene connectionGene = ConnectionGenes.RandomValue().Take(1).ElementAt(0); //ConnectionGenes[Random.Next(ConnectionGenes.Count) + 1];
+
+            if (connectionGene != null)
+            {
+                connectionGene.Weight = connectionGene.Weight + Mutation_WeightShift * (Random.NextDouble() * 2 - 1);
+            }
+        }
+
+
+        /// <summary>
+        /// Mutates a random connection by radomizing its weight.
+        /// </summary>
+        public void Mutate_WeightRandom()
+        {
+            ConnectionGene connectionGene = ConnectionGenes.RandomValue().Take(1).ElementAt(0); //ConnectionGenes[Random.Next(ConnectionGenes.Count) + 1];
+
+            if (connectionGene != null)
+            {
+                connectionGene.Weight = Mutation_WeightRandom * (Random.NextDouble() * 2 - 1);
+            }
+        }
+
+
+        /// <summary>
+        /// Mutates a random connection by inverting its current Enabled status.
+        /// </summary>
+        public void Mutate_LinkToggle()
+        {
+            ConnectionGene connectionGene = ConnectionGenes.RandomValue().Take(1).ElementAt(0); //ConnectionGenes[Random.Next(ConnectionGenes.Count) + 1];
+
+            if (connectionGene != null)
+            {
+                connectionGene.Enabled = !connectionGene.Enabled;
+            }
         }
 
         #endregion Mutate
