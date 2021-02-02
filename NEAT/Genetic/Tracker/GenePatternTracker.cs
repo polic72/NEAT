@@ -13,6 +13,65 @@ namespace NEAT.Genetic.Tracker
     /// </summary>
     public class GenePatternTracker
     {
+        #region Local Constants
+
+        /// <summary>
+        /// The maximum number of nodes that any neural network can have.
+        /// <para/>
+        /// </summary>
+        public int MaxNodes { get; }
+
+
+        /// <summary>
+        /// The C1 constant used in <see cref="NEAT.Genetic.Genome.Distance(Genome)"/> calculation.
+        /// </summary>
+        public double C1 { get; }
+
+        /// <summary>
+        /// The C2 constant used in <see cref="NEAT.Genetic.Genome.Distance(Genome)"/> calculation.
+        /// </summary>
+        public double C2 { get; }
+
+        /// <summary>
+        /// The C3 constant used in <see cref="NEAT.Genetic.Genome.Distance(Genome)"/> calculation.
+        /// </summary>
+        public double C3 { get; }
+
+
+        /// <summary>
+        /// Whether or not to use uniform crossover. If false, use blended crossover. See remarks for more details.
+        /// </summary>
+        /// <remarks>
+        /// In uniform crossover, matching genes are randomly chosen for the offspring genome.
+        /// <para/>
+        /// In blended crossover, the connection weights of matching genes are averaged.
+        /// </remarks>
+        public bool Uniform_Crossover { get; }
+
+        /// <summary>
+        /// The delta for genome scores can fall between to be considered equal. Used in corssover.
+        /// </summary>
+        public double Crossover_ScoreDelta { get; }
+
+
+        #region Mutation Constants
+
+        /// <summary>
+        /// The value to be the min/max [-value, value) for the <see cref="NEAT.Genetic.Genome.Mutate_WeightRandom"/> and <see cref="NEAT.Genetic.Genome.Mutate_Link"/>.
+        /// </summary>
+        public static double Mutation_WeightRandom { get; private set; }
+
+
+        /// <summary>
+        /// The strength to adjust the weight during <see cref="NEAT.Genetic.Genome.Mutate_WeightShift"/>.
+        /// </summary>
+        public static double Mutation_WeightShift { get; private set; }
+
+        #endregion Mutation Constants
+
+        #endregion Local Constants
+
+
         private readonly Dictionary<int, NodeGenePattern> nodeGenePatterns;
         private readonly Dictionary<int, ConnectionGenePattern> connectionGenePatterns;
 
@@ -24,12 +83,25 @@ namespace NEAT.Genetic.Tracker
         private Random AF_random;
 
 
+        #region Constructors
+
         /// <summary>
-        /// Constructs a gene pattern tracker with the given initial max replacing number. Adds Sigmoid and ReLU to known activation functions.
+        /// Constructs a gene pattern tracker with the given initial max replacing number and every local constant. Adds Sigmoid and ReLU to known activation functions.
         /// </summary>
         /// <param name="initial_replacingNumber">Should be #input_nodes + #output_nodes + 1.</param>
-        public GenePatternTracker(int initial_replacingNumber)
+        /// <param name="max_nodes">The maximum number of nodes a neural network can have.</param>
+        /// <param name="c1">The c1 constant to set. See <see cref="NEAT.Genetic.Genome.Distance(Genome)"/> for more information.</param>
+        /// <param name="c2">The c2 constant to set. See <see cref="NEAT.Genetic.Genome.Distance(Genome)"/> for more information.</param>
+        /// <param name="c3">The c3 constant to set. See <see cref="NEAT.Genetic.Genome.Distance(Genome)"/> for more information.</param>
+        /// <param name="uniform_crossover">Whether or not to use uniform crossover. <see cref="NEAT.Genetic.Tracker.GenePatternTracker.Uniform_Crossover"/> for more information.</param>
+        /// <param name="crossover_scoreDelta">The delta for genome scores can fall between to be considered equal. Used in corssover.</param>
+        /// <param name="mutate_weightRandom">The value to be the min/max [-value, value) for random weight mutations.</param>
+        /// <param name="mutate_weightShift">The strength to adjust the weight for weight shift mutations.</param>
+        public GenePatternTracker(int initial_replacingNumber, int max_nodes, double c1, double c2, double c3, bool uniform_crossover, double crossover_scoreDelta,
+            double mutate_weightRandom, double mutate_weightShift)
         {
+            #region Internals
+
             nodeGenePatterns = new Dictionary<int, NodeGenePattern>();
             connectionGenePatterns = new Dictionary<int, ConnectionGenePattern>();
 
@@ -41,7 +113,54 @@ namespace NEAT.Genetic.Tracker
 
             known_activationFunctions.Add(Node.Sigmoid);
             known_activationFunctions.Add(Node.ReLU);
+
+            #endregion Internals
+
+
+            #region Local Constants
+
+            MaxNodes = max_nodes;
+
+            C1 = c1;
+            C2 = c2;
+            C3 = c3;
+
+            Uniform_Crossover = uniform_crossover;
+
+            Crossover_ScoreDelta = crossover_scoreDelta;
+
+
+            Mutation_WeightRandom = mutate_weightRandom;
+
+            Mutation_WeightShift = mutate_weightShift;
+
+            #endregion Local Constants
         }
+
+
+        /// <summary>
+        /// Constructs a gene pattern tracker with the given initial max replacing number. Adds Sigmoid and ReLU to known activation functions.
+        /// </summary>
+        /// <param name="initial_replacingNumber">Should be #input_nodes + #output_nodes + 1.</param>
+        /// <remarks>
+        /// The local constants are their default values of:
+        /// <list type="bullet">
+        /// <item>MaxNodes: 2^20</item>
+        /// <item>C1: 1  <term/>  C2: 1  <term/>  C3: 0.4</item>
+        /// <item>Uniform_Crossover: true</item>
+        /// <item>Crossover_ScoreDelta: 0.001</item>
+        /// <item>Mutation_WeightRandom: 1</item>
+        /// <item>Mutation_WeightShift: 0.3</item>
+        /// </list>
+        /// TODO update as needed
+        /// </remarks>
+        public GenePatternTracker(int initial_replacingNumber)
+            : this(initial_replacingNumber, (int)Math.Pow(2, 20), 1, 1, .4, true, .001, 1, .3)
+        {
+
+        }
+
+        #endregion Constructors
 
 
         #region Node_ActivationFunctions

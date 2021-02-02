@@ -22,150 +22,6 @@ namespace NEAT.Genetic
     /// </remarks>
     public class Genome //TODO Consider adding bias node to Genome (absolutely do)
     {
-        #region "Constants"
-
-        /// <summary>
-        /// The maximum number of nodes that any neural network can have.
-        /// <para/>
-        /// Set in the <see cref="NEAT.Genetic.Genome.Init(int, double, double, double, bool, double, double, double)"/> method.
-        /// </summary>
-        public static int MaxNodes { get; private set; }
-
-
-        /// <summary>
-        /// The C1 constant used in <see cref="NEAT.Genetic.Genome.Distance(Genome)"/> calculation.
-        /// </summary>
-        public static double C1 { get; private set; }
-
-        /// <summary>
-        /// The C2 constant used in <see cref="NEAT.Genetic.Genome.Distance(Genome)"/> calculation.
-        /// </summary>
-        public static double C2 { get; private set; }
-
-        /// <summary>
-        /// The C3 constant used in <see cref="NEAT.Genetic.Genome.Distance(Genome)"/> calculation.
-        /// </summary>
-        public static double C3 { get; private set; }
-
-
-        /// <summary>
-        /// Whether or not to use uniform crossover. If false, use blended crossover. See remarks for more details.
-        /// </summary>
-        /// <remarks>
-        /// In uniform crossover, matching genes are randomly chosen for the offspring genome.
-        /// <para/>
-        /// In blended crossover, the connection weights of matching genes are averaged.
-        /// </remarks>
-        public static bool Uniform_Crossover { get; private set; }
-
-        /// <summary>
-        /// The delta for genome scores can fall between to be considered equal. Used in corssover.
-        /// </summary>
-        public static double Crossover_ScoreDelta { get; private set; }
-
-
-        #region Mutation Constants
-
-        /// <summary>
-        /// The value to be the min/max [-value, value) for the 
-        /// <see cref="NEAT.Genetic.Genome.Mutate_WeightRandom"/> and 
-        /// <see cref="NEAT.Genetic.Genome.Mutate_Link"/>.
-        /// </summary>
-        public static double Mutation_WeightRandom { get; private set; }
-
-
-        /// <summary>
-        /// The strength to adjust the weight during 
-        /// <see cref="NEAT.Genetic.Genome.Mutate_WeightShift"/>.
-        /// </summary>
-        public static double Mutation_WeightShift { get; private set; }
-
-        #endregion Mutation Constants
-
-
-
-
-        #region Initialization
-
-        private static bool initialized = false;
-
-        /// <summary>
-        /// Initializes the EvolvingNN class with the given constants.
-        /// </summary>
-        /// <param name="max_nodes">The maximum number of nodes a neural network can have.</param>
-        /// <param name="c1">The c1 constant to set. See <see cref="NEAT.Genetic.Genome.Distance(Genome)"/> for more 
-        /// information.</param>
-        /// <param name="c2">The c2 constant to set. See <see cref="NEAT.Genetic.Genome.Distance(Genome)"/> for more 
-        /// information.</param>
-        /// <param name="c3">The c3 constant to set. See <see cref="NEAT.Genetic.Genome.Distance(Genome)"/> for more 
-        /// information.</param>
-        /// <param name="uniform_crossover">Whether or not to use uniform crossover. See 
-        /// <see cref="NEAT.Genetic.Genome.Uniform_Crossover"/> for more information.</param>
-        /// <param name="crossover_scoreDelta">The delta for genome scores can fall between to be considered equal. 
-        /// Used in corssover.</param>
-        /// <param name="mutate_weightRandom">The value to be the min/max [-value, value) for random weight mutations.</param>
-        /// <param name="mutate_weightShift">The strength to adjust the weight for weight shift mutations.</param>
-        public static void Init(int max_nodes, double c1, double c2, double c3, bool uniform_crossover, double crossover_scoreDelta,
-            double mutate_weightRandom, double mutate_weightShift)
-        {
-            if (initialized)
-            {
-                throw new InvalidOperationException("The Genome class is already initialized.");
-            }
-
-
-            MaxNodes = max_nodes;
-
-            C1 = c1;
-            C2 = c2;
-            C3 = c3;
-
-            Uniform_Crossover = uniform_crossover;
-
-            Crossover_ScoreDelta = crossover_scoreDelta;
-
-
-            Mutation_WeightRandom = mutate_weightRandom;
-
-            Mutation_WeightShift = mutate_weightShift;
-
-
-            initialized = true;
-        }
-
-
-        /// <summary>
-        /// Initializes the EvolvingNN class with:
-        /// <list type="bullet">
-        /// <item>MaxNodes: 2^20</item>
-        /// <item>C1: 1  <term/>  C2: 1  <term/>  C3: 0.4</item>
-        /// <item>Uniform_Crossover: true</item>
-        /// <item>Crossover_ScoreDelta: 0.001</item>
-        /// <item>Mutation_WeightRandom: 1</item>
-        /// <item>Mutation_WeightShift: 0.3</item>
-        /// </list>
-        /// TODO update as needed
-        /// </summary>
-        public static void Init()
-        {
-            Init((int)Math.Pow(2, 20), 1, 1, .4, true, .001, 1, .3);
-        }
-
-
-        /// <summary>
-        /// Tells whether or not the Genome constants are initialized.
-        /// </summary>
-        /// <returns>True if initialized, false otherwise.</returns>
-        public static bool IsInitialized()
-        {
-            return initialized;
-        }
-
-        #endregion Initialization
-
-        #endregion "Constants"
-
-
         #region Properties
 
         /// <summary>
@@ -315,7 +171,7 @@ namespace NEAT.Genetic
             N = (N < 20) ? 1 : N;   //Only needed for large networks.
 
 
-            return C1 * (num_excess / N) + C2 * (num_disjoint / N) + (C3 * weight_diff);
+            return GenePatternTracker.C1 * (num_excess / N) + GenePatternTracker.C2 * (num_disjoint / N) + (GenePatternTracker.C3 * weight_diff);
         }
 
 
@@ -378,7 +234,7 @@ namespace NEAT.Genetic
                     enumerator_me.MoveNext();
                     enumerator_them.MoveNext();
 
-                    if (Uniform_Crossover)
+                    if (GenePatternTracker.Uniform_Crossover)
                     {
                         if (random.NextDouble() < .5)
                         {
@@ -400,7 +256,7 @@ namespace NEAT.Genetic
                 {
                     enumerator_them.MoveNext();
 
-                    if (Math.Abs(my_score - their_score) < Crossover_ScoreDelta || their_score > my_score)
+                    if (Math.Abs(my_score - their_score) < GenePatternTracker.Crossover_ScoreDelta || their_score > my_score)
                     {
                         created_genome.ConnectionGenes.Add(inNum_them, GenePatternTracker.Copy_ConnectionGene(connectionGene_them));
                     }
@@ -409,7 +265,7 @@ namespace NEAT.Genetic
                 {
                     enumerator_me.MoveNext();
 
-                    if (Math.Abs(my_score - their_score) < Crossover_ScoreDelta || my_score > their_score)
+                    if (Math.Abs(my_score - their_score) < GenePatternTracker.Crossover_ScoreDelta || my_score > their_score)
                     {
                         created_genome.ConnectionGenes.Add(inNum_me, GenePatternTracker.Copy_ConnectionGene(connectionGene_me));
                     }
@@ -420,7 +276,7 @@ namespace NEAT.Genetic
             //Run through the excess connections and add them all if allowed.
             if (enumerator_me.Current != null)  //We have leftover genes, add ours if allowed.
             {
-                if (Math.Abs(my_score - their_score) < Crossover_ScoreDelta || my_score > their_score)  //Check legality.
+                if (Math.Abs(my_score - their_score) < GenePatternTracker.Crossover_ScoreDelta || my_score > their_score)  //Check legality.
                 {
                     do
                     {
@@ -432,7 +288,7 @@ namespace NEAT.Genetic
             }
             else if (enumerator_them.Current != null)  //They have leftover genes, add theirs if allowed.
             {
-                if (Math.Abs(my_score - their_score) < Crossover_ScoreDelta || their_score > my_score)  //Check legality.
+                if (Math.Abs(my_score - their_score) < GenePatternTracker.Crossover_ScoreDelta || their_score > my_score)  //Check legality.
                 {
                     do
                     {
@@ -501,7 +357,8 @@ namespace NEAT.Genetic
             NodeGene nodeGene_b = temp_subset.ElementAt(Random.Next(temp_subset.Count()));  //Get a random gene with a higher X value.
 
 
-            ConnectionGene connectionGene = GenePatternTracker.Create_ConnectionGene(nodeGene_a, nodeGene_b, Mutation_WeightRandom * (Random.NextDouble() * 2 - 1), true);
+            ConnectionGene connectionGene = GenePatternTracker.Create_ConnectionGene(nodeGene_a, nodeGene_b, GenePatternTracker.Mutation_WeightRandom * (Random.NextDouble() * 2 - 1), 
+                true);
 
             if (ConnectionGenes.ContainsKey(connectionGene.ConnectionGenePattern.InnovationNumber))   //Can only happen if it already existed in the tracker.
             {
@@ -560,11 +417,11 @@ namespace NEAT.Genetic
         /// </summary>
         public void Mutate_WeightShift()
         {
-            ConnectionGene connectionGene = ConnectionGenes.RandomValue().Take(1).ElementAt(0); //ConnectionGenes[Random.Next(ConnectionGenes.Count) + 1];
+            ConnectionGene connectionGene = ConnectionGenes.RandomValue().Take(1).ElementAt(0);
 
             if (connectionGene != null)
             {
-                connectionGene.Weight = connectionGene.Weight + Mutation_WeightShift * (Random.NextDouble() * 2 - 1);
+                connectionGene.Weight = connectionGene.Weight + GenePatternTracker.Mutation_WeightShift * (Random.NextDouble() * 2 - 1);
             }
         }
 
@@ -574,11 +431,11 @@ namespace NEAT.Genetic
         /// </summary>
         public void Mutate_WeightRandom()
         {
-            ConnectionGene connectionGene = ConnectionGenes.RandomValue().Take(1).ElementAt(0); //ConnectionGenes[Random.Next(ConnectionGenes.Count) + 1];
+            ConnectionGene connectionGene = ConnectionGenes.RandomValue().Take(1).ElementAt(0);
 
             if (connectionGene != null)
             {
-                connectionGene.Weight = Mutation_WeightRandom * (Random.NextDouble() * 2 - 1);
+                connectionGene.Weight = GenePatternTracker.Mutation_WeightRandom * (Random.NextDouble() * 2 - 1);
             }
         }
 
@@ -588,7 +445,7 @@ namespace NEAT.Genetic
         /// </summary>
         public void Mutate_LinkToggle()
         {
-            ConnectionGene connectionGene = ConnectionGenes.RandomValue().Take(1).ElementAt(0); //ConnectionGenes[Random.Next(ConnectionGenes.Count) + 1];
+            ConnectionGene connectionGene = ConnectionGenes.RandomValue().Take(1).ElementAt(0);
 
             if (connectionGene != null)
             {
