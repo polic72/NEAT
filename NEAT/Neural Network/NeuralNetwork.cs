@@ -40,8 +40,12 @@ namespace NEAT.Neural_Network
         /// Constructs a neural network based on the given genome.
         /// </summary>
         /// <param name="genome">The genome with all of the genes to create a neural network.</param>
+        /// <exception cref="ArgumentNullException">When the genome is null.</exception>
         public NeuralNetwork(Genome genome)
         {
+            Helpers.ThrowOnNull(genome, "genome");
+
+
             Dictionary<int, Node> temp_nodes = new Dictionary<int, Node>(); //Temporary holder to for creating connections.
 
             foreach (NodeGene nodeGene in genome.NodeGenes.Values)
@@ -100,8 +104,12 @@ namespace NEAT.Neural_Network
         /// The input array's indexing is based on the indexes of the input nodes. As the makeup of the neural network is not 
         /// editable, this is determinded at constrcutor-time. The same is true for the output.
         /// </remarks>
+        /// <exception cref="ArgumentNullException">When the input is null.</exception>
+        /// <exception cref="ArgumentException">When the input is not the same size as number of input nodes.</exception>
         public double[] FeedForward(double[] input)
         {
+            Helpers.ThrowOnNull(input, "input");
+
             if (input.Length != input_nodes.Count)
             {
                 throw new ArgumentException("The input must be the same length as the input nodes of the genome.", "input");

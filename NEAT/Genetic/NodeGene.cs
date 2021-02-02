@@ -34,8 +34,13 @@ namespace NEAT.Genetic
         /// </summary>
         /// <param name="nodeGenePattern">The node gene pattern that this node gene implements.</param>
         /// <param name="activationFunction">The activation function of the node.</param>
+        /// <exception cref="ArgumentNullException">When the node gene pattern or activation function is null.</exception>
         protected internal NodeGene(NodeGenePattern nodeGenePattern, Node.ActivationFunction activationFunction)
         {
+            Helpers.ThrowOnNull(nodeGenePattern, "nodeGenePattern");
+            Helpers.ThrowOnNull(activationFunction, "activationFunction");
+
+
             NodeGenePattern = nodeGenePattern;
 
             ActivationFunction = activationFunction;
@@ -46,6 +51,7 @@ namespace NEAT.Genetic
         /// Constructs a node gene with the given node gene pattern and default activation function (<see cref="NEAT.Neural_Network.Node.Sigmoid(double)"/>).
         /// </summary>
         /// <param name="nodeGenePattern">The node gene pattern that this node gene implements.</param>
+        /// <exception cref="ArgumentNullException">When the node gene pattern is null.</exception>
         protected internal NodeGene(NodeGenePattern nodeGenePattern)
             : this(nodeGenePattern, Node.Sigmoid)
         {

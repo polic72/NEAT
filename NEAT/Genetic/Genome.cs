@@ -197,8 +197,13 @@ namespace NEAT.Genetic
         /// </summary>
         /// <param name="genePatternTracker">The gene pattern tracker for the genome.</param>
         /// <param name="random">The internal random for the genome.</param>
+        /// <exception cref="ArgumentNullException">When either parameter is null.</exception>
         public Genome(GenePatternTracker genePatternTracker, Random random)
         {
+            Helpers.ThrowOnNull(genePatternTracker, "genePatternTracker");
+            Helpers.ThrowOnNull(random, "random");
+
+
             GenePatternTracker = genePatternTracker;
             Random = random;
 
@@ -225,8 +230,12 @@ namespace NEAT.Genetic
         ///     N = # of genes in largest genome (this or them), 1 if #genes &lt; 20 |
         ///     c_ = constant for adjusting
         /// </remarks>
+        /// <exception cref="ArgumentNullException">When the given genome is null.</exception>
         public double Distance(Genome genome)
         {
+            Helpers.ThrowOnNull(genome, "genome");
+
+
             int index_me = 0;   //Leaving indexes from old implementation due to their mathematical usefulness later.
             int index_them = 0;
 
@@ -335,8 +344,13 @@ namespace NEAT.Genetic
         /// <item>On excess connection genes: Adds genes from parent with higher score.</item>
         /// </list>
         /// </remarks>
+        /// <exception cref="ArgumentNullException">When the genome or random is null.</exception>
         public Genome Crossover(double my_score, Genome genome, double their_score, Random random)
         {
+            Helpers.ThrowOnNull(genome, "genome");
+            Helpers.ThrowOnNull(random, "random");
+
+
             Genome created_genome = new Genome(GenePatternTracker, random);
 
 
@@ -462,6 +476,7 @@ namespace NEAT.Genetic
         /// </summary>
         /// <param name="genome">The genome to cross over with.</param>
         /// <returns>The crossed-over genome.</returns>
+        /// <exception cref="ArgumentNullException">When the given genome is null.</exception>
         public Genome Crossover(Genome genome)
         {
             return Crossover(0, genome, 0, Random);

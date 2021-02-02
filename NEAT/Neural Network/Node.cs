@@ -79,8 +79,12 @@ namespace NEAT.Neural_Network
         /// </summary>
         /// <param name="x">The x coordinate of this node.</param>
         /// <param name="activationFunction">The activation function to use for this node.</param>
+        /// <exception cref="ArgumentNullException">When the activation function is null.</exception>
         public Node(double x, ActivationFunction activationFunction)
         {
+            Helpers.ThrowOnNull(activationFunction, "activationFunction");
+
+
             X = x;
 
             Activation = activationFunction;

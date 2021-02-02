@@ -38,9 +38,14 @@ namespace NEAT.Genetic.Tracker
         /// <param name="from">The NodeGene to connect from.</param>
         /// <param name="to">The NodeGene to connect to.</param>
         /// <param name="replacing_number">The innovation number of the node that replaces this connection.</param>
+        /// <exception cref="ArgumentNullException">When from/to is null.</exception>
         protected internal ConnectionGenePattern(int innovation_number, NodeGenePattern from, NodeGenePattern to, int replacing_number) :
             base(innovation_number)
         {
+            Helpers.ThrowOnNull(from, "from");
+            Helpers.ThrowOnNull(to, "to");
+
+
             From = from;
             To = to;
 
@@ -83,8 +88,12 @@ namespace NEAT.Genetic.Tracker
         /// <param name="from">The from node of the potential connection gene pattern.</param>
         /// <param name="to">The to node of the potential connection gene pattern.</param>
         /// <returns>The hash code.</returns>
+        /// <exception cref="ArgumentNullException">When from/to is null.</exception>
         public static int GetHashCode(NodeGenePattern from, NodeGenePattern to)
         {
+            Helpers.ThrowOnNull(from, "from");
+            Helpers.ThrowOnNull(to, "to");
+
             return from.InnovationNumber * Genome.MaxNodes + to.InnovationNumber;
         }
 

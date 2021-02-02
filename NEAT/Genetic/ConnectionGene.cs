@@ -43,8 +43,14 @@ namespace NEAT.Genetic
         /// <param name="connectionGenePattern">The connection gene pattern that this connection gene implements.</param>
         /// <param name="weight">The weight of the connection.</param>
         /// <param name="enabled">Whether or not this connection is enabled.</param>
+        /// <exception cref="ArgumentNullException">When the connection gene pattern is null.</exception>
         protected internal ConnectionGene(ConnectionGenePattern connectionGenePattern, double weight, bool enabled)
         {
+            Helpers.ThrowOnNull(connectionGenePattern, "connectionGenePattern");
+
+
+            ConnectionGenePattern = connectionGenePattern;
+
             Weight = weight;
             Enabled = enabled;
         }
@@ -55,6 +61,7 @@ namespace NEAT.Genetic
         /// </summary>
         /// <param name="connectionGenePattern">The connection gene pattern that this connection gene implements.</param>
         /// <param name="weight">The weight of the connection.</param>
+        /// <exception cref="ArgumentNullException">When the connection gene pattern is null.</exception>
         protected internal ConnectionGene(ConnectionGenePattern connectionGenePattern, double weight)
             : this(connectionGenePattern, weight, true)
         {

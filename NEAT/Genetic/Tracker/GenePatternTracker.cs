@@ -120,8 +120,12 @@ namespace NEAT.Genetic.Tracker
         /// </summary>
         /// <param name="nodeGenePattern">The node gene pattern to add.</param>
         /// <returns>True if added. False if already contained.</returns>
+        /// <exception cref="ArgumentNullException">When the node gene pattern is null.</exception>
         public bool AddNodeGenePattern(NodeGenePattern nodeGenePattern)
         {
+            Helpers.ThrowOnNull(nodeGenePattern, "nodeGenePattern");
+
+
             if (nodeGenePatterns.ContainsKey(nodeGenePattern.InnovationNumber))
             {
                 return false;
@@ -156,6 +160,7 @@ namespace NEAT.Genetic.Tracker
         /// <param name="nodeGenePattern">The node gene pattern of the node gene.</param>
         /// <param name="activationFunction">The activation function of the node gene.</param>
         /// <returns>The created node gene.</returns>
+        /// <exception cref="ArgumentNullException">When the node gene pattern or activation function is null.</exception>
         public NodeGene Create_NodeGene(NodeGenePattern nodeGenePattern, Node.ActivationFunction activationFunction)
         {
             return new NodeGene(nodeGenePattern, activationFunction);
@@ -171,8 +176,12 @@ namespace NEAT.Genetic.Tracker
         /// </remarks>
         /// <param name="connectionGene">The connection gene with the intention of splitting.</param>
         /// <returns>The created node gene.</returns>
+        /// <exception cref="ArgumentNullException">When the connection gene is null.</exception>
         public NodeGene Create_NodeGene(ConnectionGene connectionGene)
         {
+            Helpers.ThrowOnNull(connectionGene, "connectionGene");
+
+
             NodeGenePattern pattern;
 
             if (nodeGenePatterns.ContainsKey(connectionGene.ConnectionGenePattern.ReplacingNumber))
@@ -196,6 +205,7 @@ namespace NEAT.Genetic.Tracker
         /// </summary>
         /// <param name="nodeGene">The node gene to copy.</param>
         /// <returns>The copy of the node gene.</returns>
+        /// <exception cref="ArgumentNullException">When the node gene pattern or activation function is null.</exception>
         public NodeGene Copy_NodeGene(NodeGene nodeGene)
         {
             return new NodeGene(nodeGene.NodeGenePattern, nodeGene.ActivationFunction);
@@ -211,8 +221,12 @@ namespace NEAT.Genetic.Tracker
         /// </summary>
         /// <param name="connectionGenePattern">The connection gene pattern to add.</param>
         /// <returns>True if added. False if already contained.</returns>
+        /// <exception cref="ArgumentNullException">When the connection gene pattern is null.</exception>
         public bool AddConnectionGenePattern(ConnectionGenePattern connectionGenePattern)
         {
+            Helpers.ThrowOnNull(connectionGenePattern, "connectionGenePattern");
+
+
             if (connectionGenePatterns.ContainsKey(connectionGenePattern.InnovationNumber))
             {
                 return false;
@@ -249,8 +263,13 @@ namespace NEAT.Genetic.Tracker
         /// <param name="weight">The weight of the connection gene.</param>
         /// <param name="enabled">Whether or not the connection is enabled.</param>
         /// <returns>The created connection gene.</returns>
+        /// <exception cref="ArgumentNullException">When from/to is null.</exception>
         public ConnectionGene Create_ConnectionGene(NodeGene from, NodeGene to, double weight, bool enabled)
         {
+            Helpers.ThrowOnNull(from, "from");
+            Helpers.ThrowOnNull(to, "to");
+
+
             int innovation_number = ConnectionGenePattern.GetHashCode(from.NodeGenePattern, to.NodeGenePattern);
 
             if (connectionGenePatterns.ContainsKey(innovation_number))
@@ -274,6 +293,7 @@ namespace NEAT.Genetic.Tracker
         /// <param name="weight">The weight of the connection gene.</param>
         /// <param name="enabled">Whether or not the connection is enabled.</param>
         /// <returns>The created connection gene.</returns>
+        /// <exception cref="ArgumentNullException">When the connection gene pattern is null.</exception>
         public ConnectionGene Create_ConnectionGene(ConnectionGenePattern connectionGenePattern, double weight, bool enabled)
         {
             return new ConnectionGene(connectionGenePattern, weight, enabled);
@@ -285,6 +305,7 @@ namespace NEAT.Genetic.Tracker
         /// </summary>
         /// <param name="connectionGene">The connection gene to copy.</param>
         /// <returns>The copy of the connection gene.</returns>
+        /// <exception cref="ArgumentNullException">When the connection gene pattern is null.</exception>
         public ConnectionGene Copy_ConnectionGene(ConnectionGene connectionGene)
         {
             return new ConnectionGene(connectionGene.ConnectionGenePattern, connectionGene.Weight, connectionGene.Enabled);

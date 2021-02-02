@@ -45,8 +45,13 @@ namespace NEAT.Neural_Network
         /// <param name="from">The left-hand node of this connection.</param>
         /// <param name="to">The right-hand node of this connection.</param>
         /// <param name="auto_connect">True to automatically add this connection to the nodes' connections; false if undesired.</param>
+        /// <exception cref="ArgumentNullException">When either nodes are null.</exception>
         public Connection(Node from, Node to, bool auto_connect)
         {
+            Helpers.ThrowOnNull(from, "from");
+            Helpers.ThrowOnNull(to, "to");
+
+
             From = from;
             To = to;
 
@@ -66,6 +71,7 @@ namespace NEAT.Neural_Network
         /// </summary>
         /// <param name="from">The left-hand node of this connection.</param>
         /// <param name="to">The right-hand node of this connection.</param>
+        /// <exception cref="ArgumentNullException">When either nodes are null.</exception>
         public Connection(Node from, Node to)
             : this(from, to, true)
         {

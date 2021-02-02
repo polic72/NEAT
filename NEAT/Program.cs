@@ -13,36 +13,33 @@ namespace NEAT
     {
         public static void Main(string[] args)
         {
-			Random random = new Random();
+            SortedDictionary<int, string> sd = new SortedDictionary<int, string>();
 
-			List<string> list = new List<string>();
-			list.Add("a");
-			list.Add("b");
-			//list.Add("c");
-			//list.Add("d");
+            sd.Add(2, "2");
+            sd.Add(6, "6");
+            sd.Add(3, "3");
+            sd.Add(4, "4");
+            sd.Add(8, "8");
+            sd.Add(5, "5");
+            sd.Add(7, "7");
+            sd.Add(1, "1");
 
+            SortedDictionary<int, string>.ValueCollection.Enumerator enumerator = sd.Values.GetEnumerator();
 
-			int choice = -1;
+            enumerator.MoveNext();
 
-			int index = list.IndexOf("b");
-			if (index == -1)
-			{
-				choice = random.Next(list.Count);
-			}
-			else
-			{
-				choice = random.Next(list.Count - 1);
+            while (enumerator.Current != null)
+            {
+                Console.WriteLine(enumerator.Current);
 
-				if (choice >= index)
-				{
-					choice++;
-				}
-			 }
+                enumerator.MoveNext();
+            }
 
 
-			Console.WriteLine(choice);
+            List<string> o = new List<string>();o.Add("efw");
+            Console.WriteLine(o.Contains(null));
 
-			//Console.ReadKey();
+			Console.ReadKey();
         }
     }
 }
