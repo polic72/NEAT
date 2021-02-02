@@ -69,7 +69,7 @@
     <Compile Include="Genetic\ConnectionGene.cs" />
     <Compile Include="Genetic\Tracker\ConnectionGenePattern.cs" />
     <Compile Include="Genetic\Tracker\GenePattern.cs" />
-    <Compile Include="Genetic\Tracker\GenePatternTracker.cs" />
+    <Compile Include="Genetic\Tracker\Pedigree.cs" />
     <Compile Include="Genetic\NodeGene.cs" />
     <Compile Include="Genetic\Tracker\NodeGenePattern.cs" />
     <Compile Include="Helpers.cs" />

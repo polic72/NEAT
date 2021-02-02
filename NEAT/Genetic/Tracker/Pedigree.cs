@@ -9,9 +9,9 @@ using NEAT.Neural_Network;
 namespace NEAT.Genetic.Tracker
 {
     /// <summary>
-    /// A class that is used to track genes globally. Used for optimization.
+    /// A class that is used to track genes "globally". Used for optimization.
     /// </summary>
-    public class GenePatternTracker
+    public class Pedigree
     {
         #region Local Constants
 
@@ -86,18 +86,18 @@ namespace NEAT.Genetic.Tracker
         #region Constructors
 
         /// <summary>
-        /// Constructs a gene pattern tracker with the given initial max replacing number and every local constant. Adds Sigmoid and ReLU to known activation functions.
+        /// Constructs a pedigree with the given initial max replacing number and every local constant. Adds Sigmoid and ReLU to known activation functions.
         /// </summary>
         /// <param name="initial_replacingNumber">Should be #input_nodes + #output_nodes + 1.</param>
         /// <param name="max_nodes">The maximum number of nodes a neural network can have.</param>
         /// <param name="c1">The c1 constant to set. See <see cref="NEAT.Genetic.Genome.Distance(Genome)"/> for more information.</param>
         /// <param name="c2">The c2 constant to set. See <see cref="NEAT.Genetic.Genome.Distance(Genome)"/> for more information.</param>
         /// <param name="c3">The c3 constant to set. See <see cref="NEAT.Genetic.Genome.Distance(Genome)"/> for more information.</param>
-        /// <param name="uniform_crossover">Whether or not to use uniform crossover. <see cref="NEAT.Genetic.Tracker.GenePatternTracker.Uniform_Crossover"/> for more information.</param>
+        /// <param name="uniform_crossover">Whether or not to use uniform crossover. <see cref="NEAT.Genetic.Tracker.Pedigree.Uniform_Crossover"/> for more information.</param>
         /// <param name="crossover_scoreDelta">The delta for genome scores can fall between to be considered equal. Used in corssover.</param>
         /// <param name="mutate_weightRandom">The value to be the min/max [-value, value) for random weight mutations.</param>
         /// <param name="mutate_weightShift">The strength to adjust the weight for weight shift mutations.</param>
-        public GenePatternTracker(int initial_replacingNumber, int max_nodes, double c1, double c2, double c3, bool uniform_crossover, double crossover_scoreDelta,
+        public Pedigree(int initial_replacingNumber, int max_nodes, double c1, double c2, double c3, bool uniform_crossover, double crossover_scoreDelta,
             double mutate_weightRandom, double mutate_weightShift)
         {
             #region Internals
@@ -139,7 +139,7 @@ namespace NEAT.Genetic.Tracker
 
 
         /// <summary>
-        /// Constructs a gene pattern tracker with the given initial max replacing number. Adds Sigmoid and ReLU to known activation functions.
+        /// Constructs a pedigree with the given initial max replacing number. Adds Sigmoid and ReLU to known activation functions.
         /// </summary>
         /// <param name="initial_replacingNumber">Should be #input_nodes + #output_nodes + 1.</param>
         /// <remarks>
@@ -154,7 +154,7 @@ namespace NEAT.Genetic.Tracker
         /// </list>
         /// TODO update as needed
         /// </remarks>
-        public GenePatternTracker(int initial_replacingNumber)
+        public Pedigree(int initial_replacingNumber)
             : this(initial_replacingNumber, (int)Math.Pow(2, 20), 1, 1, .4, true, .001, 1, .3)
         {
 

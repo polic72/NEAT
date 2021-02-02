@@ -27,7 +27,7 @@ namespace NEAT.Genetic
         /// <summary>
         /// The gene tracker associated with this genome. All genes in this genome are in this gene tracker.
         /// </summary>
-        public GenePatternTracker GenePatternTracker { get; }
+        public Pedigree Pedigree { get; }
 
         /// <summary>
         /// The internal random of the genome.
@@ -49,18 +49,18 @@ namespace NEAT.Genetic
 
 
         /// <summary>
-        /// Constructs a genome with the given gene pattern tracker and random.
+        /// Constructs a genome with the given pedigree and random.
         /// </summary>
-        /// <param name="genePatternTracker">The gene pattern tracker for the genome.</param>
+        /// <param name="pedigree">The pedigree for the genome.</param>
         /// <param name="random">The internal random for the genome.</param>
         /// <exception cref="ArgumentNullException">When either parameter is null.</exception>
-        public Genome(GenePatternTracker genePatternTracker, Random random)
+        public Genome(Pedigree pedigree, Random random)
         {
-            Helpers.ThrowOnNull(genePatternTracker, "genePatternTracker");
+            Helpers.ThrowOnNull(pedigree, "genePatternTracker");
             Helpers.ThrowOnNull(random, "random");
 
 
-            GenePatternTracker = genePatternTracker;
+            Pedigree = pedigree;
             Random = random;
 
             ConnectionGenes = new SortedDictionary<int, ConnectionGene>();
@@ -171,7 +171,7 @@ namespace NEAT.Genetic
             N = (N < 20) ? 1 : N;   //Only needed for large networks.
 
 
-            return GenePatternTracker.C1 * (num_excess / N) + GenePatternTracker.C2 * (num_disjoint / N) + (GenePatternTracker.C3 * weight_diff);
+            return Pedigree.C1 * (num_excess / N) + Pedigree.C2 * (num_disjoint / N) + (Pedigree.C3 * weight_diff);
         }
 
 
@@ -207,7 +207,7 @@ namespace NEAT.Genetic
             Helpers.ThrowOnNull(random, "random");
 
 
-            Genome created_genome = new Genome(GenePatternTracker, random);
+            Genome created_genome = new Genome(Pedigree, random);
 
 
             #region ConnectionGenes
@@ -234,20 +234,20 @@ namespace NEAT.Genetic
                     enumerator_me.MoveNext();
                     enumerator_them.MoveNext();
 
-                    if (GenePatternTracker.Uniform_Crossover)
+                    if (Pedigree.Uniform_Crossover)
                     {
                         if (random.NextDouble() < .5)
                         {
-                            created_genome.ConnectionGenes.Add(inNum_me, GenePatternTracker.Copy_ConnectionGene(connectionGene_me));
+                            created_genome.ConnectionGenes.Add(inNum_me, Pedigree.Copy_ConnectionGene(connectionGene_me));
                         }
                         else
                         {
-                            created_genome.ConnectionGenes.Add(inNum_them, GenePatternTracker.Copy_ConnectionGene(connectionGene_them));
+                            created_genome.ConnectionGenes.Add(inNum_them, Pedigree.Copy_ConnectionGene(connectionGene_them));
                         }
                     }
                     else
                     {
-                        created_genome.ConnectionGenes.Add(inNum_me, GenePatternTracker.Create_ConnectionGene(connectionGene_me.ConnectionGenePattern,
+                        created_genome.ConnectionGenes.Add(inNum_me, Pedigree.Create_ConnectionGene(connectionGene_me.ConnectionGenePattern,
                             (connectionGene_me.Weight + connectionGene_them.Weight) / 2,
                             (random.NextDouble() < .5) ? connectionGene_me.Enabled : connectionGene_them.Enabled));
                     }
@@ -256,18 +256,18 @@ namespace NEAT.Genetic
                 {
                     enumerator_them.MoveNext();
 
-                    if (Math.Abs(my_score - their_score) < GenePatternTracker.Crossover_ScoreDelta || their_score > my_score)
+                    if (Math.Abs(my_score - their_score) < Pedigree.Crossover_ScoreDelta || their_score > my_score)
                     {
-                        created_genome.ConnectionGenes.Add(inNum_them, GenePatternTracker.Copy_ConnectionGene(connectionGene_them));
+                        created_genome.ConnectionGenes.Add(inNum_them, Pedigree.Copy_ConnectionGene(connectionGene_them));
                     }
                 }
                 else    //Disjoint gene at me, add this gene if allowed.
                 {
                     enumerator_me.MoveNext();
 
-                    if (Math.Abs(my_score - their_score) < GenePatternTracker.Crossover_ScoreDelta || my_score > their_score)
+                    if (Math.Abs(my_score - their_score) < Pedigree.Crossover_ScoreDelta || my_score > their_score)
                     {
-                        created_genome.ConnectionGenes.Add(inNum_me, GenePatternTracker.Copy_ConnectionGene(connectionGene_me));
+                        created_genome.ConnectionGenes.Add(inNum_me, Pedigree.Copy_ConnectionGene(connectionGene_me));
                     }
                 }
             }
@@ -276,24 +276,24 @@ namespace NEAT.Genetic
             //Run through the excess connections and add them all if allowed.
             if (enumerator_me.Current != null)  //We have leftover genes, add ours if allowed.
             {
-                if (Math.Abs(my_score - their_score) < GenePatternTracker.Crossover_ScoreDelta || my_score > their_score)  //Check legality.
+                if (Math.Abs(my_score - their_score) < Pedigree.Crossover_ScoreDelta || my_score > their_score)  //Check legality.
                 {
                     do
                     {
                         created_genome.ConnectionGenes.Add(enumerator_me.Current.ConnectionGenePattern.InnovationNumber, 
-                            GenePatternTracker.Copy_ConnectionGene(enumerator_me.Current));
+                            Pedigree.Copy_ConnectionGene(enumerator_me.Current));
                     }
                     while (enumerator_me.MoveNext());
                 }
             }
             else if (enumerator_them.Current != null)  //They have leftover genes, add theirs if allowed.
             {
-                if (Math.Abs(my_score - their_score) < GenePatternTracker.Crossover_ScoreDelta || their_score > my_score)  //Check legality.
+                if (Math.Abs(my_score - their_score) < Pedigree.Crossover_ScoreDelta || their_score > my_score)  //Check legality.
                 {
                     do
                     {
                         created_genome.ConnectionGenes.Add(enumerator_them.Current.ConnectionGenePattern.InnovationNumber,
-                            GenePatternTracker.Copy_ConnectionGene(enumerator_them.Current));
+                            Pedigree.Copy_ConnectionGene(enumerator_them.Current));
                     }
                     while (enumerator_them.MoveNext());
                 }
@@ -311,12 +311,12 @@ namespace NEAT.Genetic
 
                 if (!created_genome.NodeGenes.ContainsKey(pattern.From.InnovationNumber))
                 {
-                    created_genome.NodeGenes.Add(pattern.From.InnovationNumber, GenePatternTracker.Copy_NodeGene(NodeGenes[pattern.From.InnovationNumber]));
+                    created_genome.NodeGenes.Add(pattern.From.InnovationNumber, Pedigree.Copy_NodeGene(NodeGenes[pattern.From.InnovationNumber]));
                 }
 
                 if (!created_genome.NodeGenes.ContainsKey(pattern.To.InnovationNumber))
                 {
-                    created_genome.NodeGenes.Add(pattern.To.InnovationNumber, GenePatternTracker.Copy_NodeGene(NodeGenes[pattern.To.InnovationNumber]));
+                    created_genome.NodeGenes.Add(pattern.To.InnovationNumber, Pedigree.Copy_NodeGene(NodeGenes[pattern.To.InnovationNumber]));
                 }
             }
 
@@ -357,7 +357,7 @@ namespace NEAT.Genetic
             NodeGene nodeGene_b = temp_subset.ElementAt(Random.Next(temp_subset.Count()));  //Get a random gene with a higher X value.
 
 
-            ConnectionGene connectionGene = GenePatternTracker.Create_ConnectionGene(nodeGene_a, nodeGene_b, GenePatternTracker.Mutation_WeightRandom * (Random.NextDouble() * 2 - 1), 
+            ConnectionGene connectionGene = Pedigree.Create_ConnectionGene(nodeGene_a, nodeGene_b, Pedigree.Mutation_WeightRandom * (Random.NextDouble() * 2 - 1), 
                 true);
 
             if (ConnectionGenes.ContainsKey(connectionGene.ConnectionGenePattern.InnovationNumber))   //Can only happen if it already existed in the tracker.
@@ -386,13 +386,13 @@ namespace NEAT.Genetic
             NodeGene from = NodeGenes[connectionGene.ConnectionGenePattern.From.InnovationNumber];
             NodeGene to = NodeGenes[connectionGene.ConnectionGenePattern.To.InnovationNumber];
 
-            NodeGene created = GenePatternTracker.Create_NodeGene(connectionGene);
+            NodeGene created = Pedigree.Create_NodeGene(connectionGene);
 
             NodeGenes.Add(created.NodeGenePattern.InnovationNumber, created);
 
 
-            ConnectionGene created_connectionGene_1 = GenePatternTracker.Create_ConnectionGene(from, created, 1, true); //Default weight of 1.
-            ConnectionGene created_connectionGene_2 = GenePatternTracker.Create_ConnectionGene(created, to, connectionGene.Weight, connectionGene.Enabled);
+            ConnectionGene created_connectionGene_1 = Pedigree.Create_ConnectionGene(from, created, 1, true); //Default weight of 1.
+            ConnectionGene created_connectionGene_2 = Pedigree.Create_ConnectionGene(created, to, connectionGene.Weight, connectionGene.Enabled);
 
             ConnectionGenes.Remove(connectionGene.ConnectionGenePattern.InnovationNumber);
 
@@ -408,7 +408,7 @@ namespace NEAT.Genetic
         {
             NodeGene nodeGene = NodeGenes.RandomValue().Take(1).ElementAt(0);
 
-            nodeGene.ActivationFunction = GenePatternTracker.GetRandomActivationFunction(nodeGene.ActivationFunction);
+            nodeGene.ActivationFunction = Pedigree.GetRandomActivationFunction(nodeGene.ActivationFunction);
         }
 
 
@@ -421,7 +421,7 @@ namespace NEAT.Genetic
 
             if (connectionGene != null)
             {
-                connectionGene.Weight = connectionGene.Weight + GenePatternTracker.Mutation_WeightShift * (Random.NextDouble() * 2 - 1);
+                connectionGene.Weight = connectionGene.Weight + Pedigree.Mutation_WeightShift * (Random.NextDouble() * 2 - 1);
             }
         }
 
@@ -435,7 +435,7 @@ namespace NEAT.Genetic
 
             if (connectionGene != null)
             {
-                connectionGene.Weight = GenePatternTracker.Mutation_WeightRandom * (Random.NextDouble() * 2 - 1);
+                connectionGene.Weight = Pedigree.Mutation_WeightRandom * (Random.NextDouble() * 2 - 1);
             }
         }
 
