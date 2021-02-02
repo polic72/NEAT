@@ -175,6 +175,8 @@ namespace NEAT.Neural_Network
         }
 
 
+        #region Default Activation Functions
+
         /// <summary>
         /// The sigmoid function. Used as the default activation function.
         /// </summary>
@@ -184,5 +186,23 @@ namespace NEAT.Neural_Network
         {
             return 1.0 / (1 + Math.Exp(-x));
         }
+
+
+        /// <summary>
+        /// The Rectified Linear Unit (ReLU) funcition.
+        /// </summary>
+        /// <param name="x">The input for the function.</param>
+        /// <returns>The output of the ReLU function.</returns>
+        public static double ReLU(double x)
+        {
+            if (x < 0)
+            {
+                return 0;
+            }
+
+            return x;
+        }
+
+        #endregion Default Activation Functions
     }
 }

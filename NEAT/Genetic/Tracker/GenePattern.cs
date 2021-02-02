@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace NEAT.Genetic.Tracker
 {
+    /// <summary>
+    /// A base class for a gene pattern.
+    /// </summary>
     public abstract class GenePattern : IComparable<GenePattern>
     {
         /// <summary>

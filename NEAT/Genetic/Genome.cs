@@ -478,7 +478,7 @@ namespace NEAT.Genetic
         public void Mutate_Link()
         {
             //Get first node to connect. It is random.
-            NodeGene nodeGene_a = NodeGenes.RandomValue().Take(1).ElementAt(0); //NodeGenes[Random.Next(NodeGenes.Count) + 1];  //Innovation numbers start at 1.
+            NodeGene nodeGene_a = NodeGenes.RandomValue().Take(1).ElementAt(0);
 
 
             IEnumerable<NodeGene> temp_subset = NodeGenes.Values.Where(a => a.NodeGenePattern.X > nodeGene_a.NodeGenePattern.X);
@@ -498,44 +498,35 @@ namespace NEAT.Genetic
         }
 
 
-        ///// <summary>
-        ///// Mutates a random connection splitting it with a node.
-        ///// </summary>
-        //public void Mutate_Node()
-        //{
-        //    ConnectionGene connectionGene = ConnectionGenes.RandomValue().Take(1).ElementAt(0);
+        /// <summary>
+        /// Mutates a random connection splitting it with a node.
+        /// </summary>
+        public void Mutate_Node()
+        {
+            ConnectionGene connectionGene = ConnectionGenes.RandomValue().Take(1).ElementAt(0);
 
-        //    if (connectionGene == null)
-        //    {
-        //        return;
-        //    }
-
-
-        //    NodeGene from = connectionGene.From;
-        //    NodeGene to = connectionGene.To;
-
-        //    NodeGene created = NEAT.CreateNode();
-
-        //    created.X = (from.X + to.X) / 2;
-        //    created.Y = (from.Y + to.Y) / 2 + random.NextDouble() * 0.1 + .05;
-
-        //    Nodes.Add(created);
+            if (connectionGene == null)
+            {
+                return;
+            }
 
 
-        //    ConnectionGene created_connectionGene_1 = NEAT.CreateConnection(from, created);
-        //    ConnectionGene created_connectionGene_2 = NEAT.CreateConnection(created, to);
+            NodeGene from = NodeGenes[connectionGene.ConnectionGenePattern.From.InnovationNumber];
+            NodeGene to = NodeGenes[connectionGene.ConnectionGenePattern.To.InnovationNumber];
 
-        //    Connections.Remove(connectionGene);
+            NodeGene created = GenePatternTracker.Create_NodeGene(connectionGene);
 
-        //    Connections.Add(created_connectionGene_1);
-        //    Connections.Add(created_connectionGene_2);
+            NodeGenes.Add(created.NodeGenePattern.InnovationNumber, created);
 
 
-        //    created_connectionGene_1.Weight = 1;                        //Default weight.
-        //    created_connectionGene_2.Weight = connectionGene.Weight;    //Old connection's weight.
+            ConnectionGene created_connectionGene_1 = GenePatternTracker.Create_ConnectionGene(from, created, 1, true); //Default weight of 1.
+            ConnectionGene created_connectionGene_2 = GenePatternTracker.Create_ConnectionGene(created, to, connectionGene.Weight, connectionGene.Enabled);
 
-        //    created_connectionGene_2.Enabled = connectionGene.Enabled;  //Old enabled state.
-        //}
+            ConnectionGenes.Remove(connectionGene.ConnectionGenePattern.InnovationNumber);
+
+            ConnectionGenes.Add(created_connectionGene_1.ConnectionGenePattern.InnovationNumber, created_connectionGene_1);
+            ConnectionGenes.Add(created_connectionGene_2.ConnectionGenePattern.InnovationNumber, created_connectionGene_2);
+        }
 
 
         /// <summary>

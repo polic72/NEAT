@@ -20,8 +20,12 @@ namespace NEAT.Genetic.Tracker
         private static int max_replacingNumber;
 
 
+        private List<Node.ActivationFunction> known_activationFunctions;
+        private Random AF_random;
+
+
         /// <summary>
-        /// Constructs a gene pattern tracker with the given initial max replacing number.
+        /// Constructs a gene pattern tracker with the given initial max replacing number. Adds Sigmoid and ReLU to known activation functions.
         /// </summary>
         /// <param name="initial_replacingNumber">Should be #input_nodes + #output_nodes + 1.</param>
         public GenePatternTracker(int initial_replacingNumber)
@@ -30,7 +34,46 @@ namespace NEAT.Genetic.Tracker
             connectionGenePatterns = new Dictionary<int, ConnectionGenePattern>();
 
             max_replacingNumber = initial_replacingNumber;
+
+
+            known_activationFunctions = new List<Node.ActivationFunction>();
+            AF_random = new Random();
+
+            known_activationFunctions.Add(Node.Sigmoid);
+            known_activationFunctions.Add(Node.ReLU);
         }
+
+
+        #region Node_ActivationFunctions
+
+        /// <summary>
+        /// Adds the given activation function to the known activation functions.
+        /// </summary>
+        /// <param name="activationFunction">The activation function to add.</param>
+        /// <returns>False if activation function is already added. True otherwise.</returns>
+        public bool Add_KnownActivationFunction(Node.ActivationFunction activationFunction)
+        {
+            if (known_activationFunctions.Contains(activationFunction))
+            {
+                return false;
+            }
+
+            known_activationFunctions.Add(activationFunction);
+
+            return true;
+        }
+
+
+        /// <summary>
+        /// Gets a random kown activation function.
+        /// </summary>
+        /// <returns>The random known activation function.</returns>
+        public Node.ActivationFunction GetRandomActivationFunction()
+        {
+            return known_activationFunctions[AF_random.Next(known_activationFunctions.Count)];
+        }
+
+        #endregion Node_ActivationFunctions
 
 
         #region NodeGenePattern
@@ -79,6 +122,35 @@ namespace NEAT.Genetic.Tracker
         public NodeGene Create_NodeGene(NodeGenePattern nodeGenePattern, Node.ActivationFunction activationFunction)
         {
             return new NodeGene(nodeGenePattern, activationFunction);
+        }
+
+
+        /// <summary>
+        /// Creates a node gene with the intention of splitting the given connection gene. Gives it a random known activation function.
+        /// </summary>
+        /// <remarks>
+        /// If the node gene pattern does not yet exist, it will be created. Its innovation number will be the replacing number in the given connection gene's pattern. The X will be the 
+        /// average of the Xs in the given connection gene pattern's From/To nodes.
+        /// </remarks>
+        /// <param name="connectionGene">The connection gene with the intention of splitting.</param>
+        /// <returns>The created node gene.</returns>
+        public NodeGene Create_NodeGene(ConnectionGene connectionGene)
+        {
+            NodeGenePattern pattern;
+
+            if (nodeGenePatterns.ContainsKey(connectionGene.ConnectionGenePattern.ReplacingNumber))
+            {
+                pattern = nodeGenePatterns[connectionGene.ConnectionGenePattern.ReplacingNumber];
+            }
+            else
+            {
+                pattern = new NodeGenePattern(connectionGene.ConnectionGenePattern.ReplacingNumber,
+                    (connectionGene.ConnectionGenePattern.From.X + connectionGene.ConnectionGenePattern.To.X) / 2);
+
+                nodeGenePatterns.Add(pattern.InnovationNumber, pattern);
+            }
+
+            return new NodeGene(pattern, GetRandomActivationFunction());
         }
 
 
