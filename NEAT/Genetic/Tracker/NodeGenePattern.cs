@@ -32,9 +32,7 @@ namespace NEAT.Genetic.Tracker
 
 
         /// <summary>
-        /// Constructs a node gene pattern with the given innovation number and default X position 
-        /// (<see cref="NEAT.Neural_Network.Node.INPUT_X"/>) and activation function 
-        /// (<see cref="NEAT.Neural_Network.Node.Sigmoid(double)"/>).
+        /// Constructs a node gene pattern with the given innovation number and default X position (<see cref="NEAT.Neural_Network.Node.INPUT_X"/>).
         /// </summary>
         /// <param name="innovation_number">The innovation number.</param>
         protected internal NodeGenePattern(int innovation_number)

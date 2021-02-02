@@ -72,6 +72,27 @@ namespace NEAT.Genetic.Tracker
         #endregion Local Constants
 
 
+        #region Properties
+
+        /// <summary>
+        /// The random object used for all randomization.
+        /// </summary>
+        public Random Random { get; }
+
+
+        /// <summary>
+        /// The number of input nodes for every genome.
+        /// </summary>
+        public int Num_InputNodes { get; }
+
+        /// <summary>
+        /// The number of output nodes for every genome.
+        /// </summary>
+        public int Num_OutputNodes { get; }
+
+        #endregion Properties
+
+
         private readonly Dictionary<int, NodeGenePattern> nodeGenePatterns;
         private readonly Dictionary<int, ConnectionGenePattern> connectionGenePatterns;
 
@@ -80,7 +101,6 @@ namespace NEAT.Genetic.Tracker
 
 
         private List<Node.ActivationFunction> known_activationFunctions;
-        private Random AF_random;
 
 
         #region Constructors
@@ -88,7 +108,9 @@ namespace NEAT.Genetic.Tracker
         /// <summary>
         /// Constructs a pedigree with the given initial max replacing number and every local constant. Adds Sigmoid and ReLU to known activation functions.
         /// </summary>
-        /// <param name="initial_replacingNumber">Should be #input_nodes + #output_nodes + 1.</param>
+        /// <param name="num_inputNodes">The number of input nodes for every genome.</param>
+        /// <param name="num_outputNodes">The number of output nodes for every genome.</param>
+        /// <param name="random">The random object used for all randomization.</param>
         /// <param name="max_nodes">The maximum number of nodes a neural network can have.</param>
         /// <param name="c1">The c1 constant to set. See <see cref="NEAT.Genetic.Genome.Distance(Genome)"/> for more information.</param>
         /// <param name="c2">The c2 constant to set. See <see cref="NEAT.Genetic.Genome.Distance(Genome)"/> for more information.</param>
@@ -97,24 +119,31 @@ namespace NEAT.Genetic.Tracker
         /// <param name="crossover_scoreDelta">The delta for genome scores can fall between to be considered equal. Used in corssover.</param>
         /// <param name="mutate_weightRandom">The value to be the min/max [-value, value) for random weight mutations.</param>
         /// <param name="mutate_weightShift">The strength to adjust the weight for weight shift mutations.</param>
-        public Pedigree(int initial_replacingNumber, int max_nodes, double c1, double c2, double c3, bool uniform_crossover, double crossover_scoreDelta,
+        public Pedigree(int num_inputNodes, int num_outputNodes, Random random, int max_nodes, double c1, double c2, double c3, bool uniform_crossover, double crossover_scoreDelta,
             double mutate_weightRandom, double mutate_weightShift)
         {
-            #region Internals
+            #region Internal Setters
 
             nodeGenePatterns = new Dictionary<int, NodeGenePattern>();
             connectionGenePatterns = new Dictionary<int, ConnectionGenePattern>();
 
-            max_replacingNumber = initial_replacingNumber;
+
+            Num_InputNodes = num_inputNodes;
+            Num_OutputNodes = num_outputNodes;
+
+            Random = random;
+
+
+            max_replacingNumber = Num_InputNodes + Num_OutputNodes + 1;
 
 
             known_activationFunctions = new List<Node.ActivationFunction>();
-            AF_random = new Random();
+            random = new Random();
 
             known_activationFunctions.Add(Node.Sigmoid);
             known_activationFunctions.Add(Node.ReLU);
 
-            #endregion Internals
+            #endregion Internal Setters
 
 
             #region Local Constants
@@ -135,13 +164,31 @@ namespace NEAT.Genetic.Tracker
             Mutation_WeightShift = mutate_weightShift;
 
             #endregion Local Constants
+
+
+            #region Node Initialization
+
+            for (int i = 1; i <= Num_InputNodes; ++i)
+            {
+                nodeGenePatterns.Add(i, new NodeGenePattern(i, Node.INPUT_X));
+            }
+
+
+            for (int i = 1; i <= Num_InputNodes; ++i)
+            {
+                nodeGenePatterns.Add(i + Num_InputNodes, new NodeGenePattern(i + Num_InputNodes, Node.OUTPUT_X));
+            }
+
+            #endregion Node Initialization
         }
 
 
         /// <summary>
         /// Constructs a pedigree with the given initial max replacing number. Adds Sigmoid and ReLU to known activation functions.
         /// </summary>
-        /// <param name="initial_replacingNumber">Should be #input_nodes + #output_nodes + 1.</param>
+        /// <param name="num_inputNodes">The number of input nodes for every genome.</param>
+        /// <param name="num_outputNodes">The number of output nodes for every genome.</param>
+        /// <param name="random">The random object used for all randomization.</param>
         /// <remarks>
         /// The local constants are their default values of:
         /// <list type="bullet">
@@ -154,13 +201,34 @@ namespace NEAT.Genetic.Tracker
         /// </list>
         /// TODO update as needed
         /// </remarks>
-        public Pedigree(int initial_replacingNumber)
-            : this(initial_replacingNumber, (int)Math.Pow(2, 20), 1, 1, .4, true, .001, 1, .3)
+        public Pedigree(int num_inputNodes, int num_outputNodes, Random random)
+            : this(num_inputNodes, num_outputNodes, random, (int)Math.Pow(2, 20), 1, 1, .4, true, .001, 1, .3)
         {
 
         }
 
         #endregion Constructors
+
+
+        #region Genome
+
+        /// <summary>
+        /// Creates a genome with the only the input and output nodes. Each have the <see cref="NEAT.Neural_Network.Node.Sigmoid(double)"/> activation function.
+        /// </summary>
+        /// <returns>The created genome.</returns>
+        public Genome CreateGenome()
+        {
+            Genome genome = new Genome(this, Random);
+
+            for (int i = 1; i <= (Num_InputNodes + Num_OutputNodes); ++i)
+            {
+                genome.NodeGenes.Add(i, new NodeGene(nodeGenePatterns[i]));
+            }
+
+            return genome;
+        }
+
+        #endregion Genome
 
 
         #region Node_ActivationFunctions
@@ -189,7 +257,7 @@ namespace NEAT.Genetic.Tracker
         /// <returns>The random known activation function.</returns>
         public Node.ActivationFunction GetRandomActivationFunction()
         {
-            return known_activationFunctions[AF_random.Next(known_activationFunctions.Count)];
+            return known_activationFunctions[Random.Next(known_activationFunctions.Count)];
         }
 
 
@@ -214,11 +282,11 @@ namespace NEAT.Genetic.Tracker
             int index = known_activationFunctions.IndexOf(excluding_activationFunction);
             if (index == -1)
             {
-                choice = AF_random.Next(known_activationFunctions.Count);
+                choice = Random.Next(known_activationFunctions.Count);
             }
             else
             {
-                choice = AF_random.Next(known_activationFunctions.Count - 1);
+                choice = Random.Next(known_activationFunctions.Count - 1);
 
                 if (choice >= index)
                 {

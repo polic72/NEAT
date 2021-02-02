@@ -38,12 +38,12 @@ namespace NEAT.Genetic
         /// <summary>
         /// The ConnectionGenes of this genome.
         /// </summary>
-        public SortedDictionary<int, ConnectionGene> ConnectionGenes { get; }
+        protected internal SortedDictionary<int, ConnectionGene> ConnectionGenes { get; }
 
         /// <summary>
         /// The NodeGenes of this genome.
         /// </summary>
-        public SortedDictionary<int, NodeGene> NodeGenes { get; }
+        protected internal SortedDictionary<int, NodeGene> NodeGenes { get; }
 
         #endregion Properties
 
@@ -54,7 +54,7 @@ namespace NEAT.Genetic
         /// <param name="pedigree">The pedigree for the genome.</param>
         /// <param name="random">The internal random for the genome.</param>
         /// <exception cref="ArgumentNullException">When either parameter is null.</exception>
-        public Genome(Pedigree pedigree, Random random)
+        protected internal Genome(Pedigree pedigree, Random random)
         {
             Helpers.ThrowOnNull(pedigree, "genePatternTracker");
             Helpers.ThrowOnNull(random, "random");
