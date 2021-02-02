@@ -46,9 +46,9 @@ namespace NEAT.Neural_Network
 
             foreach (NodeGene nodeGene in genome.NodeGenes.Values)
             {
-                Node node = new Node(nodeGene.X, nodeGene.ActivationFunction);
+                Node node = new Node(nodeGene.NodeGenePattern.X, nodeGene.ActivationFunction);
 
-                temp_nodes.Add(nodeGene.InnovationNumber, node);
+                temp_nodes.Add(nodeGene.NodeGenePattern.InnovationNumber, node);
 
                 if (node.X == 0)
                 {
@@ -70,8 +70,8 @@ namespace NEAT.Neural_Network
 
             foreach (ConnectionGene connectionGene in genome.ConnectionGenes.Values)
             {
-                Node from = temp_nodes[connectionGene.From.InnovationNumber];   //new Node(connections[i].From.InnovationNumber);
-                Node to = temp_nodes[connectionGene.To.InnovationNumber]; //new Node(connections[i].To.InnovationNumber);
+                Node from = temp_nodes[connectionGene.ConnectionGenePattern.From.InnovationNumber];   //new Node(connections[i].From.InnovationNumber);
+                Node to = temp_nodes[connectionGene.ConnectionGenePattern.To.InnovationNumber]; //new Node(connections[i].To.InnovationNumber);
 
                 //Node from = new Node(connections[i].From.InnovationNumber);
                 //Node to = new Node(connections[i].To.InnovationNumber);

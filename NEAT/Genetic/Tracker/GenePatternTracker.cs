@@ -73,6 +73,43 @@ namespace NEAT.Genetic.Tracker
             return known_activationFunctions[AF_random.Next(known_activationFunctions.Count)];
         }
 
+
+        /// <summary>
+        /// Gets a random kown activation function excluding the given activation function.
+        /// </summary>
+        /// <param name="excluding_activationFunction">The activation function to exclude from the search.</param>
+        /// <returns>The random known activation function.</returns>
+        public Node.ActivationFunction GetRandomActivationFunction(Node.ActivationFunction excluding_activationFunction)
+        {
+            if (known_activationFunctions.Count == 0)
+            {
+                return null;
+            }
+            else if (known_activationFunctions.Count == 1)
+            {
+                return known_activationFunctions[0];
+            }
+
+            int choice = -1;
+
+            int index = known_activationFunctions.IndexOf(excluding_activationFunction);
+            if (index == -1)
+            {
+                choice = AF_random.Next(known_activationFunctions.Count);
+            }
+            else
+            {
+                choice = AF_random.Next(known_activationFunctions.Count - 1);
+
+                if (choice >= index)
+                {
+                    choice++;
+                }
+            }
+
+            return known_activationFunctions[choice];
+        }
+
         #endregion Node_ActivationFunctions
 
 

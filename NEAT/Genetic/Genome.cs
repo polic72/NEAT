@@ -530,6 +530,17 @@ namespace NEAT.Genetic
 
 
         /// <summary>
+        /// Mutates a random node by giving it a random activation function other than the one it has right now.
+        /// </summary>
+        public void Mutate_ActivationFunction()
+        {
+            NodeGene nodeGene = NodeGenes.RandomValue().Take(1).ElementAt(0);
+
+            nodeGene.ActivationFunction = GenePatternTracker.GetRandomActivationFunction(nodeGene.ActivationFunction);
+        }
+
+
+        /// <summary>
         /// Mutates a random connection by shifting its weight up or down by a radom value.
         /// </summary>
         public void Mutate_WeightShift()
