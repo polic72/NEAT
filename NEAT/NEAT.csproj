@@ -77,7 +77,6 @@
     <Compile Include="Genetic\Genome.cs" />
     <Compile Include="Neural Network\NeuralNetwork.cs" />
     <Compile Include="Neural Network\Node.cs" />
-    <Compile Include="OrderedHashSet.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
