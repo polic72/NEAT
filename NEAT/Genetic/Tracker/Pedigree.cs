@@ -270,11 +270,30 @@ namespace NEAT.Genetic.Tracker
         /// <param name="probability_mutateWeightRandom">The probability to mutate the weight of a random connection by setting it randomly.</param>
         /// <param name="probability_mutateWeightShift">The probability to mutate the weight of a random connection by shifting it.</param>
         /// <param name="probability_mutateLinkToggle">The probability to mutate a random connection by toggling its Enabled state.</param>
+        /// <exception cref="ArgumentNullException">When random is null.</exception>
+        /// <exception cref="ArgumentException">When num_inputNodes/num_outputNodes are 0 or negative.</exception>
         public Pedigree(int num_inputNodes, int num_outputNodes, Random random, int max_nodes, double c1, double c2, double c3, bool uniformCrossover, double crossover_scoreDelta,
             double mutate_weightRandom, double mutate_weightShift,
             double probability_mutateLink, double probability_mutateNode, double probability_mutateActivationFunction, double probability_mutateWeightRandom,
             double probability_mutateWeightShift, double probability_mutateLinkToggle)
         {
+            #region Error Checking
+
+            Helpers.ThrowOnNull(random, "random");
+
+            
+            if (num_inputNodes <= 0)
+            {
+                throw new ArgumentException("\"num_inputNodes\" must be a non-zero positive number.", "num_inputNodes");
+            }
+            else if (num_outputNodes <= 0)
+            {
+                throw new ArgumentException("\"num_outputNodes\" must be a non-zero positive number.", "num_outputNodes");
+            }
+
+            #endregion Error Checking
+
+
             #region Internal Setters
 
             nodeGenePatterns = new Dictionary<int, NodeGenePattern>();
