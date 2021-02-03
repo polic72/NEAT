@@ -34,13 +34,14 @@ namespace NEAT.Genetic.Tracker
         /// <summary>
         /// Constructs a connection gene pattern with the given innovation number, from/to nodes, and replacing number.
         /// </summary>
+        /// <param name="pedigree">The owning pedigree of this connection gene pattern.</param>
         /// <param name="innovation_number">The innovation number.</param>
         /// <param name="from">The NodeGene to connect from.</param>
         /// <param name="to">The NodeGene to connect to.</param>
         /// <param name="replacing_number">The innovation number of the node that replaces this connection.</param>
         /// <exception cref="ArgumentNullException">When from/to is null.</exception>
-        protected internal ConnectionGenePattern(int innovation_number, NodeGenePattern from, NodeGenePattern to, int replacing_number) :
-            base(innovation_number)
+        protected internal ConnectionGenePattern(Pedigree pedigree, int innovation_number, NodeGenePattern from, NodeGenePattern to, int replacing_number) :
+            base(pedigree, innovation_number)
         {
             Helpers.ThrowOnNull(from, "from");
             Helpers.ThrowOnNull(to, "to");
@@ -78,23 +79,24 @@ namespace NEAT.Genetic.Tracker
         /// <returns>The hash code.</returns>
         public override int GetHashCode()
         {
-            return From.InnovationNumber * Genome.MaxNodes + To.InnovationNumber;
+            return From.InnovationNumber * Pedigree.MaxNodes + To.InnovationNumber;
         }
 
 
         /// <summary>
         /// Gets the hash code of a potential connection gene pattern. Based off the innovation numbers of the given node gene patterns.
         /// </summary>
+        /// <param name="pedigree">The owning pedigree of the potential connection gene pattern.</param>
         /// <param name="from">The from node of the potential connection gene pattern.</param>
         /// <param name="to">The to node of the potential connection gene pattern.</param>
         /// <returns>The hash code.</returns>
         /// <exception cref="ArgumentNullException">When from/to is null.</exception>
-        public static int GetHashCode(NodeGenePattern from, NodeGenePattern to)
+        public static int GetHashCode(Pedigree pedigree, NodeGenePattern from, NodeGenePattern to)
         {
             Helpers.ThrowOnNull(from, "from");
             Helpers.ThrowOnNull(to, "to");
 
-            return from.InnovationNumber * Genome.MaxNodes + to.InnovationNumber;
+            return from.InnovationNumber * pedigree.MaxNodes + to.InnovationNumber;
         }
 
 

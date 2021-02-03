@@ -331,13 +331,13 @@ namespace NEAT.Genetic.Tracker
 
             for (int i = 1; i <= Num_InputNodes; ++i)
             {
-                nodeGenePatterns.Add(i, new NodeGenePattern(i, Node.INPUT_X));
+                nodeGenePatterns.Add(i, new NodeGenePattern(this, i, Node.INPUT_X));
             }
 
 
             for (int i = 1; i <= Num_InputNodes; ++i)
             {
-                nodeGenePatterns.Add(i + Num_InputNodes, new NodeGenePattern(i + Num_InputNodes, Node.OUTPUT_X));
+                nodeGenePatterns.Add(i + Num_InputNodes, new NodeGenePattern(this, i + Num_InputNodes, Node.OUTPUT_X));
             }
 
             #endregion Node Initialization
@@ -535,7 +535,7 @@ namespace NEAT.Genetic.Tracker
             }
             else
             {
-                pattern = new NodeGenePattern(connectionGene.ConnectionGenePattern.ReplacingNumber,
+                pattern = new NodeGenePattern(this, connectionGene.ConnectionGenePattern.ReplacingNumber,
                     (connectionGene.ConnectionGenePattern.From.X + connectionGene.ConnectionGenePattern.To.X) / 2);
 
                 nodeGenePatterns.Add(pattern.InnovationNumber, pattern);
@@ -615,7 +615,7 @@ namespace NEAT.Genetic.Tracker
             Helpers.ThrowOnNull(to, "to");
 
 
-            int innovation_number = ConnectionGenePattern.GetHashCode(from.NodeGenePattern, to.NodeGenePattern);
+            int innovation_number = ConnectionGenePattern.GetHashCode(this, from.NodeGenePattern, to.NodeGenePattern);
 
             if (connectionGenePatterns.ContainsKey(innovation_number))
             {
@@ -623,7 +623,7 @@ namespace NEAT.Genetic.Tracker
             }
 
 
-            ConnectionGenePattern created_connectionGenePattern = new ConnectionGenePattern(innovation_number, from.NodeGenePattern, to.NodeGenePattern, max_replacingNumber++);
+            ConnectionGenePattern created_connectionGenePattern = new ConnectionGenePattern(this, innovation_number, from.NodeGenePattern, to.NodeGenePattern, max_replacingNumber++);
 
             connectionGenePatterns.Add(innovation_number, created_connectionGenePattern);
 

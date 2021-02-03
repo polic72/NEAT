@@ -12,6 +12,12 @@ namespace NEAT.Genetic.Tracker
     public abstract class GenePattern : IComparable<GenePattern>
     {
         /// <summary>
+        /// The owning pedigree of this gene pattern.
+        /// </summary>
+        public Pedigree Pedigree { get; }
+
+
+        /// <summary>
         /// The innovation number of this gene pattern.
         /// </summary>
         /// <remarks>
@@ -25,22 +31,14 @@ namespace NEAT.Genetic.Tracker
         #region Constructors
 
         /// <summary>
-        /// Constructs a gene pattern with the given innovation number.
+        /// Constructs a gene pattern with the given pedigree and innovation number.
         /// </summary>
+        /// <param name="pedigree">The owning pedigree of this gene pattern.</param>
         /// <param name="innovation_number">The innovation number.</param>
-        public GenePattern(int innovation_number)
+        public GenePattern(Pedigree pedigree, int innovation_number)
         {
+            Pedigree = pedigree;
             InnovationNumber = innovation_number;
-        }
-
-
-        /// <summary>
-        /// Constructs a gene pattern with the default innovation number (0).
-        /// </summary>
-        public GenePattern()
-            : this(0)
-        {
-
         }
 
         #endregion Constructors

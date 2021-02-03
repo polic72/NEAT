@@ -22,23 +22,13 @@ namespace NEAT.Genetic.Tracker
         /// <summary>
         /// Constructs a node gene pattern with the given innovation number and X position.
         /// </summary>
+        /// <param name="pedigree">The owning pedigree of this node gene pattern.</param>
         /// <param name="innovation_number">The innovation number.</param>
         /// <param name="x">The X position of the node.</param>
-        protected internal NodeGenePattern(int innovation_number, double x) :
-            base(innovation_number)
+        protected internal NodeGenePattern(Pedigree pedigree, int innovation_number, double x) :
+            base(pedigree, innovation_number)
         {
             X = x;
-        }
-
-
-        /// <summary>
-        /// Constructs a node gene pattern with the given innovation number and default X position (<see cref="NEAT.Neural_Network.Node.INPUT_X"/>).
-        /// </summary>
-        /// <param name="innovation_number">The innovation number.</param>
-        protected internal NodeGenePattern(int innovation_number)
-            : base(innovation_number)
-        {
-            X = Neural_Network.Node.INPUT_X;
         }
 
         #endregion Constructors
