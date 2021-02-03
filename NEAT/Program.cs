@@ -16,15 +16,26 @@ namespace NEAT
         {
             Pedigree pedigree = new Pedigree(4, 1, new Random(42));
 
-            Genome genome = pedigree.CreateGenome();
+            Genome genome_1 = pedigree.CreateGenome();
 
-            genome.Mutate_Link();
-            genome.Mutate_Link();
+            genome_1.Mutate_Link();
+            genome_1.Mutate_Link();
 
-            genome.Mutate_Node();
+            genome_1.Mutate_Node();
 
 
-            Console.WriteLine();
+            Genome genome_2 = pedigree.CreateGenome();
+
+            genome_2.Mutate_Link();
+            genome_2.Mutate_Link();
+
+            genome_2.Mutate_Node();
+
+
+            Genome genome_3 = genome_1.Crossover(genome_2);
+
+
+            Console.WriteLine(genome_1.Distance(genome_2));
 
 			Console.ReadKey();
         }

@@ -305,18 +305,48 @@ namespace NEAT.Genetic
 
             #region NodeGenes
 
+            //Input/Output nodes.
+            for (int i = 1; i <= Pedigree.Num_InputNodes + Pedigree.Num_OutputNodes; ++i)
+            {
+                created_genome.NodeGenes.Add(i, NodeGenes[i]);
+            }
+
+
+            //Every other relavent node.
             foreach (ConnectionGene connectionGene in created_genome.ConnectionGenes.Values)
             {
                 ConnectionGenePattern pattern = connectionGene.ConnectionGenePattern;
 
                 if (!created_genome.NodeGenes.ContainsKey(pattern.From.InnovationNumber))
                 {
-                    created_genome.NodeGenes.Add(pattern.From.InnovationNumber, Pedigree.Copy_NodeGene(NodeGenes[pattern.From.InnovationNumber]));
+                    NodeGene nodeGene_toCopy;
+
+                    try
+                    {
+                        nodeGene_toCopy = NodeGenes[pattern.From.InnovationNumber];
+                    }
+                    catch (KeyNotFoundException)
+                    {
+                        nodeGene_toCopy = genome.NodeGenes[pattern.From.InnovationNumber];
+                    }
+
+                    created_genome.NodeGenes.Add(pattern.From.InnovationNumber, Pedigree.Copy_NodeGene(nodeGene_toCopy));
                 }
 
                 if (!created_genome.NodeGenes.ContainsKey(pattern.To.InnovationNumber))
                 {
-                    created_genome.NodeGenes.Add(pattern.To.InnovationNumber, Pedigree.Copy_NodeGene(NodeGenes[pattern.To.InnovationNumber]));
+                    NodeGene nodeGene_toCopy;
+
+                    try
+                    {
+                        nodeGene_toCopy = NodeGenes[pattern.To.InnovationNumber];
+                    }
+                    catch (KeyNotFoundException)
+                    {
+                        nodeGene_toCopy = genome.NodeGenes[pattern.To.InnovationNumber];
+                    }
+
+                    created_genome.NodeGenes.Add(pattern.To.InnovationNumber, Pedigree.Copy_NodeGene(nodeGene_toCopy));
                 }
             }
 
@@ -421,6 +451,10 @@ namespace NEAT.Genetic
             if (NodeGenes.Count >= Pedigree.MaxNodes)
             {
                 return; //Do nothing if we have max nodes.
+            }
+            else if (NodeGenes.Count == 0)
+            {
+                return; //Literally cannot make a node.
             }
 
 
