@@ -416,7 +416,7 @@ namespace NEAT.Genetic
         public void Mutate_Link()
         {
             //Get first node to connect. It is random.
-            NodeGene nodeGene_a = NodeGenes.RandomValue().Take(1).ElementAt(0);
+            NodeGene nodeGene_a = NodeGenes.RandomValue(Random).Take(1).ElementAt(0);
 
 
             IEnumerable<NodeGene> temp_subset = NodeGenes.Values.Where(a => a.NodeGenePattern.X > nodeGene_a.NodeGenePattern.X);
@@ -458,7 +458,7 @@ namespace NEAT.Genetic
             }
 
 
-            ConnectionGene connectionGene = ConnectionGenes.RandomValue().Take(1).ElementAt(0);
+            ConnectionGene connectionGene = ConnectionGenes.RandomValue(Random).Take(1).ElementAt(0);
 
             if (connectionGene == null)
             {
@@ -489,7 +489,7 @@ namespace NEAT.Genetic
         /// </summary>
         public void Mutate_ActivationFunction()
         {
-            NodeGene nodeGene = NodeGenes.RandomValue().Take(1).ElementAt(0);
+            NodeGene nodeGene = NodeGenes.RandomValue(Random).Take(1).ElementAt(0);
 
             nodeGene.ActivationFunction = Pedigree.GetRandomActivationFunction(nodeGene.ActivationFunction);
         }
@@ -500,7 +500,7 @@ namespace NEAT.Genetic
         /// </summary>
         public void Mutate_WeightRandom()
         {
-            ConnectionGene connectionGene = ConnectionGenes.RandomValue().Take(1).ElementAt(0);
+            ConnectionGene connectionGene = ConnectionGenes.RandomValue(Random).Take(1).ElementAt(0);
 
             if (connectionGene != null)
             {
@@ -514,7 +514,7 @@ namespace NEAT.Genetic
         /// </summary>
         public void Mutate_WeightShift()
         {
-            ConnectionGene connectionGene = ConnectionGenes.RandomValue().Take(1).ElementAt(0);
+            ConnectionGene connectionGene = ConnectionGenes.RandomValue(Random).Take(1).ElementAt(0);
 
             if (connectionGene != null)
             {
@@ -528,7 +528,7 @@ namespace NEAT.Genetic
         /// </summary>
         public void Mutate_LinkToggle()
         {
-            ConnectionGene connectionGene = ConnectionGenes.RandomValue().Take(1).ElementAt(0);
+            ConnectionGene connectionGene = ConnectionGenes.RandomValue(Random).Take(1).ElementAt(0);
 
             if (connectionGene != null)
             {
