@@ -42,14 +42,14 @@ namespace NEAT.Genetic.Tracker
         /// Whether or not to use uniform crossover. If false, use blended crossover. See remarks for more details.
         /// </summary>
         /// <remarks>
-        /// In uniform crossover, matching genes are randomly chosen for the offspring genome.
+        /// In uniform crossover, matching connection genes are randomly chosen for the offspring genome.
         /// <para/>
         /// In blended crossover, the connection weights of matching genes are averaged.
         /// </remarks>
-        public bool Uniform_Crossover { get; }
+        public bool UniformCrossover { get; }
 
         /// <summary>
-        /// The delta for genome scores can fall between to be considered equal. Used in corssover.
+        /// The delta for genome scores can fall between to be considered equal. Used in crossover.
         /// </summary>
         public double Crossover_ScoreDelta { get; }
 
@@ -59,15 +59,157 @@ namespace NEAT.Genetic.Tracker
         /// <summary>
         /// The value to be the min/max [-value, value) for the <see cref="NEAT.Genetic.Genome.Mutate_WeightRandom"/> and <see cref="NEAT.Genetic.Genome.Mutate_Link"/>.
         /// </summary>
-        public static double Mutation_WeightRandom { get; private set; }
-
+        public double Mutation_WeightRandom { get; }
 
         /// <summary>
         /// The strength to adjust the weight during <see cref="NEAT.Genetic.Genome.Mutate_WeightShift"/>.
         /// </summary>
-        public static double Mutation_WeightShift { get; private set; }
+        public double Mutation_WeightShift { get; }
+
+
+        
+
+        /// <summary>
+        /// The probability to mutate a new connection between random nodes. (<see cref="NEAT.Genetic.Genome.Mutate_Link"/>)
+        /// </summary>
+        /// <remarks>
+        /// Used in the <see cref="NEAT.Genetic.Genome.Mutate"/> method.
+        /// </remarks>
+        public double Probability_MutateLink { get; }
+
+        /// <summary>
+        /// The probability to mutate a new node, splitting a connection. (<see cref="NEAT.Genetic.Genome.Mutate_Node"/>)
+        /// </summary>
+        /// <remarks>
+        /// Used in the <see cref="NEAT.Genetic.Genome.Mutate"/> method.
+        /// </remarks>
+        public double Probability_MutateNode { get; }
+
+        /// <summary>
+        /// The probability to mutate the activation function of a random node. (<see cref="NEAT.Genetic.Genome.Mutate_ActivationFunction"/>)
+        /// </summary>
+        /// <remarks>
+        /// Used in the <see cref="NEAT.Genetic.Genome.Mutate"/> method.
+        /// </remarks>
+        public double Probability_MutateActivationFunction { get; }
+
+        /// <summary>
+        /// The probability to mutate the weight of a random connection by setting it randomly. (<see cref="NEAT.Genetic.Genome.Mutate_WeightRandom"/>)
+        /// </summary>
+        /// <remarks>
+        /// Used in the <see cref="NEAT.Genetic.Genome.Mutate"/> method.
+        /// </remarks>
+        public double Probability_MutateWeightRandom { get; }
+
+        /// <summary>
+        /// The probability to mutate the weight of a random connection by shifting it. (<see cref="NEAT.Genetic.Genome.Mutate_WeightShift"/>)
+        /// </summary>
+        /// <remarks>
+        /// Used in the <see cref="NEAT.Genetic.Genome.Mutate"/> method.
+        /// </remarks>
+        public double Probability_MutateWeightShift { get; }
+
+        /// <summary>
+        /// The probability to mutate a random connection by toggling its Enabled state. (<see cref="NEAT.Genetic.Genome.Mutate_LinkToggle"/>)
+        /// </summary>
+        /// <remarks>
+        /// Used in the <see cref="NEAT.Genetic.Genome.Mutate"/> method.
+        /// </remarks>
+        public double Probability_MutateLinkToggle { get; }
 
         #endregion Mutation Constants
+
+
+        #region Defaults
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static class ConstantDefaults
+        {
+            /// <summary>
+            /// The default value for <see cref="NEAT.Genetic.Tracker.Pedigree.MaxNodes"/>.
+            /// </summary>
+            public const int Default_MaxNodes = 1048576;
+
+
+            /// <summary>
+            /// The default value for <see cref="NEAT.Genetic.Tracker.Pedigree.C1"/>.
+            /// </summary>
+            public const double Default_C1 = 1;
+
+            /// <summary>
+            /// The default value for <see cref="NEAT.Genetic.Tracker.Pedigree.C2"/>.
+            /// </summary>
+            public const double Default_C2 = 1;
+
+            /// <summary>
+            /// The default value for <see cref="NEAT.Genetic.Tracker.Pedigree.C3"/>.
+            /// </summary>
+            public const double Default_C3 = 0.4;
+
+
+            /// <summary>
+            /// The default value for <see cref="NEAT.Genetic.Tracker.Pedigree.UniformCrossover"/>.
+            /// </summary>
+            public const bool Default_UniformCrossover = true;
+
+            /// <summary>
+            /// The default value for <see cref="NEAT.Genetic.Tracker.Pedigree.Crossover_ScoreDelta"/>.
+            /// </summary>
+            public const double Default_CrossoverScoreDelta = 0.001;
+
+
+            #region Mutation Constants
+
+            /// <summary>
+            /// The default value for <see cref="NEAT.Genetic.Tracker.Pedigree.Mutation_WeightRandom"/>.
+            /// </summary>
+            public const double Default_MutationWeightRandom = 1;
+
+
+            /// <summary>
+            /// The default value for <see cref="NEAT.Genetic.Tracker.Pedigree.Mutation_WeightShift"/>.
+            /// </summary>
+            public const double Default_MutationWeightShift = 0.3;
+
+
+
+
+            /// <summary>
+            /// The default value for <see cref="NEAT.Genetic.Tracker.Pedigree.Probability_MutateLink"/>.
+            /// </summary>
+            public const double Default_ProbabilityMutateLink = 0.05;
+
+            /// <summary>
+            /// The default value for <see cref="NEAT.Genetic.Tracker.Pedigree.Probability_MutateNode"/>.
+            /// </summary>
+            public const double Default_ProbabilityMutateNode = 0.03;
+
+            /// <summary>
+            /// The default value for <see cref="NEAT.Genetic.Tracker.Pedigree.Probability_MutateActivationFunction"/>.
+            /// </summary>
+            public const double Default_ProbabilityMutateActivationFunction = 0.03;
+
+            /// <summary>
+            /// The default value for <see cref="NEAT.Genetic.Tracker.Pedigree.Probability_MutateWeightRandom"/>.
+            /// </summary>
+            public const double Default_ProbabilityMutateWeightRandom = 0.03;
+
+            /// <summary>
+            /// The default value for <see cref="NEAT.Genetic.Tracker.Pedigree.Probability_MutateWeightShift"/>.
+            /// </summary>
+            public const double Default_ProbabilityMutateWeightShift = 0.05;
+
+            /// <summary>
+            /// The default value for <see cref="NEAT.Genetic.Tracker.Pedigree.Probability_MutateLinkToggle"/>.
+            /// </summary>
+            public const double Default_ProbabilityMutateLinkToggle = 0.04;
+
+            #endregion Mutation Constants
+        }
+
+        #endregion Defaults
 
         #endregion Local Constants
 
@@ -111,16 +253,27 @@ namespace NEAT.Genetic.Tracker
         /// <param name="num_inputNodes">The number of input nodes for every genome.</param>
         /// <param name="num_outputNodes">The number of output nodes for every genome.</param>
         /// <param name="random">The random object used for all randomization.</param>
+        /// 
         /// <param name="max_nodes">The maximum number of nodes a neural network can have.</param>
         /// <param name="c1">The c1 constant to set. See <see cref="NEAT.Genetic.Genome.Distance(Genome)"/> for more information.</param>
         /// <param name="c2">The c2 constant to set. See <see cref="NEAT.Genetic.Genome.Distance(Genome)"/> for more information.</param>
         /// <param name="c3">The c3 constant to set. See <see cref="NEAT.Genetic.Genome.Distance(Genome)"/> for more information.</param>
-        /// <param name="uniform_crossover">Whether or not to use uniform crossover. <see cref="NEAT.Genetic.Tracker.Pedigree.Uniform_Crossover"/> for more information.</param>
-        /// <param name="crossover_scoreDelta">The delta for genome scores can fall between to be considered equal. Used in corssover.</param>
+        /// <param name="uniformCrossover">Whether or not to use uniform crossover. <see cref="NEAT.Genetic.Tracker.Pedigree.UniformCrossover"/> for more information.</param>
+        /// <param name="crossover_scoreDelta">The delta for genome scores can fall between to be considered equal. Used in crossover.</param>
+        /// 
         /// <param name="mutate_weightRandom">The value to be the min/max [-value, value) for random weight mutations.</param>
         /// <param name="mutate_weightShift">The strength to adjust the weight for weight shift mutations.</param>
-        public Pedigree(int num_inputNodes, int num_outputNodes, Random random, int max_nodes, double c1, double c2, double c3, bool uniform_crossover, double crossover_scoreDelta,
-            double mutate_weightRandom, double mutate_weightShift)
+        /// 
+        /// <param name="probability_mutateLink">The probability to mutate a new connection between random nodes.</param>
+        /// <param name="probability_mutateNode">The probability to mutate a new node, splitting a connection.</param>
+        /// <param name="probability_mutateActivationFunction">The probability to mutate the activation function of a random node.</param>
+        /// <param name="probability_mutateWeightRandom">The probability to mutate the weight of a random connection by setting it randomly.</param>
+        /// <param name="probability_mutateWeightShift">The probability to mutate the weight of a random connection by shifting it.</param>
+        /// <param name="probability_mutateLinkToggle">The probability to mutate a random connection by toggling its Enabled state.</param>
+        public Pedigree(int num_inputNodes, int num_outputNodes, Random random, int max_nodes, double c1, double c2, double c3, bool uniformCrossover, double crossover_scoreDelta,
+            double mutate_weightRandom, double mutate_weightShift,
+            double probability_mutateLink, double probability_mutateNode, double probability_mutateActivationFunction, double probability_mutateWeightRandom,
+            double probability_mutateWeightShift, double probability_mutateLinkToggle)
         {
             #region Internal Setters
 
@@ -154,7 +307,7 @@ namespace NEAT.Genetic.Tracker
             C2 = c2;
             C3 = c3;
 
-            Uniform_Crossover = uniform_crossover;
+            UniformCrossover = uniformCrossover;
 
             Crossover_ScoreDelta = crossover_scoreDelta;
 
@@ -162,6 +315,14 @@ namespace NEAT.Genetic.Tracker
             Mutation_WeightRandom = mutate_weightRandom;
 
             Mutation_WeightShift = mutate_weightShift;
+
+
+            Probability_MutateLink = probability_mutateLink;
+            Probability_MutateNode = probability_mutateNode;
+            Probability_MutateActivationFunction = probability_mutateActivationFunction;
+            Probability_MutateWeightRandom = probability_mutateWeightRandom;
+            Probability_MutateWeightShift = probability_mutateWeightShift;
+            Probability_MutateLinkToggle = probability_mutateLinkToggle;
 
             #endregion Local Constants
 
@@ -190,19 +351,16 @@ namespace NEAT.Genetic.Tracker
         /// <param name="num_outputNodes">The number of output nodes for every genome.</param>
         /// <param name="random">The random object used for all randomization.</param>
         /// <remarks>
-        /// The local constants are their default values of:
-        /// <list type="bullet">
-        /// <item>MaxNodes: 2^20</item>
-        /// <item>C1: 1  <term/>  C2: 1  <term/>  C3: 0.4</item>
-        /// <item>Uniform_Crossover: true</item>
-        /// <item>Crossover_ScoreDelta: 0.001</item>
-        /// <item>Mutation_WeightRandom: 1</item>
-        /// <item>Mutation_WeightShift: 0.3</item>
-        /// </list>
-        /// TODO update as needed
+        /// Uses the default values for every constant. See <see cref="NEAT.Genetic.Tracker.Pedigree.ConstantDefaults"/>.
         /// </remarks>
         public Pedigree(int num_inputNodes, int num_outputNodes, Random random)
-            : this(num_inputNodes, num_outputNodes, random, (int)Math.Pow(2, 20), 1, 1, .4, true, .001, 1, .3)
+            : this(num_inputNodes, num_outputNodes, random,
+                  ConstantDefaults.Default_MaxNodes, ConstantDefaults.Default_C1, ConstantDefaults.Default_C2, ConstantDefaults.Default_C3,
+                  ConstantDefaults.Default_UniformCrossover, ConstantDefaults.Default_CrossoverScoreDelta,
+                  ConstantDefaults.Default_MutationWeightRandom, ConstantDefaults.Default_MutationWeightShift,
+
+                  ConstantDefaults.Default_ProbabilityMutateLink, ConstantDefaults.Default_ProbabilityMutateNode, ConstantDefaults.Default_ProbabilityMutateActivationFunction,
+                  ConstantDefaults.Default_ProbabilityMutateWeightRandom, ConstantDefaults.Default_ProbabilityMutateWeightShift, ConstantDefaults.Default_ProbabilityMutateLinkToggle)
         {
 
         }

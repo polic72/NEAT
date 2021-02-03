@@ -188,14 +188,14 @@ namespace NEAT.Genetic
         /// <remarks>
         /// When the given scores are equal, use the following rules:
         /// <list type="bullet">
-        /// <item>On similar connection genes: See <see cref="NEAT.Genetic.Genome.Uniform_Crossover"/>.</item>
+        /// <item>On similar connection genes: See <see cref="NEAT.Genetic.Tracker.Pedigree.UniformCrossover"/>.</item>
         /// <item>On disjoint connection genes: Adds all to the created genome.</item>
         /// <item>On excess connection genes: Adds all to the created genome.</item>
         /// </list>
         /// 
         /// When the given scores are not equal, use the following rules:
         /// <list type="bullet">
-        /// <item>On similar connection genes: See <see cref="NEAT.Genetic.Genome.Uniform_Crossover"/>.</item>
+        /// <item>On similar connection genes: See <see cref="NEAT.Genetic.Tracker.Pedigree.UniformCrossover"/>.</item>
         /// <item>On disjoint connection genes: Adds genes from parent with higher score.</item>
         /// <item>On excess connection genes: Adds genes from parent with higher score.</item>
         /// </list>
@@ -234,7 +234,7 @@ namespace NEAT.Genetic
                     enumerator_me.MoveNext();
                     enumerator_them.MoveNext();
 
-                    if (Pedigree.Uniform_Crossover)
+                    if (Pedigree.UniformCrossover)
                     {
                         if (random.NextDouble() < .5)
                         {
@@ -344,6 +344,43 @@ namespace NEAT.Genetic
         #region Mutate
 
         /// <summary>
+        /// Possibly mutates the genome in every mutation possibility. The probabilities are determined by the constants in <see cref="NEAT.Genetic.Tracker.Pedigree"/>.
+        /// </summary>
+        public void Mutate()
+        {
+            if (Pedigree.Probability_MutateLink > Random.NextDouble())
+            {
+                Mutate_Link();
+            }
+
+            if (Pedigree.Probability_MutateNode > Random.NextDouble())
+            {
+                Mutate_Node();
+            }
+
+            if (Pedigree.Probability_MutateActivationFunction > Random.NextDouble())
+            {
+                Mutate_ActivationFunction();
+            }
+
+            if (Pedigree.Probability_MutateWeightRandom > Random.NextDouble())
+            {
+                Mutate_WeightRandom();
+            }
+
+            if (Pedigree.Probability_MutateWeightShift > Random.NextDouble())
+            {
+                Mutate_WeightShift();
+            }
+
+            if (Pedigree.Probability_MutateLinkToggle > Random.NextDouble())
+            {
+                Mutate_LinkToggle();
+            }
+        }
+
+
+        /// <summary>
         /// Mutates the genome by creating a new connection. 
         /// </summary>
         public void Mutate_Link()
@@ -375,6 +412,12 @@ namespace NEAT.Genetic
         /// </summary>
         public void Mutate_Node()
         {
+            if (NodeGenes.Count >= Pedigree.MaxNodes)
+            {
+                return; //Do nothing if we have max nodes.
+            }
+
+
             ConnectionGene connectionGene = ConnectionGenes.RandomValue().Take(1).ElementAt(0);
 
             if (connectionGene == null)
@@ -413,20 +456,6 @@ namespace NEAT.Genetic
 
 
         /// <summary>
-        /// Mutates a random connection by shifting its weight up or down by a radom value.
-        /// </summary>
-        public void Mutate_WeightShift()
-        {
-            ConnectionGene connectionGene = ConnectionGenes.RandomValue().Take(1).ElementAt(0);
-
-            if (connectionGene != null)
-            {
-                connectionGene.Weight = connectionGene.Weight + Pedigree.Mutation_WeightShift * (Random.NextDouble() * 2 - 1);
-            }
-        }
-
-
-        /// <summary>
         /// Mutates a random connection by radomizing its weight.
         /// </summary>
         public void Mutate_WeightRandom()
@@ -436,6 +465,20 @@ namespace NEAT.Genetic
             if (connectionGene != null)
             {
                 connectionGene.Weight = Pedigree.Mutation_WeightRandom * (Random.NextDouble() * 2 - 1);
+            }
+        }
+
+
+        /// <summary>
+        /// Mutates a random connection by shifting its weight up or down by a radom value.
+        /// </summary>
+        public void Mutate_WeightShift()
+        {
+            ConnectionGene connectionGene = ConnectionGenes.RandomValue().Take(1).ElementAt(0);
+
+            if (connectionGene != null)
+            {
+                connectionGene.Weight = connectionGene.Weight + Pedigree.Mutation_WeightShift * (Random.NextDouble() * 2 - 1);
             }
         }
 
