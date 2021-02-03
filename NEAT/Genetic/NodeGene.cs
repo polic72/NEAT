@@ -133,5 +133,15 @@ namespace NEAT.Genetic
 
             return !left.Equals(right);
         }
+
+
+        /// <summary>
+        /// String representation of this node gene.
+        /// </summary>
+        /// <returns>String representation of this node gene.</returns>
+        public override string ToString()
+        {
+            return NodeGenePattern.ToString() + ", ActFunc: " + ActivationFunction.Method.Name;
+        }
     }
 }

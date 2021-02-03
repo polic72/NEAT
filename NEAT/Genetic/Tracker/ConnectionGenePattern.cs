@@ -146,5 +146,15 @@ namespace NEAT.Genetic.Tracker
 
             return !left.Equals(right);
         }
+
+
+        /// <summary>
+        /// String representation of this connection gene pattern.
+        /// </summary>
+        /// <returns>String representation of this connection gene pattern.</returns>
+        public override string ToString()
+        {
+            return base.ToString() + ", From: {" + From.ToString() + "}, To: {" + To.ToString() + "}, RepNum: " + ReplacingNumber;
+        }
     }
 }

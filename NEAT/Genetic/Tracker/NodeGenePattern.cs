@@ -106,5 +106,15 @@ namespace NEAT.Genetic.Tracker
 
             return !left.Equals(right);
         }
+
+
+        /// <summary>
+        /// String representation of this node gene pattern.
+        /// </summary>
+        /// <returns>String representation of this node gene pattern.</returns>
+        public override string ToString()
+        {
+            return base.ToString() + ", X: " + X.ToString();
+        }
     }
 }

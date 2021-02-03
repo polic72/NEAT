@@ -146,5 +146,15 @@ namespace NEAT.Genetic
 
             return !left.Equals(right);
         }
+
+
+        /// <summary>
+        /// String representation of this connection gene.
+        /// </summary>
+        /// <returns>String representation of this connection gene.</returns>
+        public override string ToString()
+        {
+            return ConnectionGenePattern.ToString() + ", Weight: " + Weight.ToString() + ", Enabled: " + Enabled.ToString();
+        }
     }
 }

@@ -64,5 +64,15 @@ namespace NEAT.Genetic.Tracker
                 return 0;
             }
         }
+
+
+        /// <summary>
+        /// String representation of this gene pattern.
+        /// </summary>
+        /// <returns>String representation of this gene pattern.</returns>
+        public override string ToString()
+        {
+            return "InNum: " + InnovationNumber;
+        }
     }
 }
