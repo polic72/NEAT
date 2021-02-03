@@ -10,7 +10,7 @@ using NEAT.Neural_Network;
 namespace NEAT.Speciation
 {
     /// <summary>
-    /// 
+    /// An individual organism that has its own genome, has a fitness score, and belongs to a species.
     /// </summary>
     public class Organism
     {
@@ -34,7 +34,7 @@ namespace NEAT.Speciation
         /// <summary>
         /// The fitness score of this organism.
         /// </summary>
-        public double Score { get; set; }
+        public double FitnessScore { get; set; }
 
         /// <summary>
         /// The species this organism belongs to.

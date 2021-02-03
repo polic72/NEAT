@@ -35,6 +35,10 @@ namespace NEAT
             Genome genome_3 = genome_1.Crossover(genome_2);
 
 
+            NeuralNetwork neuralNetwork = new NeuralNetwork(genome_3);
+
+            double[] output = neuralNetwork.FeedForward(new double[] { .6, .7, .5, .5 });
+
             Console.WriteLine(genome_1.Distance(genome_2));
 
 			Console.ReadKey();
