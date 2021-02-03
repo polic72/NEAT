@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using NEAT.Neural_Network;
 using NEAT.Genetic;
+using NEAT.Genetic.Tracker;
 
 namespace NEAT
 {
@@ -13,31 +14,17 @@ namespace NEAT
     {
         public static void Main(string[] args)
         {
-            SortedDictionary<int, string> sd = new SortedDictionary<int, string>();
+            Pedigree pedigree = new Pedigree(4, 1, new Random(42));
 
-            sd.Add(2, "2");
-            sd.Add(6, "6");
-            sd.Add(3, "3");
-            sd.Add(4, "4");
-            sd.Add(8, "8");
-            sd.Add(5, "5");
-            sd.Add(7, "7");
-            sd.Add(1, "1");
+            Genome genome = pedigree.CreateGenome();
 
-            SortedDictionary<int, string>.ValueCollection.Enumerator enumerator = sd.Values.GetEnumerator();
+            genome.Mutate_Link();
+            genome.Mutate_Link();
 
-            enumerator.MoveNext();
-
-            while (enumerator.Current != null)
-            {
-                Console.WriteLine(enumerator.Current);
-
-                enumerator.MoveNext();
-            }
+            genome.Mutate_Node();
 
 
-            List<string> o = new List<string>();o.Add("efw");
-            Console.WriteLine(o.Contains(null));
+            Console.WriteLine();
 
 			Console.ReadKey();
         }

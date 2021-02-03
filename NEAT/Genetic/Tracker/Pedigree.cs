@@ -335,7 +335,7 @@ namespace NEAT.Genetic.Tracker
             }
 
 
-            for (int i = 1; i <= Num_InputNodes; ++i)
+            for (int i = 1; i <= Num_OutputNodes; ++i)
             {
                 nodeGenePatterns.Add(i + Num_InputNodes, new NodeGenePattern(this, i + Num_InputNodes, Node.OUTPUT_X));
             }

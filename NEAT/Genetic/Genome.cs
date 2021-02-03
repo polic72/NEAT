@@ -391,6 +391,12 @@ namespace NEAT.Genetic
 
             IEnumerable<NodeGene> temp_subset = NodeGenes.Values.Where(a => a.NodeGenePattern.X > nodeGene_a.NodeGenePattern.X);
 
+            if (temp_subset.Count() == 0)
+            {
+                return; //TODO handle this too
+            }
+
+
             NodeGene nodeGene_b = temp_subset.ElementAt(Random.Next(temp_subset.Count()));  //Get a random gene with a higher X value.
 
 
