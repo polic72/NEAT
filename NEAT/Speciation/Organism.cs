@@ -48,8 +48,12 @@ namespace NEAT.Speciation
         /// Constructs an organism with the given genome that it contains.
         /// </summary>
         /// <param name="genome">The genome of the organism.</param>
+        /// <exception cref="ArgumentNullException">When the genome is null.</exception>
         public Organism(Genome genome)
         {
+            Helpers.ThrowOnNull(genome, "genome");
+
+
             Genome = genome;
 
             NeuralNetwork = new NeuralNetwork(Genome);

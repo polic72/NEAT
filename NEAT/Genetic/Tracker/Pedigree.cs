@@ -248,7 +248,7 @@ namespace NEAT.Genetic.Tracker
         #region Constructors
 
         /// <summary>
-        /// Constructs a pedigree with the given initial max replacing number and every local constant. Adds Sigmoid and ReLU to known activation functions.
+        /// Constructs a pedigree with the given input/output node counts and every local constant. Adds bias node. Adds Sigmoid and ReLU to known activation functions.
         /// </summary>
         /// <param name="num_inputNodes">The number of input nodes for every genome.</param>
         /// <param name="num_outputNodes">The number of output nodes for every genome.</param>
@@ -287,7 +287,7 @@ namespace NEAT.Genetic.Tracker
             Random = random;
 
 
-            max_replacingNumber = Num_InputNodes + Num_OutputNodes + 1;
+            max_replacingNumber = Num_InputNodes + Num_OutputNodes + 2; //+1 for the bias node, another +1 to not overwrite the last output node.
 
 
             known_activationFunctions = new List<Node.ActivationFunction>();
@@ -329,13 +329,13 @@ namespace NEAT.Genetic.Tracker
 
             #region Node Initialization
 
-            for (int i = 1; i <= Num_InputNodes; ++i)
+            for (int i = 1; i <= Num_InputNodes + 1; ++i)
             {
                 nodeGenePatterns.Add(i, new NodeGenePattern(this, i, Node.INPUT_X));
             }
 
 
-            for (int i = 1; i <= Num_OutputNodes; ++i)
+            for (int i = 2; i <= Num_OutputNodes + 1; ++i)  //Both initial and final are +1 to handle the bias node.
             {
                 nodeGenePatterns.Add(i + Num_InputNodes, new NodeGenePattern(this, i + Num_InputNodes, Node.OUTPUT_X));
             }
@@ -345,7 +345,7 @@ namespace NEAT.Genetic.Tracker
 
 
         /// <summary>
-        /// Constructs a pedigree with the given initial max replacing number. Adds Sigmoid and ReLU to known activation functions.
+        /// Constructs a pedigree with the given input/output node counts. Adds bias node. Adds Sigmoid and ReLU to known activation functions.
         /// </summary>
         /// <param name="num_inputNodes">The number of input nodes for every genome.</param>
         /// <param name="num_outputNodes">The number of output nodes for every genome.</param>
@@ -378,7 +378,7 @@ namespace NEAT.Genetic.Tracker
         {
             Genome genome = new Genome(this, Random);
 
-            for (int i = 1; i <= (Num_InputNodes + Num_OutputNodes); ++i)
+            for (int i = 1; i <= (Num_InputNodes + Num_OutputNodes + 1); ++i)   //The +1 handles the bias node.
             {
                 genome.NodeGenes.Add(i, new NodeGene(nodeGenePatterns[i]));
             }

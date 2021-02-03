@@ -19,19 +19,23 @@ namespace NEAT.Neural_Network
     {
         /// <summary>
         /// The input nodes of the neural network. Do not insert or delete!
-        /// TODO consider adding deticated bias node to NeuralNetwork class
         /// </summary>
-        protected List<Node> input_nodes = new List<Node>();
+        protected readonly List<Node> input_nodes = new List<Node>();
+
+        /// <summary>
+        /// The bias node of the neural network.
+        /// </summary>
+        protected readonly Node bias_node;
 
         /// <summary>
         /// The hidden nodes of the neural network. Do not insert or delete! Reset after each get of Output.
         /// </summary>
-        protected List<Node> output_nodes = new List<Node>();
+        protected readonly List<Node> output_nodes = new List<Node>();
 
         /// <summary>
         /// The output nodes of the neural network. Do not insert or delete! Reset after each get of Output.
         /// </summary>
-        protected List<Node> hidden_nodes = new List<Node>();
+        protected readonly List<Node> hidden_nodes = new List<Node>();
 
 
         #region Constructors
@@ -41,12 +45,17 @@ namespace NEAT.Neural_Network
         /// </summary>
         /// <param name="genome">The genome with all of the genes to create a neural network.</param>
         /// <exception cref="ArgumentNullException">When the genome is null.</exception>
+        /// <remarks>
+        /// The bias node is the last input node.
+        /// </remarks>
         public NeuralNetwork(Genome genome)
         {
             Helpers.ThrowOnNull(genome, "genome");
 
 
-            Dictionary<int, Node> temp_nodes = new Dictionary<int, Node>(); //Temporary holder to for creating connections.
+            Dictionary<int, Node> temp_nodes = new Dictionary<int, Node>(); //Temporary holder for creating connections.
+
+            Node temp_biasNode = null;
 
             foreach (NodeGene nodeGene in genome.NodeGenes.Values)
             {
@@ -57,6 +66,8 @@ namespace NEAT.Neural_Network
                 if (node.X == 0)
                 {
                     input_nodes.Add(node);
+
+                    temp_biasNode = node;   //These nodes are sorted by innovation number, we can take advantage of this so the last known input node is the bias node.
                 }
                 else if (node.X == 1)
                 {
@@ -67,6 +78,12 @@ namespace NEAT.Neural_Network
                     hidden_nodes.Add(node);
                 }
             }
+
+
+            input_nodes.Remove(temp_biasNode);  //The bias node is in the input nodes, and should not be.
+
+            bias_node = temp_biasNode;
+            bias_node.SetOutput(1); //The bias node will always have an output of 1.
 
 
             hidden_nodes.Sort();    //Sorts by X thanks to Node.CompareTo(). This needs to happen so each hidden layer outputs in correct order.

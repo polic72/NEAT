@@ -20,7 +20,7 @@ namespace NEAT.Genetic
     /// <para/>
     /// Excess: A gene is excess if it doesn't have a neighbor.
     /// </remarks>
-    public class Genome //TODO Consider adding bias node to Genome (absolutely do)
+    public class Genome
     {
         #region Properties
 
@@ -305,8 +305,8 @@ namespace NEAT.Genetic
 
             #region NodeGenes
 
-            //Input/Output nodes.
-            for (int i = 1; i <= Pedigree.Num_InputNodes + Pedigree.Num_OutputNodes; ++i)
+            //Input/Output nodes and bias node.
+            for (int i = 1; i <= Pedigree.Num_InputNodes + Pedigree.Num_OutputNodes + 1; ++i)   //The +1 handles the bias node.
             {
                 created_genome.NodeGenes.Add(i, NodeGenes[i]);
             }
@@ -469,7 +469,7 @@ namespace NEAT.Genetic
             {
                 return; //Do nothing if we have max nodes.
             }
-            else if (NodeGenes.Count == 0)
+            else if (ConnectionGenes.Count == 0)
             {
                 return; //Literally cannot make a node.
             }
