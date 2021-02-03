@@ -376,37 +376,54 @@ namespace NEAT.Genetic
         /// <summary>
         /// Possibly mutates the genome in every mutation possibility. The probabilities are determined by the constants in <see cref="NEAT.Genetic.Tracker.Pedigree"/>.
         /// </summary>
-        public void Mutate()
+        /// <returns>True if any mutation occured. False otherwise.</returns>
+        public bool Mutate()
         {
+            bool any_changes = false;
+
             if (Pedigree.Probability_MutateLink > Random.NextDouble())
             {
                 Mutate_Link();
+
+                any_changes = true;
             }
 
             if (Pedigree.Probability_MutateNode > Random.NextDouble())
             {
                 Mutate_Node();
+
+                any_changes = true;
             }
 
             if (Pedigree.Probability_MutateActivationFunction > Random.NextDouble())
             {
                 Mutate_ActivationFunction();
+
+                any_changes = true;
             }
 
             if (Pedigree.Probability_MutateWeightRandom > Random.NextDouble())
             {
                 Mutate_WeightRandom();
+
+                any_changes = true;
             }
 
             if (Pedigree.Probability_MutateWeightShift > Random.NextDouble())
             {
                 Mutate_WeightShift();
+
+                any_changes = true;
             }
 
             if (Pedigree.Probability_MutateLinkToggle > Random.NextDouble())
             {
                 Mutate_LinkToggle();
+
+                any_changes = true;
             }
+
+            return any_changes;
         }
 
 
