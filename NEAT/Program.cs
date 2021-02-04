@@ -64,6 +64,9 @@ namespace NEAT
 
             client.Speciate();
 
+
+            Console.WriteLine(client.Organisms[0].Genome.Distance(client.Organisms[1].Genome));
+
             #endregion NEATClient Test
 
 

@@ -192,7 +192,7 @@ namespace NEAT
 
                         foreach (Species other_species in all_other_species)
                         {
-                            Organism other_random_organism = species.GetRandomOrganism(Pedigree.Random);    //No need to exclude the organism because it can't be here.
+                            Organism other_random_organism = other_species.GetRandomOrganism(Pedigree.Random);    //No need to exclude the organism because it can't be here.
 
                             if (organism.Genome.Distance(other_random_organism.Genome) < CompatibilityDistance) //The organism can fit in another species, put it there.
                             {
@@ -222,7 +222,7 @@ namespace NEAT
                     {
                         if (organism.Species != random_organism.Species)    //If the species to set is actually different.
                         {
-                            organism.Species.RemoveOrganism(organism);
+                            organism.Species?.RemoveOrganism(organism);
 
                             species.AddOrganism(organism);
                         }
@@ -234,7 +234,7 @@ namespace NEAT
 
                 if (!found_species)
                 {
-                    organism.Species.RemoveOrganism(organism);
+                    organism.Species?.RemoveOrganism(organism);
 
 
                     Species new_species = new Species();
