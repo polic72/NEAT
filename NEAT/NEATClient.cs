@@ -191,7 +191,13 @@ namespace NEAT
 
                     if (organism.Genome.Distance(random_organism.Genome) < CompatibilityDistance)
                     {
-                        species.AddOrganism(organism);
+                        if (organism.Species != random_organism.Species)    //If the species to set is actually different.
+                        {
+                            organism.Species.RemoveOrganism(organism);
+
+
+                            species.AddOrganism(organism);
+                        }
 
                         found_species = true;
                         break;
