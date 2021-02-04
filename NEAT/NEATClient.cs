@@ -156,8 +156,8 @@ namespace NEAT
 
 
         /// <summary>
-        /// Constructs a NEAT client with the given pedigree and number of organisms. Uses 4 for the initial compatibility distance and <see cref="NEAT.NEATClient.NERO_CD_Function(int)"/> 
-        /// for the CompatibilityDistanceFunction.
+        /// Constructs a NEAT client with the given pedigree and number of organisms. Uses 4 for the initial compatibility distance and 
+        /// <see cref="NEAT.NEATClient.NERO_CD_Function(int)"/> for the CompatibilityDistanceFunction.
         /// </summary>
         /// <param name="pedigree">The pedigree used to track all genes in this NEAT client.</param>
         /// <param name="numOrganisms">The total number of organisms this NEAT client will train.</param>
@@ -183,18 +183,46 @@ namespace NEAT
                 {
                     Organism random_organism = species.GetRandomOrganism(Pedigree.Random, organism);
 
-                    if (random_organism == null)    //The organism we're at is the only organism in the species we're at. Leave it in this species.
+
+                    if (random_organism == null)    //The organism we're at is the only organism in the species we're at. See if we should leave it in this species.
                     {
+                        bool kill_species = false;
+
+                        IEnumerable<Species> all_other_species = Species.Where(x => x != species);
+
+                        foreach (Species other_species in all_other_species)
+                        {
+                            Organism other_random_organism = species.GetRandomOrganism(Pedigree.Random);    //No need to exclude the organism because it can't be here.
+
+                            if (organism.Genome.Distance(other_random_organism.Genome) < CompatibilityDistance) //The organism can fit in another species, put it there.
+                            {
+                                organism.Species.RemoveOrganism(organism);
+
+                                other_species.AddOrganism(organism);
+
+
+                                kill_species = true;
+                                break;
+                            }
+                        }
+
+
+                        if (kill_species)   //This species no longer has any organisms, it is now extinct.
+                        {
+                            Species.Remove(species);
+                        }
+
+
                         found_species = true;
                         break;
                     }
+
 
                     if (organism.Genome.Distance(random_organism.Genome) < CompatibilityDistance)
                     {
                         if (organism.Species != random_organism.Species)    //If the species to set is actually different.
                         {
                             organism.Species.RemoveOrganism(organism);
-
 
                             species.AddOrganism(organism);
                         }
