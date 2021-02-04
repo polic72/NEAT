@@ -146,12 +146,7 @@ namespace NEAT
 
             Species.Add(first_species);
 
-            //foreach (Organism organism in Organisms)
-            //{
-            //    Species.First.Value.AddOrganism(organism);
-            //}
-
-            first_species.AddOrganism(Organisms[0]);
+            first_species.AddOrganism(Organisms[0]);    //Prepares first species to house every organism.
 
 
             Speciate();
