@@ -73,6 +73,7 @@
     <Compile Include="Genetic\NodeGene.cs" />
     <Compile Include="Genetic\Tracker\NodeGenePattern.cs" />
     <Compile Include="Helpers.cs" />
+    <Compile Include="NEATClient.cs" />
     <Compile Include="Neural Network\Connection.cs" />
     <Compile Include="Genetic\Genome.cs" />
     <Compile Include="Neural Network\NeuralNetwork.cs" />

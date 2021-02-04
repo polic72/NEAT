@@ -14,34 +14,48 @@ namespace NEAT
     {
         public static void Main(string[] args)
         {
+            #region Pedigree Test
+
+            //Pedigree pedigree = new Pedigree(4, 1, new Random(42));
+
+            //Genome genome_1 = pedigree.CreateGenome();
+
+            //genome_1.Mutate_Link();
+            //genome_1.Mutate_Link();
+
+            //genome_1.Mutate_Node();
+
+
+            //Genome genome_2 = pedigree.CreateGenome();
+
+            //genome_2.Mutate_Link();
+            //genome_2.Mutate_Link();
+
+            //genome_2.Mutate_Node();
+
+
+            //Genome genome_3 = genome_1.Crossover(genome_2);
+
+
+            //NeuralNetwork neuralNetwork = new NeuralNetwork(genome_3);
+
+            //double[] output = neuralNetwork.FeedForward(new double[] { .6, .7, .5, .5 });
+
+            //Console.WriteLine(genome_1.Distance(genome_2));
+
+            #endregion Pedigree Test
+
+
+            #region NEATClient Test
+
             Pedigree pedigree = new Pedigree(4, 1, new Random(42));
 
-            Genome genome_1 = pedigree.CreateGenome();
+            NEATClient client = new NEATClient(pedigree, 10);
 
-            genome_1.Mutate_Link();
-            genome_1.Mutate_Link();
-
-            genome_1.Mutate_Node();
+            #endregion NEATClient Test
 
 
-            Genome genome_2 = pedigree.CreateGenome();
-
-            genome_2.Mutate_Link();
-            genome_2.Mutate_Link();
-
-            genome_2.Mutate_Node();
-
-
-            Genome genome_3 = genome_1.Crossover(genome_2);
-
-
-            NeuralNetwork neuralNetwork = new NeuralNetwork(genome_3);
-
-            double[] output = neuralNetwork.FeedForward(new double[] { .6, .7, .5, .5 });
-
-            Console.WriteLine(genome_1.Distance(genome_2));
-
-			Console.ReadKey();
+            Console.ReadKey();
         }
     }
 }

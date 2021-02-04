@@ -11,10 +11,12 @@ namespace NEAT.Speciation
     /// </summary>
     public class Species
     {
+        #region Properties
+
         /// <summary>
         /// The stored organisms in this species.
         /// </summary>
-        public HashSet<Organism> Organisms { get; }
+        protected HashSet<Organism> Organisms { get; }
 
 
         /// <summary>
@@ -24,12 +26,61 @@ namespace NEAT.Speciation
 
 
         /// <summary>
+        /// The number of organisms in this species.
+        /// </summary>
+        public int Size => Organisms.Count;
+
+        #endregion Properties
+
+
+        /// <summary>
         /// Constructs a species.
         /// </summary>
         public Species()
         {
             Organisms = new HashSet<Organism>();
         }
+
+
+        #region Organisms
+
+        /// <summary>
+        /// Adds this organism to the species. Sets the <see cref="NEAT.Speciation.Organism.Species"/> propterty to this species.
+        /// </summary>
+        /// <param name="organism">The organism to add.</param>
+        /// <returns>False if the organism is already present, therefore not added. True otherwise.</returns>
+        public bool AddOrganism(Organism organism)
+        {
+            organism.Species = this;
+
+            return Organisms.Add(organism);
+        }
+
+
+        /// <summary>
+        /// Removes this organism from the species. Sets the <see cref="NEAT.Speciation.Organism.Species"/> propterty to null.
+        /// </summary>
+        /// <param name="organism">The organism to remove.</param>
+        /// <returns>True if the organism is already present, therefore removed. False otherwise.</returns>
+        public bool RemoveOrganism(Organism organism)
+        {
+            organism.Species = null;
+
+            return Organisms.Remove(organism);
+        }
+
+
+        /// <summary>
+        /// Tells whether or not the given organism is in this species.
+        /// </summary>
+        /// <param name="organism">The organism to check.</param>
+        /// <returns>True if the organism is present. False otherwise.</returns>
+        public bool ContainsOrganism(Organism organism)
+        {
+            return Organisms.Contains(organism);
+        }
+
+        #endregion Organisms
 
 
         /// <summary>
