@@ -80,6 +80,29 @@ namespace NEAT.Speciation
             return Organisms.Contains(organism);
         }
 
+
+        /// <summary>
+        /// Gets a random organism.
+        /// </summary>
+        /// <param name="random">The random object to use.</param>
+        /// <returns>A random organism.</returns>
+        public Organism GetRandomOrganism(Random random)
+        {
+            return Organisms.RandomValue(random);
+        }
+
+
+        /// <summary>
+        /// Gets a random organism excluding the given organism.
+        /// </summary>
+        /// <param name="random">The random object to use.</param>
+        /// <param name="excluding_organism">The organism to exclude from the search.</param>
+        /// <returns>A random organism.</returns>
+        public Organism GetRandomOrganism(Random random, Organism excluding_organism)
+        {
+            return Organisms.RandomValue(random, excluding_organism);
+        }
+
         #endregion Organisms
 
 

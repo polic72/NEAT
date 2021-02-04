@@ -36,7 +36,7 @@ namespace NEAT
         /// <summary>
         /// All of the species tracked in this NEAT client.
         /// </summary>
-        public LinkedList<Species> Species { get; }
+        public HashSet<Species> Species { get; }
 
 
         /// <summary>
@@ -122,7 +122,7 @@ namespace NEAT
 
             Organisms = new List<Organism>(numOrganisms);
 
-            Species = new LinkedList<Species>();
+            Species = new HashSet<Species>();
 
 
             CompatibilityDistance = compatibility_distance;
@@ -134,18 +134,24 @@ namespace NEAT
 
             #region Initial Conditions
 
+            //Create organisms:
             for (int i = 0; i < NumOrganisms; ++i)
             {
                 Organisms.Add(new Organism(Pedigree.CreateGenome()));
             }
 
 
-            Species.AddLast(new Species());
+            //Create Species:
+            Species first_species = new Species();
 
-            foreach (Organism organism in Organisms)
-            {
-                Species.First.Value.AddOrganism(organism);
-            }
+            Species.Add(first_species);
+
+            //foreach (Organism organism in Organisms)
+            //{
+            //    Species.First.Value.AddOrganism(organism);
+            //}
+
+            first_species.AddOrganism(Organisms[0]);
 
 
             Speciate();
@@ -158,8 +164,8 @@ namespace NEAT
         /// Constructs a NEAT client with the given pedigree and number of organisms. Uses 4 for the initial compatibility distance and <see cref="NEAT.NEATClient.NERO_CD_Function(int)"/> 
         /// for the CompatibilityDistanceFunction.
         /// </summary>
-        /// <param name="pedigree"></param>
-        /// <param name="numOrganisms"></param>
+        /// <param name="pedigree">The pedigree used to track all genes in this NEAT client.</param>
+        /// <param name="numOrganisms">The total number of organisms this NEAT client will train.</param>
         public NEATClient(Pedigree pedigree, int numOrganisms)
             : this(pedigree, numOrganisms, 4, NERO_CD_Function)
         {
@@ -172,9 +178,43 @@ namespace NEAT
         /// <summary>
         /// Separates the current organisms into the correct species. Makes new species as needed.
         /// </summary>
-        protected void Speciate()
+        public void Speciate()
         {
+            foreach (Organism organism in Organisms)
+            {
+                bool found_species = false;
 
+                foreach (Species species in Species)
+                {
+                    Organism random_organism = species.GetRandomOrganism(Pedigree.Random, organism);
+
+                    if (random_organism == null)    //The organism we're at is the only organism in the species we're at. Leave it in this species.
+                    {
+                        found_species = true;
+                        break;
+                    }
+
+                    if (organism.Genome.Distance(random_organism.Genome) < CompatibilityDistance)
+                    {
+                        species.AddOrganism(organism);
+
+                        found_species = true;
+                        break;
+                    }
+                }
+
+                if (!found_species)
+                {
+                    organism.Species.RemoveOrganism(organism);
+
+
+                    Species new_species = new Species();
+
+                    Species.Add(new_species);
+
+                    new_species.AddOrganism(organism);
+                }
+            }
         }
     }
 }

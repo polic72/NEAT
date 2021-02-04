@@ -92,7 +92,7 @@ namespace NEAT.Genetic
         /// </summary>
         /// <param name="left">The left node gene to test.</param>
         /// <param name="right">The right node gene to test.</param>
-        /// <returns>True if both node genes have the node gene pattern. False otherwise.</returns>
+        /// <returns>True if both node genes have the same node gene pattern. False otherwise.</returns>
         public static bool operator ==(NodeGene left, NodeGene right)
         {
             if (left is null)

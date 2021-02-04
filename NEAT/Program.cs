@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using NEAT.Neural_Network;
 using NEAT.Genetic;
 using NEAT.Genetic.Tracker;
+using NEAT.Speciation;
 
 namespace NEAT
 {
@@ -50,7 +51,18 @@ namespace NEAT
 
             Pedigree pedigree = new Pedigree(4, 1, new Random(42));
 
-            NEATClient client = new NEATClient(pedigree, 10);
+            NEATClient client = new NEATClient(pedigree, 2);
+
+            IEnumerable<Organism> oh = client.Organisms.Where(x => x != client.Organisms[0]);
+
+            client.Organisms[0].Genome.Mutate_Link();
+            client.Organisms[0].Genome.Mutate_Link();
+
+            client.Organisms[0].Genome.Mutate_Node();
+            client.Organisms[0].Genome.Mutate_Node();
+            client.Organisms[0].Genome.Mutate_Node();
+
+            client.Speciate();
 
             #endregion NEATClient Test
 
