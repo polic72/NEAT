@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using NEAT.Genetic.Tracker;
 using NEAT.Speciation;
 using NEAT.Genetic;
+using NEAT.Neural_Network;
 
 namespace NEAT
 {
@@ -101,6 +102,24 @@ namespace NEAT
         #endregion CompatibilityDistanceFunction
 
 
+        #region EvaluationFunction
+
+        /// <summary>
+        /// The delegate of how organisms' neural networks are evaluated and given a fitness.
+        /// </summary>
+        /// <param name="neuralNetwork">The neural network to evaluate.</param>
+        /// <returns>The fitness score of the given neural network.</returns>
+        public delegate double EvaluateFunction(NeuralNetwork neuralNetwork);
+
+
+        /// <summary>
+        /// The used EvaluateFunction.
+        /// </summary>
+        protected EvaluateFunction evaluateFunction;
+
+        #endregion EvaluationFunction
+
+
         #region Constructors
 
         /// <summary>
@@ -108,10 +127,11 @@ namespace NEAT
         /// </summary>
         /// <param name="pedigree">The pedigree used to track all genes in this NEAT client.</param>
         /// <param name="numOrganisms">The total number of organisms this NEAT client will train.</param>
+        /// <param name="evaluateFunction">The function to evaluate organisms' neural networks and give them a fitness score.</param>
         /// <param name="compatibility_distance">The initial compatibility distance.</param>
         /// <param name="CD_function">The function to adjust the compatibility distance by. Good options are the <see cref="NEAT.NEATClient.NERO_CD_Function(int)"/> and the 
         /// <see cref="NEAT.NEATClient.Constant_CD_Function(int)"/></param>
-        public NEATClient(Pedigree pedigree, int numOrganisms, double compatibility_distance, CompatibilityDistanceFunction CD_function)
+        public NEATClient(Pedigree pedigree, int numOrganisms, EvaluateFunction evaluateFunction, double compatibility_distance, CompatibilityDistanceFunction CD_function)
         {
             #region Internal Setters
 
@@ -123,6 +143,9 @@ namespace NEAT
             Organisms = new List<Organism>(numOrganisms);
 
             Species = new HashSet<Species>();
+
+
+            this.evaluateFunction = evaluateFunction;
 
 
             CompatibilityDistance = compatibility_distance;
@@ -161,8 +184,9 @@ namespace NEAT
         /// </summary>
         /// <param name="pedigree">The pedigree used to track all genes in this NEAT client.</param>
         /// <param name="numOrganisms">The total number of organisms this NEAT client will train.</param>
-        public NEATClient(Pedigree pedigree, int numOrganisms)
-            : this(pedigree, numOrganisms, 4, NERO_CD_Function)
+        /// <param name="evaluateFunction">The function to evaluate organisms' neural networks and give them a fitness score.</param>
+        public NEATClient(Pedigree pedigree, int numOrganisms, EvaluateFunction evaluateFunction)
+            : this(pedigree, numOrganisms, evaluateFunction, 4, NERO_CD_Function)
         {
 
         }
@@ -173,7 +197,7 @@ namespace NEAT
         /// <summary>
         /// Separates the current organisms into the correct species. Makes new species as needed.
         /// </summary>
-        public void Speciate()
+        protected void Speciate()
         {
             foreach (Organism organism in Organisms)
             {
@@ -244,6 +268,30 @@ namespace NEAT
                     new_species.AddOrganism(organism);
                 }
             }
+        }
+
+
+        /// <summary>
+        /// Evaluates the scores of every organism and species.
+        /// </summary>
+        protected void EvaluateScores()
+        {
+            foreach (Organism organism in Organisms)
+            {
+                organism.FitnessScore = evaluateFunction(organism.NeuralNetwork);
+            }
+
+
+            foreach (Species species in Species)
+            {
+                species.CalculateFitnessScore();
+            }
+        }
+
+
+        protected void Kill()
+        {
+
         }
     }
 }

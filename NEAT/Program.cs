@@ -62,7 +62,7 @@ namespace NEAT
             client.Organisms[0].Genome.Mutate_Node();
             client.Organisms[0].Genome.Mutate_Node();
 
-            client.Speciate();
+            //client.Speciate();
 
 
             Console.WriteLine(client.Organisms[0].Genome.Distance(client.Organisms[1].Genome));
