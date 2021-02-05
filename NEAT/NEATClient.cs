@@ -323,7 +323,7 @@ namespace NEAT
                 {
                     if (organism.Genome.Distance(other_organism.Genome) < CompatibilityDistance)
                     {
-                        sharing_sum++;
+                        ++sharing_sum;
                     }
                 }
 

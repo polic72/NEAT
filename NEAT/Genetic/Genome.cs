@@ -123,27 +123,27 @@ namespace NEAT.Genetic
 
                 if (inNum_me == inNum_them) //Similar genes.
                 {
-                    index_me++;
-                    index_them++;
+                    ++index_me;
+                    ++index_them;
                     enumerator_me.MoveNext();
                     enumerator_them.MoveNext();
 
-                    num_similar++;
+                    ++num_similar;
                     weight_diff += Math.Abs(connectionGene_me.Weight - connectionGene_them.Weight);
                 }
                 else if (inNum_me > inNum_them) //Disjoint gene at them, increase them.
                 {
-                    index_them++;
+                    ++index_them;
                     enumerator_them.MoveNext();
 
-                    num_disjoint++;
+                    ++num_disjoint;
                 }
                 else    //Disjoint gene at me, increase me.
                 {
-                    index_me++;
+                    ++index_me;
                     enumerator_me.MoveNext();
 
-                    num_disjoint++;
+                    ++num_disjoint;
                 }
             }
 

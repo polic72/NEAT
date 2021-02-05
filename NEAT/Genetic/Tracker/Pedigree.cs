@@ -467,7 +467,7 @@ namespace NEAT.Genetic.Tracker
 
                 if (choice >= index)
                 {
-                    choice++;
+                    ++choice;
                 }
             }
 
