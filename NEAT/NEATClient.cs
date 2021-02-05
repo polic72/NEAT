@@ -45,6 +45,12 @@ namespace NEAT
         /// </summary>
         public double CompatibilityDistance { get; internal set; }
 
+
+        /// <summary>
+        /// The percentage of organisms that will survive on <see cref="NEAT.NEATClient.Kill"/>.
+        /// </summary>
+        public double SurvivingPercentage { get; }
+
         #endregion Properties
 
 
@@ -123,7 +129,7 @@ namespace NEAT
         #region Constructors
 
         /// <summary>
-        /// Constructs a NEAT client with the given pedigree, number of organisms, and every constant.
+        /// Constructs a NEAT client with the given pedigree, number of organisms, evaluation function, and every constant.
         /// </summary>
         /// <param name="pedigree">The pedigree used to track all genes in this NEAT client.</param>
         /// <param name="numOrganisms">The total number of organisms this NEAT client will train.</param>
@@ -131,7 +137,9 @@ namespace NEAT
         /// <param name="compatibility_distance">The initial compatibility distance.</param>
         /// <param name="CD_function">The function to adjust the compatibility distance by. Good options are the <see cref="NEAT.NEATClient.NERO_CD_Function(int)"/> and the 
         /// <see cref="NEAT.NEATClient.Constant_CD_Function(int)"/></param>
-        public NEATClient(Pedigree pedigree, int numOrganisms, EvaluateFunction evaluateFunction, double compatibility_distance, CompatibilityDistanceFunction CD_function)
+        /// <param name="surviving_percentage">The percentage of organisms that will survive on <see cref="NEAT.NEATClient.Kill"/>.</param>
+        public NEATClient(Pedigree pedigree, int numOrganisms, EvaluateFunction evaluateFunction, double compatibility_distance, CompatibilityDistanceFunction CD_function, 
+            double surviving_percentage)
         {
             #region Internal Setters
 
@@ -151,6 +159,9 @@ namespace NEAT
             CompatibilityDistance = compatibility_distance;
 
             this.CD_function = CD_function;
+
+
+            SurvivingPercentage = surviving_percentage;
 
             #endregion Internal Setters
 
@@ -179,14 +190,14 @@ namespace NEAT
 
 
         /// <summary>
-        /// Constructs a NEAT client with the given pedigree and number of organisms. Uses 4 for the initial compatibility distance and 
-        /// <see cref="NEAT.NEATClient.NERO_CD_Function(int)"/> for the CompatibilityDistanceFunction.
+        /// Constructs a NEAT client with the given pedigree, number of organisms, and evaluation function. Uses 4 for the initial compatibility distance, 
+        /// <see cref="NEAT.NEATClient.NERO_CD_Function(int)"/> for the CompatibilityDistanceFunction, and 0.8 for the survival percentage.
         /// </summary>
         /// <param name="pedigree">The pedigree used to track all genes in this NEAT client.</param>
         /// <param name="numOrganisms">The total number of organisms this NEAT client will train.</param>
         /// <param name="evaluateFunction">The function to evaluate organisms' neural networks and give them a fitness score.</param>
         public NEATClient(Pedigree pedigree, int numOrganisms, EvaluateFunction evaluateFunction)
-            : this(pedigree, numOrganisms, evaluateFunction, 4, NERO_CD_Function)
+            : this(pedigree, numOrganisms, evaluateFunction, 4, NERO_CD_Function, 0.8)
         {
 
         }
@@ -194,12 +205,20 @@ namespace NEAT
         #endregion Constructors
 
 
+
+
         #region Evolution
 
+        public void Evolve()
+        {
+
+        }
+
+
         /// <summary>
-        /// Separates the current organisms into the correct species. Makes new species as needed.
+        /// Separates the current organisms into the correct species. Makes new species as needed. See <see cref="NEAT.NEATClient.Evolve"/> before using!
         /// </summary>
-        protected void Speciate()
+        public void Speciate()
         {
             foreach (Organism organism in Organisms)
             {
@@ -274,7 +293,7 @@ namespace NEAT
 
 
         /// <summary>
-        /// Evaluates the scores of every organism and species. Applies the sharing function to the scores first.
+        /// Evaluates the scores of every organism and species. Applies the sharing function to the scores first. See <see cref="NEAT.NEATClient.Evolve"/> before using!
         /// </summary>
         /// <remarks>
         /// The new fitness (f'i) of organism i is as follows:
@@ -291,7 +310,7 @@ namespace NEAT
         /// <item>n: The total number of stored organisms.</item>
         /// </list>
         /// </remarks>
-        protected void EvaluateScores()
+        public void EvaluateScores()
         {
             foreach (Organism organism in Organisms)
             {
@@ -328,11 +347,25 @@ namespace NEAT
 
 
         /// <summary>
-        /// 
+        /// Kills all of the worst performing organisms. The percentage that will die is 1 - <see cref="NEAT.NEATClient.SurvivingPercentage"/>. 
+        /// See <see cref="NEAT.NEATClient.Evolve"/> before using!
         /// </summary>
-        protected void Kill()
+        public void Kill()
         {
+            Organisms.Sort();   //Sorts the organisms by fitness score, greatest to lowest.
 
+
+            double num_toKill = (1 - SurvivingPercentage) * Organisms.Count;
+
+            for (int i = 0; i < num_toKill; ++i)
+            {
+                Organism organism = Organisms[Organisms.Count - 1];
+
+
+                organism.Species.RemoveOrganism(organism);
+
+                Organisms.RemoveAt(Organisms.Count - 1);
+            }
         }
 
         #endregion Evolution

@@ -12,7 +12,7 @@ namespace NEAT.Speciation
     /// <summary>
     /// An individual organism that has its own genome, has a fitness score, and belongs to a species.
     /// </summary>
-    public class Organism : IEquatable<Organism>
+    public class Organism : IEquatable<Organism>, IComparable<Organism>
     {
         #region Properties
 
@@ -105,6 +105,19 @@ namespace NEAT.Speciation
         public override int GetHashCode()
         {
             return Genome.GetHashCode();
+        }
+
+
+        /// <summary>
+        /// Compares this organism to the given organism. Compares based on fitness score.
+        /// </summary>
+        /// <param name="other">The organism to compare to.</param>
+        /// <returns>This organism's fitness score - the given organism's fitness score. Rounds up if positive, down if negative. Then negates value.</returns>
+        public int CompareTo(Organism other)
+        {
+            double difference = FitnessScore - other.FitnessScore;
+
+            return -(int)(Math.Sign(difference) * Math.Ceiling(Math.Abs(difference)));
         }
 
 
