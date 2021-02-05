@@ -194,6 +194,8 @@ namespace NEAT
         #endregion Constructors
 
 
+        #region Evolution
+
         /// <summary>
         /// Separates the current organisms into the correct species. Makes new species as needed.
         /// </summary>
@@ -272,13 +274,49 @@ namespace NEAT
 
 
         /// <summary>
-        /// Evaluates the scores of every organism and species.
+        /// Evaluates the scores of every organism and species. Applies the sharing function to the scores first.
         /// </summary>
+        /// <remarks>
+        /// The new fitness (f'i) of organism i is as follows:
+        /// <para/>
+        /// f'i = fi / Σ( sh( dist(i, j) ) )| j=i to j=n
+        /// <para/>
+        /// Where:
+        /// <list type="bullet">
+        /// <item>i: The organism at this step.</item>
+        /// <item>fi: The fitness score of organism i returned by the EvaluationFunction.</item>
+        /// <item>sh(): A function that returns 1 when the distance is less than the compatibility distance. 0 otherwise.</item>
+        /// <item>dist(): The genome distance function.</item>
+        /// <item>j: Another organism (never equal to i).</item>
+        /// <item>n: The total number of stored organisms.</item>
+        /// </list>
+        /// </remarks>
         protected void EvaluateScores()
         {
             foreach (Organism organism in Organisms)
             {
-                organism.FitnessScore = evaluateFunction(organism.NeuralNetwork);
+                double initial_fitness = evaluateFunction(organism.NeuralNetwork);
+
+
+                int sharing_sum = 0;
+
+                foreach (Organism other_organism in Organisms.Where(x => x != organism))    //Loop through every other organism.
+                {
+                    if (organism.Genome.Distance(other_organism.Genome) < CompatibilityDistance)
+                    {
+                        sharing_sum++;
+                    }
+                }
+
+
+                if (sharing_sum == 0)   //No other organisms are similar enough to this organism.
+                {
+                    organism.FitnessScore = initial_fitness;
+                }
+                else
+                {
+                    organism.FitnessScore = initial_fitness / sharing_sum;
+                }
             }
 
 
@@ -289,9 +327,14 @@ namespace NEAT
         }
 
 
+        /// <summary>
+        /// 
+        /// </summary>
         protected void Kill()
         {
 
         }
+
+        #endregion Evolution
     }
 }
