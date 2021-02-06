@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,7 @@ namespace NEAT.Speciation
     /// <summary>
     /// A group of genetically similar organisms.
     /// </summary>
-    public class Species
+    public class Species : IEnumerable<Organism>
     {
         #region Properties
 
@@ -101,6 +102,26 @@ namespace NEAT.Speciation
         public Organism GetRandomOrganism(Random random, Organism excluding_organism)
         {
             return Organisms.RandomValue(random, excluding_organism);
+        }
+
+
+        /// <summary>
+        /// Returns an enumerator that iterates through the internal organisms.
+        /// </summary>
+        /// <returns>A <see cref="System.Collections.Generic.HashSet{T}.Enumerator"/>, that is the internals.</returns>
+        public IEnumerator<Organism> GetEnumerator()
+        {
+            return Organisms.GetEnumerator();
+        }
+
+
+        /// <summary>
+        /// Required for <see cref="IEnumerable{T}"/>. Just look at <see cref="NEAT.Speciation.Species.GetEnumerator"/>.
+        /// </summary>
+        /// <returns>What <see cref="NEAT.Speciation.Species.GetEnumerator"/> returns.</returns>
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
 
         #endregion Organisms

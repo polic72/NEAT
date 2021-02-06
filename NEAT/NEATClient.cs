@@ -377,6 +377,155 @@ namespace NEAT
             Species.RemoveWhere(x => x.Size == 0);
         }
 
+
+        /// <summary>
+        /// Reproduces the surviving species based on their fitness scores. Chooses the organisms in the species to mate based on fitness scores as well. Replaces the previous generation 
+        /// with the newly created organisms. See <see cref="NEAT.NEATClient.Evolve"/> before using!
+        /// </summary>
+        /// <remarks>
+        /// Decides the amount of offspring (nk) each species (k) should be allotted via the following equation:
+        /// <para/>
+        /// nk = P * (Fk / Ft)
+        /// <para/>
+        /// Where:
+        /// <list type="bullet">
+        /// <item>k: The species.</item>
+        /// <item>nk: The number of new organisms for species k in the next generation.</item>
+        /// <item>P: The desired new population count.</item>
+        /// <item>Fk: The average fitness score of the species.</item>
+        /// <item>Ft: The sum of all fitness score averages of every species.</item>
+        /// </list>
+        /// </remarks>
+        public void ReproduceAndReplace()
+        {
+            double total_speciesFitness = Species.Sum(x => x.AverageFitnessScore);
+
+
+            Dictionary<Species, ReproduceAndReplace_Node> stored_distributionsSpecies = new Dictionary<Species, ReproduceAndReplace_Node>(Species.Count);
+
+
+            List<Organism> next_generation = new List<Organism>(NumOrganisms);  //All of the new organisms.
+
+            HashSet<Species> next_species = new HashSet<Species>(Species.Count);
+
+
+            #region Reproduction
+
+            foreach (Species species in Species)
+            {
+                //Calculate the number of organisms every species will have:
+                int num_alloted_offspring = (int)(NumOrganisms * (species.AverageFitnessScore / total_speciesFitness));
+
+
+                //Prepare new species for placement:
+                Species creation_species = new Species();
+
+                next_species.Add(creation_species);
+
+
+                //Prepare ScoredDistribution for selecting organisms to mate:
+                ScoredDistribution<Organism> internal_organisms = new ScoredDistribution<Organism>();
+
+                foreach (Organism organism in species)
+                {
+                    internal_organisms.Add(organism, organism.FitnessScore);
+                }
+
+                stored_distributionsSpecies.Add(species, new ReproduceAndReplace_Node(internal_organisms, creation_species));
+
+
+                //Actaully mate the organisms:
+                for (int i = 0; i < num_alloted_offspring; ++i)
+                {
+                    Organism random_organism_1 = internal_organisms.ChooseValue();
+
+                    Organism random_organism_2 = internal_organisms.ChooseValue(random_organism_1); //We don't want any self-replication...
+
+                    if (random_organism_2 == null)
+                    {
+                        random_organism_2 = random_organism_1;  //Unless that's the only option ;) Only happens when the organism is the only one in the species.
+                    }
+
+
+                    Organism baby = new Organism(random_organism_1.Genome.Crossover(random_organism_1.FitnessScore, random_organism_2.Genome, random_organism_2.FitnessScore,
+                        Pedigree.Random));
+
+                    next_generation.Add(baby);
+
+                    creation_species.AddOrganism(baby);
+                }
+            }
+
+
+            if (next_generation.Count != NumOrganisms)   //We need one more organism, give it to a random species. Super rare that this doesn't happen.
+            {
+                ReproduceAndReplace_Node chosen_last_node = stored_distributionsSpecies[Species.RandomValue()];
+
+
+                ScoredDistribution<Organism> last_round_distribution = chosen_last_node.scoredDistribution_organisms;
+
+                Species last_round_species = chosen_last_node.new_species;
+
+
+                Organism random_organism_1 = last_round_distribution.ChooseValue();
+
+                Organism random_organism_2 = last_round_distribution.ChooseValue(random_organism_1); //We don't want any self-replication...
+
+                if (random_organism_2 == null)
+                {
+                    random_organism_2 = random_organism_1;  //Unless that's the only option ;) Only happens when the organism is the only one in the species.
+                }
+
+
+                Organism baby = new Organism(random_organism_1.Genome.Crossover(random_organism_1.FitnessScore, random_organism_2.Genome, random_organism_2.FitnessScore,
+                        Pedigree.Random));
+
+                next_generation.Add(baby);
+
+                last_round_species.AddOrganism(baby);
+            }
+
+            #endregion Reproduction
+
+
+            #region Replacement
+
+            //Organisms:
+            Organisms.Clear();
+
+            Organisms.AddRange(next_generation);
+
+
+            //Species:
+            Species.Clear();
+
+            foreach (Species species in next_species)
+            {
+                Species.Add(species);
+            }
+
+            #endregion Replacement
+        }
+
+
+        /// <summary>
+        /// Helper struct for holding on to some values for use in the <see cref="NEAT.NEATClient.ReproduceAndReplace"/> method.
+        /// </summary>
+        private struct ReproduceAndReplace_Node
+        {
+            public ScoredDistribution<Organism> scoredDistribution_organisms;
+
+            public Species new_species;
+
+
+            public ReproduceAndReplace_Node(ScoredDistribution<Organism> scoredDistribution_organisms, Species new_species)
+            {
+                this.scoredDistribution_organisms = scoredDistribution_organisms;
+
+                this.new_species = new_species;
+            }
+        }
+
         #endregion Evolution
     }
 }
