@@ -80,7 +80,7 @@ namespace NEAT.Neural_Network
             }
 
 
-            input_nodes.Remove(temp_biasNode);  //The bias node is in the input nodes, and should not be.
+            input_nodes.RemoveAt(input_nodes.Count - 1);    //The bias node is in the input nodes, and should not be.
 
             bias_node = temp_biasNode;
             bias_node.SetOutput(1); //The bias node will always have an output of 1.
@@ -116,7 +116,6 @@ namespace NEAT.Neural_Network
         /// </summary>
         /// <param name="input">The input of for this calculation.</param>
         /// <returns>The output of the calculation.</returns>
-        /// <exception cref="System.ArgumentException">When the input array length doesn't match the number of input nodes.</exception>
         /// <remarks>
         /// The input array's indexing is based on the indexes of the input nodes. As the makeup of the neural network is not 
         /// editable, this is determinded at constrcutor-time. The same is true for the output.
