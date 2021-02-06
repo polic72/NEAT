@@ -216,7 +216,7 @@ namespace NEAT
 
 
         /// <summary>
-        /// Separates the current organisms into the correct species. Makes new species as needed. See <see cref="NEAT.NEATClient.Evolve"/> before using!
+        /// Separates the current organisms into the correct species. Makes new species and deletes extinct species as needed. See <see cref="NEAT.NEATClient.Evolve"/> before using!
         /// </summary>
         public void Speciate()
         {
