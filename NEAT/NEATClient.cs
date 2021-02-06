@@ -368,6 +368,15 @@ namespace NEAT
             }
         }
 
+
+        /// <summary>
+        /// Removes all stored extinct species (species with no organisms). See <see cref="NEAT.NEATClient.Evolve"/> before using!
+        /// </summary>
+        public void RemoveExtinctions()
+        {
+            Species.RemoveWhere(x => x.Size == 0);
+        }
+
         #endregion Evolution
     }
 }
