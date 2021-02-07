@@ -214,11 +214,11 @@ namespace NEAT
         /// </summary>
         /// <remarks>
         /// This method is a helper method that will run <see cref="NEAT.NEATClient.Speciate"/>, <see cref="NEAT.NEATClient.EvaluateScores"/>, <see cref="NEAT.NEATClient.Kill"/>, 
-        /// <see cref="NEAT.NEATClient.RemoveExtinctions"/>, and <see cref="NEAT.NEATClient.ReproduceAndReplace"/> in that order.
+        /// <see cref="NEAT.NEATClient.RemoveExtinctions"/>, <see cref="NEAT.NEATClient.ReproduceAndReplace"/>, and <see cref="NEAT.NEATClient.Mutate"/> in that order.
         /// <para/>
         /// Each of those methods is public and therefore could be run individually, but this ordering is important to the proper evolution to the next generation. In other words, 
-        /// each of those methods are designed to be run in that exact order. Why the option was even given to allow users to run them individually is for stepping and education purposes. 
-        /// In almost every case, only this method (<see cref="NEAT.NEATClient.Evolve"/>) should be run to move to the next generation.
+        /// each of those methods are designed to be run in that exact order. Why the option was even given to allow users to run them individually is for stepping and education 
+        /// purposes. In almost every case, only this method (<see cref="NEAT.NEATClient.Evolve"/>) should be run to move to the next generation.
         /// </remarks>
         public void Evolve()
         {
@@ -231,6 +231,8 @@ namespace NEAT
             RemoveExtinctions();
 
             ReproduceAndReplace();
+
+            Mutate();
         }
 
 
@@ -542,6 +544,20 @@ namespace NEAT
                 this.scoredDistribution_organisms = scoredDistribution_organisms;
 
                 this.new_species = new_species;
+            }
+        }
+
+
+        /// <summary>
+        /// Attempts to mutate every organism. The chances are based on the <see cref="NEAT.NEATClient.Pedigree"/>'s constants. See <see cref="NEAT.NEATClient.Evolve"/> before using!
+        /// </summary>
+        public void Mutate()
+        {
+            foreach (Organism organism in Organisms)
+            {
+                organism.Genome.Mutate();
+
+                organism.UpdateNeuralNetwork();
             }
         }
 
