@@ -40,16 +40,16 @@ namespace NEAT
         }
 
 
-        /// <summary>
-        /// Constructs a scored distribution.
-        /// </summary>
-        public ScoredDistribution()
-        {
-            values = new List<T>();
-            scores = new List<double>();
+        ///// <summary>
+        ///// Constructs a scored distribution.
+        ///// </summary>
+        //public ScoredDistribution()
+        //{
+        //    values = new List<T>();
+        //    scores = new List<double>();
 
-            random = new Random();
-        }
+        //    random = new Random();
+        //}
 
         #endregion Constructors
 

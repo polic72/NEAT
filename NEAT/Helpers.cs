@@ -36,26 +36,26 @@ namespace NEAT
         }
 
 
-        /// <summary>
-        /// Gets a random value.
-        /// </summary>
-        /// <typeparam name="TKey">The key type.</typeparam>
-        /// <typeparam name="TValue">The value type.</typeparam>
-        /// <param name="dictionary">The dictionary to get the value from.</param>
-        /// <returns>The random value.</returns>
-        public static IEnumerable<TValue> RandomValue<TKey, TValue>(this IDictionary<TKey, TValue> dictionary)
-        {
-            Random random = new Random();
+        ///// <summary>
+        ///// Gets a random value.
+        ///// </summary>
+        ///// <typeparam name="TKey">The key type.</typeparam>
+        ///// <typeparam name="TValue">The value type.</typeparam>
+        ///// <param name="dictionary">The dictionary to get the value from.</param>
+        ///// <returns>The random value.</returns>
+        //public static IEnumerable<TValue> RandomValue<TKey, TValue>(this IDictionary<TKey, TValue> dictionary)
+        //{
+        //    Random random = new Random();
 
-            List<TValue> values = Enumerable.ToList(dictionary.Values);
+        //    List<TValue> values = Enumerable.ToList(dictionary.Values);
 
-            int size = dictionary.Count;
+        //    int size = dictionary.Count;
 
-            while (true)
-            {
-                yield return values[random.Next(size)];
-            }
-        }
+        //    while (true)
+        //    {
+        //        yield return values[random.Next(size)];
+        //    }
+        //}
 
         #endregion Dictionary
 
@@ -92,16 +92,16 @@ namespace NEAT
         }
 
 
-        /// <summary>
-        /// Gets a random value.
-        /// </summary>
-        /// <typeparam name="T">The set type.</typeparam>
-        /// <param name="set">The set to get the value from.</param>
-        /// <returns>default(T) if the set.Count is 0 or something bad happened. The random object otherwise.</returns>
-        public static T RandomValue<T>(this ISet<T> set)
-        {
-            return RandomValue(set, new Random());
-        }
+        ///// <summary>
+        ///// Gets a random value.
+        ///// </summary>
+        ///// <typeparam name="T">The set type.</typeparam>
+        ///// <param name="set">The set to get the value from.</param>
+        ///// <returns>default(T) if the set.Count is 0 or something bad happened. The random object otherwise.</returns>
+        //public static T RandomValue<T>(this ISet<T> set)
+        //{
+        //    return RandomValue(set, new Random());
+        //}
 
         #endregion Set
 
@@ -141,17 +141,17 @@ namespace NEAT
         }
 
 
-        /// <summary>
-        /// Gets a random value.
-        /// </summary>
-        /// <typeparam name="T">The set type. Must implement <see cref="IEquatable{T}"/>.</typeparam>
-        /// <param name="set">The set to get the value from.</param>
-        /// <param name="excluding_obj">The T object to exclude from the search.</param>
-        /// <returns>default(T) if the set.Count is 0 or something bad happened. The random object otherwise.</returns>
-        public static T RandomValue<T>(this ISet<T> set, T excluding_obj)
-        {
-            return RandomValue(set, new Random(), excluding_obj);
-        }
+        ///// <summary>
+        ///// Gets a random value.
+        ///// </summary>
+        ///// <typeparam name="T">The set type. Must implement <see cref="IEquatable{T}"/>.</typeparam>
+        ///// <param name="set">The set to get the value from.</param>
+        ///// <param name="excluding_obj">The T object to exclude from the search.</param>
+        ///// <returns>default(T) if the set.Count is 0 or something bad happened. The random object otherwise.</returns>
+        //public static T RandomValue<T>(this ISet<T> set, T excluding_obj)
+        //{
+        //    return RandomValue(set, new Random(), excluding_obj);
+        //}
 
         #endregion Set Excluding
 

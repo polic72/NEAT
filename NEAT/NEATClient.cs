@@ -445,7 +445,7 @@ namespace NEAT
 
 
                 //Prepare ScoredDistribution for selecting organisms to mate:
-                ScoredDistribution<Organism> internal_organisms = new ScoredDistribution<Organism>();
+                ScoredDistribution<Organism> internal_organisms = new ScoredDistribution<Organism>(species.Size, Pedigree.Random);
 
                 foreach (Organism organism in species)
                 {
@@ -480,7 +480,7 @@ namespace NEAT
 
             if (next_generation.Count != NumOrganisms)   //We need one more organism, give it to a random species. Super rare that this doesn't happen.
             {
-                ReproduceAndReplace_Node chosen_last_node = stored_distributionsSpecies[Species.RandomValue()];
+                ReproduceAndReplace_Node chosen_last_node = stored_distributionsSpecies[Species.RandomValue(Pedigree.Random)];
 
 
                 ScoredDistribution<Organism> last_round_distribution = chosen_last_node.scoredDistribution_organisms;
