@@ -51,10 +51,10 @@ namespace NEAT
 
             Pedigree pedigree = new Pedigree(2, 1, new Random(42));
 
-            NEATClient client = new NEATClient(pedigree, 8, Evaluate);
+            NEATClient client = new NEATClient(pedigree, 50, Evaluate);
 
-            
-            for (int i = 0; i < 10; ++i)
+
+            for (int i = 0; i < 100; ++i)
             {
                 client.Speciate();
 
@@ -67,6 +67,21 @@ namespace NEAT
                 client.ReproduceAndReplace();
 
                 client.Mutate();
+            }
+
+
+            NeuralNetwork fittest = client.GetMostFitOrganism();
+
+
+            for (int i = 0; i < 2; ++i)
+            {
+                for (int q = 0; q < 2; ++q)
+                {
+                    double[] input = { i, q };
+
+
+                    Console.WriteLine(i + ", " + q + ": " + fittest.FeedForward(input)[0]);
+                }
             }
 
 

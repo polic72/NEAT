@@ -288,9 +288,18 @@ namespace NEAT
                     {
                         if (organism.Species != random_organism.Species)    //If the species to set is actually different.
                         {
-                            organism.Species?.RemoveOrganism(organism);
+                            Species original_species = organism.Species;
+
+
+                            original_species?.RemoveOrganism(organism);
 
                             species.AddOrganism(organism);
+
+
+                            if (original_species?.Size == 0) //This species just went extinct.
+                            {
+                                Species.Remove(original_species);
+                            }
                         }
 
                         found_species = true;
@@ -300,7 +309,10 @@ namespace NEAT
 
                 if (!found_species)
                 {
-                    organism.Species?.RemoveOrganism(organism);
+                    Species original_species = organism.Species;
+
+
+                    original_species?.RemoveOrganism(organism);
 
 
                     Species new_species = new Species();
@@ -308,6 +320,12 @@ namespace NEAT
                     Species.Add(new_species);
 
                     new_species.AddOrganism(organism);
+
+
+                    if (original_species?.Size == 0) //This species just went extinct.
+                    {
+                        Species.Remove(original_species);
+                    }
                 }
             }
         }
@@ -401,7 +419,8 @@ namespace NEAT
 
         /// <summary>
         /// Reproduces the surviving species based on their fitness scores. Chooses the organisms in the species to mate based on fitness scores as well. Replaces the previous generation 
-        /// with the newly created organisms. Adjusts compatibility distance after replacement. See <see cref="NEAT.NEATClient.Evolve"/> before using!
+        /// with the newly created organisms. Removes extinct species if necessary. Adjusts compatibility distance after replacement.
+        /// See <see cref="NEAT.NEATClient.Evolve"/> before using!
         /// </summary>
         /// <remarks>
         /// Decides the amount of offspring (nk) each species (k) should be allotted via the following equation:
@@ -478,7 +497,7 @@ namespace NEAT
             }
 
 
-            if (next_generation.Count != NumOrganisms)   //We need one more organism, give it to a random species. Super rare that this doesn't happen.
+            while (next_generation.Count < NumOrganisms)   //We need more organisms, give it to some random species. Super rare that this doesn't happen.
             {
                 ReproduceAndReplace_Node chosen_last_node = stored_distributionsSpecies[Species.RandomValue(Pedigree.Random)];
 
@@ -528,6 +547,9 @@ namespace NEAT
             #endregion Replacement
 
 
+            RemoveExtinctions();
+
+
             CompatibilityDistance += CD_function.Invoke(Species.Count);
         }
 
@@ -566,5 +588,23 @@ namespace NEAT
         }
 
         #endregion Evolution
+
+
+        /// <summary>
+        /// Gets the most fit organism's neural network currently in the generation. Runs <see cref="NEAT.NEATClient.Speciate"/> and <see cref="NEAT.NEATClient.EvaluateScores"/> 
+        /// first just in case it is needed.
+        /// </summary>
+        /// <returns>The most fit organism's neural network.</returns>
+        public NeuralNetwork GetMostFitOrganism()
+        {
+            Speciate();
+
+            EvaluateScores();
+
+
+            Organisms.Sort();   //Sorts the organisms by fitness score, greatest to lowest.
+
+            return Organisms[0].NeuralNetwork;
+        }
     }
 }

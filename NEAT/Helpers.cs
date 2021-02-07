@@ -126,7 +126,7 @@ namespace NEAT
 
             IEnumerable<T> exclusion = set.Where(x => !Equals(x, excluding_obj));
 
-            int index = random.Next(set.Count);
+            int index = set.Contains(excluding_obj) ? random.Next(set.Count - 1) : random.Next(set.Count);
 
             int i = 0;
             foreach (T obj in exclusion)
