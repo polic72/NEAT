@@ -401,7 +401,7 @@ namespace NEAT
 
         /// <summary>
         /// Reproduces the surviving species based on their fitness scores. Chooses the organisms in the species to mate based on fitness scores as well. Replaces the previous generation 
-        /// with the newly created organisms. See <see cref="NEAT.NEATClient.Evolve"/> before using!
+        /// with the newly created organisms. Adjusts compatibility distance after replacement. See <see cref="NEAT.NEATClient.Evolve"/> before using!
         /// </summary>
         /// <remarks>
         /// Decides the amount of offspring (nk) each species (k) should be allotted via the following equation:
@@ -526,6 +526,9 @@ namespace NEAT
             }
 
             #endregion Replacement
+
+
+            CompatibilityDistance += CD_function.Invoke(Species.Count);
         }
 
 

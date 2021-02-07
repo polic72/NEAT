@@ -49,28 +49,61 @@ namespace NEAT
 
             #region NEATClient Test
 
-            Pedigree pedigree = new Pedigree(4, 1, new Random(42));
+            Pedigree pedigree = new Pedigree(2, 1, new Random(42));
 
-            NEATClient client = new NEATClient(pedigree, 2);
+            NEATClient client = new NEATClient(pedigree, 8, Evaluate);
 
-            IEnumerable<Organism> oh = client.Organisms.Where(x => x != client.Organisms[0]);
+            
+            for (int i = 0; i < 10; ++i)
+            {
+                client.Speciate();
 
-            client.Organisms[0].Genome.Mutate_Link();
-            client.Organisms[0].Genome.Mutate_Link();
+                client.EvaluateScores();
 
-            client.Organisms[0].Genome.Mutate_Node();
-            client.Organisms[0].Genome.Mutate_Node();
-            client.Organisms[0].Genome.Mutate_Node();
+                client.Kill();
 
-            //client.Speciate();
+                client.RemoveExtinctions();
+
+                client.ReproduceAndReplace();
+
+                client.Mutate();
+            }
 
 
-            Console.WriteLine(client.Organisms[0].Genome.Distance(client.Organisms[1].Genome));
+            Console.WriteLine();
 
             #endregion NEATClient Test
 
 
             Console.ReadKey();
+        }
+
+
+        public static double Evaluate(NeuralNetwork neuralNetwork)
+        {
+            double score = 0;
+
+            for (int i = 0; i < 2; ++i)
+            {
+                for (int q = 0; q < 2; ++q)
+                {
+                    double[] input = { i, q };
+
+                    double desired_output = (i == q) ? 0 : 1;
+
+
+                    score += Scoring(desired_output, neuralNetwork.FeedForward(input)[0]);
+                }
+            }
+
+
+            return score;
+        }
+
+
+        public static double Scoring(double desired, double actual)
+        {
+            return 2 * Math.Pow(Math.Abs(desired - actual), 2);
         }
     }
 }
