@@ -513,29 +513,43 @@ namespace NEAT.Genetic
 
 
         /// <summary>
-        /// Mutates a random connection by radomizing its weight.
+        /// Mutates a random connection by radomizing its weight. Creates connection if there is none.
         /// </summary>
         public void Mutate_WeightRandom()
         {
-            ConnectionGene connectionGene = ConnectionGenes.RandomValue(Random).Take(1).ElementAt(0);
-
-            if (connectionGene != null)
+            if (ConnectionGenes.Count == 0)
             {
-                connectionGene.Weight = Pedigree.Mutation_WeightRandom * (Random.NextDouble() * 2 - 1);
+                Mutate_Link();
+            }
+            else
+            {
+                ConnectionGene connectionGene = ConnectionGenes.RandomValue(Random).Take(1).ElementAt(0);
+
+                if (connectionGene != null)
+                {
+                    connectionGene.Weight = Pedigree.Mutation_WeightRandom * (Random.NextDouble() * 2 - 1);
+                }
             }
         }
 
 
         /// <summary>
-        /// Mutates a random connection by shifting its weight up or down by a radom value.
+        /// Mutates a random connection by shifting its weight up or down by a radom value. Creates connection if there is none.
         /// </summary>
         public void Mutate_WeightShift()
         {
-            ConnectionGene connectionGene = ConnectionGenes.RandomValue(Random).Take(1).ElementAt(0);
-
-            if (connectionGene != null)
+            if (ConnectionGenes.Count == 0)
             {
-                connectionGene.Weight = connectionGene.Weight + Pedigree.Mutation_WeightShift * (Random.NextDouble() * 2 - 1);
+                Mutate_Link();
+            }
+            else
+            {
+                ConnectionGene connectionGene = ConnectionGenes.RandomValue(Random).Take(1).ElementAt(0);
+
+                if (connectionGene != null)
+                {
+                    connectionGene.Weight = connectionGene.Weight + Pedigree.Mutation_WeightShift * (Random.NextDouble() * 2 - 1);
+                }
             }
         }
 
@@ -545,6 +559,11 @@ namespace NEAT.Genetic
         /// </summary>
         public void Mutate_LinkToggle()
         {
+            if (ConnectionGenes.Count == 0) //There are no connections, nothing to toggle.
+            {
+                return;
+            }
+
             ConnectionGene connectionGene = ConnectionGenes.RandomValue(Random).Take(1).ElementAt(0);
 
             if (connectionGene != null)

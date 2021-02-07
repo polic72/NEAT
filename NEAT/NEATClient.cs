@@ -558,9 +558,10 @@ namespace NEAT
         {
             foreach (Organism organism in Organisms)
             {
-                organism.Genome.Mutate();
-
-                organism.UpdateNeuralNetwork();
+                if (organism.Genome.Mutate())
+                {
+                    organism.UpdateNeuralNetwork();
+                }
             }
         }
 
