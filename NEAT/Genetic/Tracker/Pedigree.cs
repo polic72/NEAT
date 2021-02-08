@@ -54,6 +54,15 @@ namespace NEAT.Genetic.Tracker
         public double Crossover_ScoreDelta { get; }
 
 
+        /// <summary>
+        /// Whether or not new genomes should be input and bias nodes connected to output nodes.
+        /// </summary>
+        /// <remarks>
+        /// True to start with a fully connected network (0 hidden nodes). False to start with a blank network (no initial connections). Random weights.
+        /// </remarks>
+        public bool StartConnected { get; }
+
+
         #region Mutation Constants
 
         /// <summary>
@@ -123,7 +132,7 @@ namespace NEAT.Genetic.Tracker
         #region Defaults
 
         /// <summary>
-        /// 
+        /// The default values for pedigree constants.
         /// </summary>
         public static class ConstantDefaults
         {
@@ -160,6 +169,12 @@ namespace NEAT.Genetic.Tracker
             public const double Default_CrossoverScoreDelta = 0.001;
 
 
+            /// <summary>
+            /// The default value for <see cref="NEAT.Genetic.Tracker.Pedigree.StartConnected"/>.
+            /// </summary>
+            public const bool Default_StartConnected = true;
+
+
             #region Mutation Constants
 
             /// <summary>
@@ -179,12 +194,12 @@ namespace NEAT.Genetic.Tracker
             /// <summary>
             /// The default value for <see cref="NEAT.Genetic.Tracker.Pedigree.Probability_MutateLink"/>.
             /// </summary>
-            public const double Default_ProbabilityMutateLink = 0.05;
+            public const double Default_ProbabilityMutateLink = 0.05;   //0.01;
 
             /// <summary>
             /// The default value for <see cref="NEAT.Genetic.Tracker.Pedigree.Probability_MutateNode"/>.
             /// </summary>
-            public const double Default_ProbabilityMutateNode = 0.03;
+            public const double Default_ProbabilityMutateNode = 0.03;   //0.005;
 
             /// <summary>
             /// The default value for <see cref="NEAT.Genetic.Tracker.Pedigree.Probability_MutateActivationFunction"/>.
@@ -194,12 +209,12 @@ namespace NEAT.Genetic.Tracker
             /// <summary>
             /// The default value for <see cref="NEAT.Genetic.Tracker.Pedigree.Probability_MutateWeightRandom"/>.
             /// </summary>
-            public const double Default_ProbabilityMutateWeightRandom = 0.03;
+            public const double Default_ProbabilityMutateWeightRandom = 0.03;   //0.05;
 
             /// <summary>
             /// The default value for <see cref="NEAT.Genetic.Tracker.Pedigree.Probability_MutateWeightShift"/>.
             /// </summary>
-            public const double Default_ProbabilityMutateWeightShift = 0.05;
+            public const double Default_ProbabilityMutateWeightShift = 0.05;    //0.08
 
             /// <summary>
             /// The default value for <see cref="NEAT.Genetic.Tracker.Pedigree.Probability_MutateLinkToggle"/>.
@@ -254,6 +269,8 @@ namespace NEAT.Genetic.Tracker
         /// <param name="num_outputNodes">The number of output nodes for every genome.</param>
         /// <param name="random">The random object used for all randomization.</param>
         /// 
+        /// <param name="startConnected">Whether or not new genomes should be input and bias nodes connected to output nodes.</param>
+        /// 
         /// <param name="max_nodes">The maximum number of nodes a neural network can have.</param>
         /// <param name="c1">The c1 constant to set. See <see cref="NEAT.Genetic.Genome.Distance(Genome)"/> for more information.</param>
         /// <param name="c2">The c2 constant to set. See <see cref="NEAT.Genetic.Genome.Distance(Genome)"/> for more information.</param>
@@ -272,7 +289,9 @@ namespace NEAT.Genetic.Tracker
         /// <param name="probability_mutateLinkToggle">The probability to mutate a random connection by toggling its Enabled state.</param>
         /// <exception cref="ArgumentNullException">When random is null.</exception>
         /// <exception cref="ArgumentException">When num_inputNodes/num_outputNodes are 0 or negative.</exception>
-        public Pedigree(int num_inputNodes, int num_outputNodes, Random random, int max_nodes, double c1, double c2, double c3, bool uniformCrossover, double crossover_scoreDelta,
+        public Pedigree(int num_inputNodes, int num_outputNodes, Random random,
+            bool startConnected,
+            int max_nodes, double c1, double c2, double c3, bool uniformCrossover, double crossover_scoreDelta,
             double mutate_weightRandom, double mutate_weightShift,
             double probability_mutateLink, double probability_mutateNode, double probability_mutateActivationFunction, double probability_mutateWeightRandom,
             double probability_mutateWeightShift, double probability_mutateLinkToggle)
@@ -304,6 +323,9 @@ namespace NEAT.Genetic.Tracker
             Num_OutputNodes = num_outputNodes;
 
             Random = random;
+
+
+            StartConnected = startConnected;
 
 
             max_replacingNumber = Num_InputNodes + Num_OutputNodes + 2; //+1 for the bias node, another +1 to not overwrite the last output node.
@@ -348,7 +370,7 @@ namespace NEAT.Genetic.Tracker
 
             #region Node Initialization
 
-            for (int i = 1; i <= Num_InputNodes + 1; ++i)
+            for (int i = 1; i <= Num_InputNodes + 1; ++i)   //Num_InputNodes + 1 to handle bias node.
             {
                 nodeGenePatterns.Add(i, new NodeGenePattern(this, i, Node.INPUT_X));
             }
@@ -374,6 +396,7 @@ namespace NEAT.Genetic.Tracker
         /// </remarks>
         public Pedigree(int num_inputNodes, int num_outputNodes, Random random)
             : this(num_inputNodes, num_outputNodes, random,
+                  ConstantDefaults.Default_StartConnected,
                   ConstantDefaults.Default_MaxNodes, ConstantDefaults.Default_C1, ConstantDefaults.Default_C2, ConstantDefaults.Default_C3,
                   ConstantDefaults.Default_UniformCrossover, ConstantDefaults.Default_CrossoverScoreDelta,
                   ConstantDefaults.Default_MutationWeightRandom, ConstantDefaults.Default_MutationWeightShift,
@@ -393,6 +416,10 @@ namespace NEAT.Genetic.Tracker
         /// Creates a genome with the only the input and output nodes. Each have the <see cref="NEAT.Neural_Network.Node.Sigmoid(double)"/> activation function.
         /// </summary>
         /// <returns>The created genome.</returns>
+        /// <remarks>
+        /// If the <see cref="NEAT.Genetic.Tracker.Pedigree.StartConnected"/> property is set to true, each created genome will start with all its inputs (and bias)
+        /// connected to all of its outputs. Random weights.
+        /// </remarks>
         public Genome CreateGenome()
         {
             Genome genome = new Genome(this, Random);
@@ -401,6 +428,13 @@ namespace NEAT.Genetic.Tracker
             {
                 genome.NodeGenes.Add(i, new NodeGene(nodeGenePatterns[i]));
             }
+
+
+            if (StartConnected)
+            {
+                //For loop and add connection genes.
+            }
+
 
             return genome;
         }

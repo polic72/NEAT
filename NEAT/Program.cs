@@ -51,10 +51,10 @@ namespace NEAT
 
             Pedigree pedigree = new Pedigree(2, 1, new Random(42));
 
-            NEATClient client = new NEATClient(pedigree, 250, Evaluate);
+            NEATClient client = new NEATClient(pedigree, 25, Evaluate);
 
 
-            for (int i = 0; i < 500; ++i)
+            for (int i = 0; i < 100; ++i)
             {
                 client.Speciate();
 
