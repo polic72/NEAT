@@ -356,25 +356,33 @@ namespace NEAT
                 double initial_fitness = evaluateFunction(organism.NeuralNetwork);
 
 
-                int sharing_sum = 0;
+                //int sharing_sum = 0;
 
-                foreach (Organism other_organism in Organisms.Where(x => x != organism))    //Loop through every other organism.
-                {
-                    if (organism.Genome.Distance(other_organism.Genome) < CompatibilityDistance)
-                    {
-                        ++sharing_sum;
-                    }
-                }
+                //foreach (Organism other_organism in organism.Species)    //Loop through every other organism in the species.
+                //{
+                //    if (other_organism == organism)
+                //    {
+                //        continue;
+                //    }
+
+                //    if (organism.Genome.Distance(other_organism.Genome) < CompatibilityDistance)
+                //    {
+                //        ++sharing_sum;
+                //    }
+                //}
 
 
-                if (sharing_sum == 0)   //No other organisms are similar enough to this organism.
-                {
-                    organism.FitnessScore = initial_fitness;
-                }
-                else
-                {
-                    organism.FitnessScore = initial_fitness / sharing_sum;
-                }
+                //if (sharing_sum == 0)   //No other organisms are similar enough to this organism.
+                //{
+                //    organism.FitnessScore = initial_fitness;
+                //}
+                //else
+                //{
+                //    organism.FitnessScore = initial_fitness / sharing_sum;
+                //}
+
+
+                organism.FitnessScore = initial_fitness / organism.Species.Size;
             }
 
 

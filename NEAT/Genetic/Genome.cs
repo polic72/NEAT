@@ -488,6 +488,11 @@ namespace NEAT.Genetic
 
             NodeGene created = Pedigree.Create_NodeGene(connectionGene);
 
+            if (NodeGenes.ContainsKey(created.NodeGenePattern.InnovationNumber))
+            {
+                return; //TODO maybe retry here as well?
+            }
+
             NodeGenes.Add(created.NodeGenePattern.InnovationNumber, created);
 
 
